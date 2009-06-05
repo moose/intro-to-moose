@@ -1,0 +1,93 @@
+html>body {
+    background: none;
+}
+
+div.image-set {
+    margin-left: 6.5%;
+    margin-top: 1em;
+}
+
+div#header, div#footer {
+    color: black;
+    background: #eddbb4;
+}
+
+.slide h1 {
+    background: #eddbb4;
+    color: black;
+}
+
+span.date, span.uri {
+    font-size: 80%;
+}
+
+span.uri {
+    color: blue;
+}
+
+div.image-gallery {
+    text-align: center;
+}
+
+p.image-notes {
+    font-size: 40%;
+    font-style: italic;
+}
+
+img.for-slide {
+    float: right;
+}
+
+.slide ul, .slide ul li ul {
+    line-height: 1.2em;
+}
+
+.slide pre {
+    font-size: 100%;
+    line-height: 130%;
+}
+
+.highlight {
+    color: #03c;
+}
+
+.slide pre.small {
+    font-size: 33%;
+}
+
+.slide pre code {
+}
+
+.slide table.side-by-side tr {
+    vertical-align: top;
+}
+
+.match-moose {
+    color: #03c;
+}
+.match-unsweet {
+    color: #03c;
+    font-weight: bold;
+}
+
+.wrong {
+    color: #F00;
+}
+
+.right {
+    color: #0C0;
+}
+
+.slide h2 {
+    margin: 0.1em 0 0.1em 0;
+}
+
+.slide ul + h2,   
+.slide ul + pre {
+    margin-top: 0.5em;
+}
+
+.fake-slide0 {padding-top: 3.5em; font-size: 90%;}
+.fake-slide0 h1 {position: static; margin: 1em 0 0; padding: 0;
+   font: bold 2em Helvetica, sans-serif; white-space: normal;
+   color: #000; background: transparent;}

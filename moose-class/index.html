@@ -1,0 +1,957 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>Introduction to Moose</title>
+<!-- metadata -->
+<meta name="generator" content="S5" />
+<meta name="version" content="S5 1.2a2" />
+<meta name="author" content="Eric A. Meyer" />
+<meta name="company" content="Complex Spiral Consulting" />
+<!-- configuration parameters -->
+<meta name="defaultView" content="slideshow" />
+<meta name="controlVis" content="hidden" />
+<!-- style sheet links -->
+<link rel="stylesheet" href="ui/default/slides.css" type="text/css" media="projection" id="slideProj" />
+<link rel="stylesheet" href="ui/default/outline.css" type="text/css" media="screen" id="outlineStyle" />
+<link rel="stylesheet" href="ui/default/print.css" type="text/css" media="print" id="slidePrint" />
+<link rel="stylesheet" href="ui/default/opera.css" type="text/css" media="projection" id="operaFix" />
+<!-- embedded styles -->
+<style type="text/css" media="all">
+.imgcon {width: 525px; margin: 0 auto; padding: 0; text-align: center;}
+#anim {width: 270px; height: 320px; position: relative; margin-top: 0.5em;}
+#anim img {position: absolute; top: 42px; left: 24px;}
+img#me01 {top: 0; left: 0;}
+img#me02 {left: 23px;}
+img#me04 {top: 44px;}
+img#me05 {top: 43px;left: 36px;}
+</style>
+<!-- S5 JS -->
+<script src="ui/default/slides.js" type="text/javascript"></script>
+<link rel="stylesheet" href="ui/custom.css" type="text/css" />
+</head>
+<body>
+
+<div class="layout">
+<div id="controls"><!-- DO NOT EDIT --></div>
+<div id="currentSlide"><!-- DO NOT EDIT --></div>
+<div id="header"></div>
+<div id="footer">
+  <h2>Introduction to Moose</h2>
+</div>
+</div>
+
+<div class="presentation">
+
+<div class="slide">
+  <h1>Introduction to Moose</h1>
+  <h2>YAPC 2009</h2>
+</div>
+
+<div class="slide">
+  <h1>Moose Summed Up</h1>
+
+  <ul>
+    <li><strong>Declarative</strong> OO sugar</li>
+    <li>Introspectable</li>
+    <li>Extensible</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Concepts</h1>
+
+  <ul>
+    <li>Moose builds on Perl 5's native OO</li>
+    <li>Borrows ideas from other languages, notably Perl 6</li>
+    <li>Provides semantics for common operations</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Classes</h1>
+
+  <ul>
+    <li>
+      Classes have ...
+      <ul>
+        <li>Attributes</li>
+        <li>Methods</li>
+        <li>Superclasses</li>
+        <li>Method modifiers</li>
+        <li>Constructor and destructor</li>
+        <li>One metaclass object</li>
+      </ul>
+    </li>
+    <li>Classes do roles</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Class Example</h1>
+
+  <pre><code>package Person;
+<span class="highlight">use Moose;</span></code></pre>
+
+  <ul>
+    <li>Poof, a Moose-based class!</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Attributes</h1>
+
+  <ul>
+    <li>Aka property, slot, field, member variable</li>
+    <li>A piece of data owned by an object</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Attributes</h1>
+
+  <ul>
+    <li>
+      Attributes have ...
+      <ul>
+        <li>Access-control (read-only vs read-write)</li>
+        <li>An optional type</li>
+        <li>Accessor methods</li>
+        <li>Delegation methods</li>
+        <li>Optional default value</li>
+        <li>Many more features</li>
+      </ul>
+    </li>
+    <li>Stored in the object, but don't worry about that</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Attribute Example</h1>
+
+  <pre><code>package Person;
+use Moose;
+
+<span class="highlight">has 'first_name' =&gt; ( is =&gt; 'rw' );</span></code></pre>
+
+</div>
+
+<div class="slide">
+  <h1>Methods</h1>
+
+  <ul>
+    <li>Nothing fancy here, just Perl subroutines</li>
+  </ul>
+
+  <pre><code>package Person;
+use Moose;
+
+<span class="highlight">sub greet { ... }</span></code></pre>
+</div>
+
+<div class="slide">
+  <h1>Roles</h1>
+
+  <ul>
+    <li>Classes <strong>do</strong> (or consume) roles</li>
+    <li>Similar to mixins and Java interfaces</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Roles</h1>
+
+  <ul>
+    <li>Like classes, can have attributes, methods, do roles</li>
+    <li>Roles can require methods</li>
+    <li>Roles are composed (flattened) into classes</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Role Example</h1>
+
+<pre><code>package HasPermissions;
+<span class="highlight">use Moose::Role;</span>
+
+has is_admin =&gt; ( is =&gt; 'rw' );</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Role Example</h1>
+
+  <p>
+    And then ...
+  </p>
+  
+<pre><code>package Person;
+use Moose;
+
+<span class="highlight">with 'HasPermissions';</span></code></pre>
+</div>
+
+<div class="slide">
+  <h1>Method Modifiers</h1>
+
+  <ul>
+    <li>AKA advice</li>
+    <li>&quot;<strong>Before</strong> foo(), do this first&quot;</li>
+    <li>&quot;Do this <strong>after</strong> foo()</li>
+    <li>&quot;Put this code <strong>around</strong> foo()&quot;</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Before &amp; After</h1>
+
+<pre><code>before 'foo'
+    =&gt; sub { warn 'About to call foo()' };
+
+after  'foo'
+    =&gt; sub { warn 'Leaving foo()' };</code></pre>
+
+</div>
+
+<div class="slide">
+  <h1>Around</h1>
+
+<pre><code>around 'foo' =&gt; sub {
+    my $real_foo = shift;
+    my $self     = shift;
+
+    warn 'Just before foo()';
+    my @return =
+        $self-&gt;$real_foo( @_, bar =&gt; 42 );
+
+    return ( @return, 'modify return values' );
+};</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Type Constraints</h1>
+
+  <ul>
+    <li>NOT A FULL-BLOWN TYPE SYSTEM!</li>
+    <li>But still darn useful</li>
+    <li>Constrain attribute values</li>
+    <li>Coerce from other types</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Type Constraint Example</h1>
+
+<pre><code>package Person;
+use Moose;
+
+has 'weight' =&gt; ( is =&gt; 'ro', <span class="highlight">isa =&gt; 'Int'</span> );
+
+# kaboom
+Person-&gt;new( weight =&gt; 'fat' );</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Delegation</h1>
+
+  <ul>
+    <li>Attributes can define delegations</li>
+    <li>Lets you hide some implementation details</li>
+    <li>Fewer objects to chase around</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Delegation</h1>
+
+<pre><code>package Person;
+use Moose;
+
+has 'blog_uri' =&gt; (
+    is      =&gt; 'rw',
+    isa     =&gt; 'URI',
+    <span class="highlight">handles =&gt; { 'blog_hostname' =&gt; 'host' },</span>
+);
+
+<span class="highlight">$person->blog_hostname;</span>
+# really calls $person->blog_uri->host
+</div>
+
+<div class="slide">
+  <h1>Constructors</h1>
+
+  <ul>
+    <li>Moose creates <code>new()</code> for you</li>
+    <li>Provide an optional <code>BUILDARGS()</code> and <code>BUILD()</code></li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Destructors</h1>
+
+  <ul>
+    <li>Provide an optional <code>DEMOLISH()</code></li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Moose Meta-API</h1>
+
+  <ul>
+    <li>Answers questions like ...
+      <ul>
+        <li>What methods does this class have?</li>
+        <li>What are its parents?</li>
+        <li>What attributes does it have (including inherited attributes)?</li>
+        <li>What roles does it do?</li>
+        <li>Much, much, more</li>
+      </ul>
+    </li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Moose Meta-API</h1>
+
+  <ul>
+    <li>Not just for introspection ...
+      <ul>
+        <li>Add methods, attributes, roles, etc</li>
+        <li>Extend and alter core features</li>
+      </ul>
+    </li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Why Moose?</h1>
+
+  <ul>
+    <li>A quick bit of propoganda ...</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>With Moose</h1>
+
+  <pre><code>package Person;
+use Moose;
+
+has last_name =&gt; (
+    is  =&gt; 'rw',
+    isa =&gt; 'Str',
+);</code></pre>
+</div>
+
+<div class="slide">
+    <h1>Without Moose</h1>
+
+    <pre class="small"><code>package Person;
+use strict;
+use warnings;
+use Carp 'confess';
+
+sub new {
+    my $class = shift;
+    my %args  = @_;
+    my $self  = {};
+
+    if (exists $args{last_name}) {
+        confess &quot;Attribute (last_name) does not pass the type constraint because: &quot;
+                . &quot;Validation failed for 'Str' with value $args{last_name}&quot;
+            if ref($args{last_name});
+        $self-&gt;{last_nane} = $args{last_name};
+    }
+
+    return bless $self, $class;
+}
+
+sub last_name {
+    my $self = shift;
+
+    if (@_) {
+        my $value = shift;
+        confess &quot;Attribute (last_name) does not pass the type constraint because: &quot;
+                . &quot;Validation failed for 'Str' with value $value&quot;
+            if ref($value);
+        $self-&gt;{last_name} = $value;
+    }
+
+    return $self-&gt;{last_name};
+}</code></pre>
+
+</div>
+
+<div class="slide">
+    <h1>Side by side</h1>
+
+    <table class="side-by-side">
+        <tr>
+          <td>
+            <pre><code>package Person;
+use Moose;
+
+has last_name =&gt; (
+    is  =&gt; 'rw',
+    isa =&gt; 'Str',
+);</code></pre>
+            </td>
+            <td>
+                <pre class="small"><code>package Person;
+use strict;
+use warnings;
+use Carp 'confess';
+
+sub new {
+    my $class = shift;
+    my %args  = @_;
+    my $self  = {};
+
+    if (exists $args{last_name}) {
+        confess &quot;Attribute (last_name) does not pass the type constraint because: &quot;
+                . &quot;Validation failed for 'Str' with value $args{last_name}&quot;
+            if ref($args{last_name});
+        $self-&gt;{last_nane} = $args{last_name};
+    }
+
+    return bless $self, $class;
+}
+
+sub last_name {
+    my $self = shift;
+
+    if (@_) {
+        my $value = shift;
+        confess &quot;Attribute (last_name) does not pass the type constraint because: &quot;
+                . &quot;Validation failed for 'Str' with value $value&quot;
+            if ref($value);
+        $self-&gt;{last_name} = $value;
+    }
+
+    return $self-&gt;{last_name};
+}</code></pre>
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+<div class="slide">
+    <h1>Side by side</h1>
+
+    <table class="side-by-side">
+        <tr>
+            <td>
+                <pre><code><span class="match-moose">package Person;</span>
+use Moose;
+
+has last_name =&gt; (
+    is  =&gt; 'rw',
+    isa =&gt; 'Str',
+);</code></pre>
+            </td>
+            <td>
+                <pre class="small"><code><span class="match-unsweet">package Person;</span>
+use strict;
+use warnings;
+use Carp 'confess';
+
+sub new {
+    my $class = shift;
+    my %args  = @_;
+    my $self  = {};
+
+    if (exists $args{last_name}) {
+        confess &quot;Attribute (last_name) does not pass the type constraint because: &quot;
+                . &quot;Validation failed for 'Str' with value $args{last_name}&quot;
+            if ref($args{last_name});
+        $self-&gt;{last_nane} = $args{last_name};
+    }
+
+    return bless $self, $class;
+}
+
+sub last_name {
+    my $self = shift;
+
+    if (@_) {
+        my $value = shift;
+        confess &quot;Attribute (last_name) does not pass the type constraint because: &quot;
+                . &quot;Validation failed for 'Str' with value $value&quot;
+            if ref($value);
+        $self-&gt;{last_name} = $value;
+    }
+
+    return $self-&gt;{last_name};
+}</code></pre>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="slide">
+    <h1>Side by side</h1>
+
+    <table class="side-by-side">
+        <tr>
+            <td>
+                <pre><code>package Person;
+<span class="match-moose">use Moose;</span>
+
+has last_name =&gt; (
+    is  =&gt; 'rw',
+    isa =&gt; 'Str',
+);</code></pre>
+            </td>
+            <td>
+                <pre class="small"><code>package Person;
+<span class="match-unsweet">use strict;
+use warnings;
+use Carp 'confess';
+
+sub new {
+    my $class = shift;
+    my %args  = @_;
+    my $self  = {};</span>
+
+    if (exists $args{last_name}) {
+        confess &quot;Attribute (last_name) does not pass the type constraint because: &quot;
+                . &quot;Validation failed for 'Str' with value $args{last_name}&quot;
+            if ref($args{last_name});
+        $self-&gt;{last_nane} = $args{last_name};
+    }
+
+    <span class="match-unsweet">return bless $self, $class;
+}</span>
+
+sub last_name {
+    my $self = shift;
+
+    if (@_) {
+        my $value = shift;
+        confess &quot;Attribute (last_name) does not pass the type constraint because: &quot;
+                . &quot;Validation failed for 'Str' with value $value&quot;
+            if ref($value);
+        $self-&gt;{last_name} = $value;
+    }
+
+    return $self-&gt;{last_name};
+}</code></pre>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="slide">
+    <h1>Side by side</h1>
+
+    <table class="side-by-side">
+        <tr>
+            <td>
+                <pre><code>package Person;
+use Moose;
+
+<span class="match-moose">has last_name =&gt; (</span>
+    is  =&gt; 'rw',
+    isa =&gt; 'Str',
+<span class="match-moose">);</span></code></pre>
+            </td>
+            <td>
+                <pre class="small"><code>package Person;
+use strict;
+use warnings;
+use Carp 'confess';
+
+sub new {
+    my $class = shift;
+    my %args  = @_;
+    my $self  = {};
+
+    <span class="match-unsweet">if (exists $args{last_name}) {</span>
+        confess &quot;Attribute (last_name) does not pass the type constraint because: &quot;
+                . &quot;Validation failed for 'Str' with value $args{last_name}&quot;
+            if ref($args{last_name});
+        <span class="match-unsweet">$self-&gt;{last_nane} = $args{last_name};
+    }</span>
+
+    return bless $self, $class;
+}
+
+sub last_name {
+    my $self = shift;
+
+    if (@_) {
+        my $value = shift;
+        confess &quot;Attribute (last_name) does not pass the type constraint because: &quot;
+                . &quot;Validation failed for 'Str' with value $value&quot;
+            if ref($value);
+        $self-&gt;{last_name} = $value;
+    }
+
+    return $self-&gt;{last_name};
+}</code></pre>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="slide">
+    <h1>Side by side</h1>
+
+    <table class="side-by-side">
+        <tr>
+            <td>
+                <pre><code>package Person;
+use Moose;
+
+has last_name =&gt; (
+    <span class="match-moose">is  =&gt; 'rw',</span>
+    isa =&gt; 'Str',
+);</code></pre>
+            </td>
+            <td>
+                <pre class="small"><code>package Person;
+use strict;
+use warnings;
+use Carp 'confess';
+
+sub new {
+    my $class = shift;
+    my %args  = @_;
+    my $self  = {};
+
+    if (exists $args{last_name}) {
+        confess &quot;Attribute (last_name) does not pass the type constraint because: &quot;
+                . &quot;Validation failed for 'Str' with value $args{last_name}&quot;
+            if ref($args{last_name});
+        $self-&gt;{last_nane} = $args{last_name};
+    }
+
+    return bless $self, $class;
+}
+
+<span class="match-unsweet">sub last_name {
+    my $self = shift;
+
+    if (@_) {
+        my $value = shift;</span>
+        confess &quot;Attribute (last_name) does not pass the type constraint because: &quot;
+                . &quot;Validation failed for 'Str' with value $value&quot;
+            if ref($value);
+        <span class="match-unsweet">$self-&gt;{last_name} = $value;
+    }
+
+    return $self-&gt;{last_name};
+}</span></code></pre>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="slide">
+    <h1>Side by side</h1>
+
+    <table class="side-by-side">
+        <tr>
+            <td>
+                <pre><code>package Person;
+use Moose;
+
+has last_name =&gt; (
+    is  =&gt; 'rw',
+    <span class="match-moose">isa =&gt; 'Str',</span>
+);</code></pre>
+            </td>
+            <td>
+                <pre class="small"><code>package Person;
+use strict;
+use warnings;
+use Carp 'confess';
+
+sub new {
+    my $class = shift;
+    my %args  = @_;
+    my $self  = {};
+
+    if (exists $args{last_name}) {
+        <span class="match-unsweet">confess &quot;Attribute (last_name) does not pass the type constraint because: &quot;
+                . &quot;Validation failed for 'Str' with value $args{last_name}&quot;
+            if ref($args{last_name});</span>
+        $self-&gt;{last_nane} = $args{last_name};
+    }
+
+    return bless $self, $class;
+}
+
+sub last_name {
+    my $self = shift;
+
+    if (@_) {
+        my $value = shift;
+        <span class="match-unsweet">confess &quot;Attribute (last_name) does not pass the type constraint because: &quot;
+                . &quot;Validation failed for 'Str' with value $value&quot;
+            if ref($value);</span>
+        $self-&gt;{last_name} = $value;
+    }
+
+    return $self-&gt;{last_name};
+}</code></pre>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="slide">
+    <h1>Side by side</h1>
+
+    <table class="side-by-side">
+        <tr class="incremental">
+            <td>5 lines</td>
+            <td>21 lines</td>
+        </tr>
+        <tr class="incremental">
+            <td>92 characters</td>
+            <td>741 characters</td>
+        </tr>
+        <tr>
+            <td>
+                <pre><code>package Person;
+use Moose;
+
+has last_name =&gt; (
+    is  =&gt; 'rw',
+    isa =&gt; 'Str',
+);</code></pre>
+            </td>
+            <td>
+                <pre class="small"><code>package Person;
+use strict;
+use warnings;
+use Carp 'confess';
+
+sub new {
+    my $class = shift;
+    my %args  = @_;
+    my $self  = {};
+
+    if (exists $args{last_name}) {
+        confess &quot;Attribute (last_name) does not pass the type constraint because: &quot;
+                . &quot;Validation failed for 'Str' with value $args{last_name}&quot;
+            if ref($args{last_name});
+        $self-&gt;{last_nane} = $args{last_name};
+    }
+
+    return bless $self, $class;
+}
+
+sub last_name {
+    my $self = shift;
+
+    if (@_) {
+        my $value = shift;
+        confess &quot;Attribute (last_name) does not pass the type constraint because: &quot;
+                . &quot;Validation failed for 'Str' with value $value&quot;
+            if ref($value);
+        $self-&gt;{last_name} = $value;
+    }
+
+    return $self-&gt;{last_name};
+}</code></pre>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="slide">
+    <h1>Typo?</h1>
+
+    <pre class="small"><code>sub new {
+    my $class = shift;
+    my %args  = @_;
+    my $self  = {};
+
+    if (exists $args{last_name}) {
+        confess &quot;Attribute (last_name) does not pass the type constraint because: &quot;
+                . &quot;Validation failed for 'Str' with value $args{last_name}&quot;
+            if ref($args{last_name});
+        $self-&gt;{last_nane} = $args{last_name};
+    }
+
+    return bless $self, $class;
+}</code></pre>
+</div>
+
+<div class="slide">
+    <h1>Typo?</h1>
+
+    <pre class="small"><code>if (exists $args{last_name}) {
+    confess &quot;Attribute (last_name) does not pass the type constraint because: &quot;
+            . &quot;Validation failed for 'Str' with value $args{last_name}&quot;
+        if ref($args{last_name});
+    $self-&gt;{last_nane} = $args{last_name};
+}</code></pre>
+</div>
+
+<div class="slide">
+    <h1>Typo?</h1>
+
+    <code>$self-&gt;{last_nane} = $args{last_name};</code>
+</div>
+
+<div class="slide">
+    <h1>Typo?</h1>
+    <code>$self-&gt;{last_na<span class="highlight">n</span>e}</code>
+</div>
+
+<div class="slide">
+    <h1>Why Moose?</h1>
+
+    <pre><code>package Person;
+use Moose;
+
+has last_name =&gt; (
+    is  =&gt; 'rw',
+    isa =&gt; 'Str',
+);</code></pre>
+</div>
+
+<div class="slide fake-slide0">
+  <h1>Moose Classes</h1>
+</div>
+
+<div class="slide">
+  <h1>Moose Classes</h1>
+
+  <ul>
+    <li>Moose classes are Perl packages which <code>use Moose</code></li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Moose.pm and Your Class</h1>
+
+  <pre><code>package Person;
+use Moose;</code></pre>
+
+  <ul>
+    <li><code>Moose.pm</code> provides declarative sugar</li>
+    <li>Creates metaclasses for your class: <code>Person-&gt;meta</code></li>
+    <li>Moose classes automatically inherit from <code>Moose::Object</code></li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>What <code>Moose::Object</code> Provides</h1>
+
+  <ul>
+    <li>Constructor - <code>new()</code></li>
+    <li>Calls your <code>BUILDARGS()</code> and/or <code>BUILD()</code></li>
+    <li>Calls your <code>DEMOLISH</code> during object destruction</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>extends</h1>
+
+  <ul>
+    <li><code>extends</code> is sugar for declaring parent classes</li>
+  </ul>
+
+  <pre><code>package Employee;
+use Moose;
+<span class="highlight">extends 'Person';</span></code></pre>
+</div>
+
+<div class="slide">
+  <h1>extends</h1>
+
+  <ul>
+    <li>Each call to <code>extends</code> <strong>resets</strong> your parents</li>
+  </ul>
+
+  <h2 class="wrong">WRONG</h2>
+
+  <pre><code>package BadEmployee;
+use Moose;
+extends 'Person';
+extends 'Thief';</pre></code>
+
+  <h2 class="right">RIGHT</h2>
+
+  <pre><code>package BadEmployee;
+use Moose;
+extends 'Person', 'Thief';</pre></code>
+</div>
+
+<div class="slide">
+  <h1>Extending un-Moose-y Parents</h1>
+
+  <pre><code>package My::LWP;
+use Moose;
+extends 'LWP';</pre></code>
+
+  <ul>
+    <li>No <code>Moose::Object</code>, so ...
+      <ul>
+        <li>No attribute-handling <code>new()</code></li>
+        <li>No <code>BUILDARGS()</code> or <code>BUILD()</code></li>
+        <li>No <code>DEMOLISH()</code></li>
+      </ul>
+    </li>
+    <li>But see <code>MooseX::NonMoose</code> for a workaround</li>
+  </ul>
+</div>  
+
+<div class="slide">
+  <h1>Cleaning Up Moose Droppings</h1>
+
+  <pre><code>package Person;
+use Moose;
+
+# true
+Person->can('extends');</code></pre>
+
+  <ul>
+    <li>Not very hygienic</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Cleaning Up Moose Droppings</h1>
+
+  <pre><code>package Person;
+use Moose;
+
+...
+
+no Moose;
+
+# false
+Person->can('extends');</code></pre>
+</div>
+
+<div class="slide">
+  <h1>No Moose</h1>
+
+  <ul>
+    <li><code>no Moose</code> at the end of a package is a best practice</li>
+    <li>Just do it</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Immutability</h1>
+
+  <ul>
+    <li><span style="font-family: URW Chancery L; font-size: 140%">Stevan's Incantation of Fleet-Footedness</span></li>
+  </ul>
+
+  <pre><code>package Person;
+use Moose;
+
+<span class="highlight">__PACKAGE__->meta->make_immutable;</span></code></pre>
+</div>
+
+</body>
+</html>

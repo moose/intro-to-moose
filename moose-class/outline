@@ -1,0 +1,102 @@
+= Intro (30 minutes)
+
+* concepts (ala Moose::Manual::Concepts)
+
+= Classes
+
+* Making a class use Moose
+* extends
+* overrides/super
+* trivial attributes
+** has 'foo' => ( is => ... ) (ro & rw)
+** no other attribute features yet
+* "no Moose"
+* Immutability
+
+== Exercises
+
+* Build a Person class that uses Moose
+** first_name
+** last_name
+** assume both attributes are always provided
+* build an Employee class that is a subclass of Person
+** job_title
+
+= Roles
+
+* Making a role
+* roles as interfaces
+* requires
+* consuming roles in classes
+* consuming roles in roles
+* "no Moose::Role"
+
+== Exercises
+
+* build a role for Human
+* make the Person class consume the role
+* make the role require a "full_name" method
+* implement this method for Person
+* override it for Employee to include their title
+
+= Basic attributes
+
+* required
+* default & builder
+* lazy
+* init_arg
+
+== Exercises
+
+* Go back to Person class
+** make first & last name required
+* Go back to Employee
+** make title default to "Worker"
+** add salary_level attribute, number from 1-10
+** salary, lazy default of salary_level * 1,000, init_arg is undef
+
+= Method modifiers
+
+* before/after
+** before for state validation
+** after for additional state changes
+* around
+** modifying arguments & return values
+
+== Exercises
+
+= More roles
+
+* methods and attributes
+* method modifiers (and requiring the wrapped method)
+* attributes in roles
+
+== Exercises
+
+= Advanced attributes
+
+* delegation
+* metaclass & traits
+
+== Exercises
+
+= Types
+
+* built-in types
+* parameterizable types
+* declaring subtypes
+** URI
+** Email
+** class names & role names
+* coercions
+* attribute isa & does
+
+== Exercises
+
+= Introspection
+
+== Exercises
+
+= MooseX
+
+== Exercises
