@@ -6,7 +6,7 @@ use lib 't/lib';
 use Test::More tests => 1;
 
 my %prereqs = (
-    'Moose'      => '0.80',
+    'Moose'      => '0.81',
     'Class::MOP' => '0.85',
 );
 
