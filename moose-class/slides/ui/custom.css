@@ -17,6 +17,10 @@ div#header, div#footer {
     color: black;
 }
 
+.slide h1 {
+    text-transform: none;
+}
+
 span.date, span.uri {
     font-size: 80%;
 }
@@ -44,7 +48,7 @@ img.for-slide {
 
 .slide pre {
     font-size: 100%;
-    line-height: 130%;
+    line-height: 110%;
 }
 
 .highlight {
@@ -53,9 +57,6 @@ img.for-slide {
 
 .slide pre.small {
     font-size: 33%;
-}
-
-.slide pre code {
 }
 
 .slide table.side-by-side tr {
