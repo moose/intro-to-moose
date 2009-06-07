@@ -1,8 +1,11 @@
 use strict;
 use warnings;
 
+use lib 't/lib';
+
+use Test::More tests => 1;
+
 my %prereqs = (
-    'Test::More' => '0',
     'Moose'      => '0.80',
     'Class::MOP' => '0.85',
 );
@@ -22,18 +25,12 @@ for my $mod ( keys %prereqs ) {
 }
 
 if (@missing) {
-    warn "\n# ***********************************************************\n";
-    warn "#\n";
-    warn "# Found the following prereq problems ...\n";
-    warn "#   $_\n" for @missing;
-    warn "#\n";
-    warn "# ***********************************************************\n";
-
-    exit 255;
+    diag "\n***********************************************************\n";
+    diag "\n";
+    diag " Found the following prereq problems ...\n";
+    diag "   $_\n" for @missing;
+    diag "\n";
+    diag " ***********************************************************\n";
 }
 
-Test::More->import;
-
-plan( tests => 1 );
-ok( 'Looks like you have all the prereqs' );
-
+ok( ! @missing, 'Checking for prereqs' );

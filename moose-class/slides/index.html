@@ -60,8 +60,12 @@ img#me05 {top: 43px;left: 36px;}
   </ul>
 </div>
 
+<div class="slide fake-slide0">
+  <h1>Part 0: Moose Concepts</h1>
+</div>
+
 <div class="slide">
-  <h1>Concepts</h1>
+  <h1>Moose background</h1>
 
   <ul>
     <li>Moose builds on Perl 5's native OO</li>
@@ -817,7 +821,7 @@ has last_name =&gt; (
 </div>
 
 <div class="slide fake-slide0">
-  <h1>Moose Classes</h1>
+  <h1>Part 1: Moose Classes</h1>
 </div>
 
 <div class="slide">
@@ -1060,15 +1064,16 @@ use Moose;
 </div>
 
 <div class="slide">
-  <h1>Classes - Exercises</h1>
+  <h1>Exercises</h1>
 
   <pre>$ cd exercises
-$ prove -lv t/00-prereq.t
+$ perl bin/prove -lv t/00-prereq.t
 
 Missing anything? Install it. (see tarballs/)
 
-# prove -lv t/01-classes.t
-# 
+# perl bin/prove -lv t/01-classes.t
+
+Iterate til this passes all its tests
 
 </body>
 </html>

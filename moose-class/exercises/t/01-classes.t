@@ -33,6 +33,7 @@ use strict;
 use warnings;
 
 use lib 't/lib';
+
 use MooseClass::Tests;
 
 use Person;
