@@ -5,6 +5,7 @@
 
 <head>
 <title>Introduction to Moose</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <!-- metadata -->
 <meta name="generator" content="S5" />
 <meta name="version" content="S5 1.2a2" />
@@ -39,6 +40,11 @@ img#me05 {top: 43px;left: 36px;}
 <div id="currentSlide"><!-- DO NOT EDIT --></div>
 <div id="header"></div>
 <div id="footer">
+  <div id="license">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/us/88x31.png" /></a>
+    <br /><span xmlns:dc="http://purl.org/dc/elements/1.1/" href="http://purl.org/dc/dcmitype/Text" property="dc:title" rel="dc:type">Intro to Moose Class</span> by <span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">David Rolsky</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/">Creative Commons Attribution-Share Alike 3.0 United States License</a>.
+  </div>
+
   <h2>Introduction to Moose</h2>
 </div>
 </div>
@@ -60,18 +66,19 @@ img#me05 {top: 43px;left: 36px;}
   </ul>
 </div>
 
-<div class="slide fake-slide0">
-  <h1>Part 0: Moose Concepts</h1>
-</div>
-
 <div class="slide">
-  <h1>Moose background</h1>
+  <h1>Moose Background</h1>
 
   <ul>
+    <li>Created by Stevan Little, first released in 2006</li>
     <li>Moose builds on Perl 5's native OO</li>
     <li>Borrows ideas from other languages, notably Perl 6</li>
     <li>Provides semantics for common operations</li>
   </ul>
+</div>
+
+<div class="slide fake-slide0">
+  <h1>Part 0: Moose Concepts</h1>
 </div>
 
 <div class="slide">
@@ -138,7 +145,7 @@ img#me05 {top: 43px;left: 36px;}
   <pre><code>package Person;
 use Moose;
 
-<span class="highlight">has 'first_name' =&gt; ( is =&gt; 'rw' );</span></code></pre>
+<span class="highlight">has first_name =&gt; ( is =&gt; 'rw' );</span></code></pre>
 
 </div>
 
@@ -250,7 +257,10 @@ after  'foo'
 <pre><code>package Person;
 use Moose;
 
-has 'weight' =&gt; ( is =&gt; 'ro', <span class="highlight">isa =&gt; 'Int'</span> );
+has weight =&gt; (
+    is  =&gt; 'ro',
+    <span class="highlight">isa =&gt; 'Int'</span>,
+);
 
 # kaboom
 Person-&gt;new( weight =&gt; 'fat' );</code></pre>
@@ -272,14 +282,14 @@ Person-&gt;new( weight =&gt; 'fat' );</code></pre>
 <pre><code>package Person;
 use Moose;
 
-has 'blog_uri' =&gt; (
+has blog_uri =&gt; (
     is      =&gt; 'rw',
     isa     =&gt; 'URI',
     <span class="highlight">handles =&gt; { 'blog_hostname' =&gt; 'host' },</span>
 );
 
 <span class="highlight">$person->blog_hostname;</span>
-# really calls $person->blog_uri->host
+# really calls $person->blog_uri->host</code></pre>
 </div>
 
 <div class="slide">
@@ -880,13 +890,13 @@ use Moose;
   <pre><code>package EvilEmployee;
 use Moose;
 extends 'Person';
-extends 'Thief';</pre></code>
+extends 'Thief';</code></pre>
 
   <h2 class="right">RIGHT</h2>
 
   <pre><code>package EvilEmployee;
 use Moose;
-extends 'Person', 'Thief';</pre></code>
+extends 'Person', 'Thief';</code></pre>
 </div>
 
 <div class="slide">
@@ -894,7 +904,7 @@ extends 'Person', 'Thief';</pre></code>
 
   <pre><code>package My::LWP;
 use Moose;
-extends 'LWP';</pre></code>
+extends 'LWP';</code></pre>
 
   <ul>
     <li>No <code>Moose::Object</code>, so ...
@@ -923,7 +933,7 @@ extends 'LWP';</pre></code>
   <pre><code>package Employee;
 use Moose;
 
-<span class="incremental current">extends 'Person';</span>
+<span class="current">extends 'Person';</span>
 
 <span class="incremental">overrides</span> work =&gt; sub {
     my $self = shift;
@@ -931,6 +941,7 @@ use Moose;
     die "Pay me first" unless $self-&gt;got_paid;
     <span class="incremental">super();</span>
 }<span class="incremental">;</span></code></pre>
+</div>
 
 <div class="slide">
   <h1>Caveat <code>super</code></h1>
@@ -958,7 +969,7 @@ use Moose;
   <pre><code>package Person;
 use Moose;
 
-has 'first_name' =&gt; ( <span class="highlight">is =&gt; 'rw'</span> );
+has first_name =&gt; ( <span class="highlight">is =&gt; 'rw'</span> );
 
 my $person =
     Person-&gt;new( first_name =&gt; 'Dave' );
@@ -974,7 +985,7 @@ print $person-&gt;first_name; # Stevan</code></pre>
   <pre><code>package Person;
 use Moose;
 
-has 'first_name' =&gt; ( <span class="highlight">is =&gt; 'ro'</span> );
+has first_name =&gt; ( <span class="highlight">is =&gt; 'ro'</span> );
 
 my $person =
     Person-&gt;new( first_name =&gt; 'Dave' );
@@ -1064,6 +1075,20 @@ use Moose;
 </div>
 
 <div class="slide">
+  <h1>Classes Summary</h1>
+
+  <ul>
+    <li><code>use Moose</code></li>
+    <li><code>Class-&gt;meta</code></li>
+    <li><code>Moose::Object</code> base class</li>
+    <li><code>extends</code>, <code>overrides</code>, and <code>super</code></li>
+    <li>Simple attributes: <code>has</code>, <code>is&nbsp;=&gt;&nbsp;'ro'</code>, &amp; <code>is&nbsp;=&gt;&nbsp;'rw'</code></li>
+    <li><code>no Moose</code></li>
+    <li><code>__PACKAGE__-&gt;meta-&gt;make_immutable</code></li>
+  </ul>
+</div>
+
+<div class="slide">
   <h1>Exercises</h1>
 
   <pre>$ cd exercises
@@ -1073,7 +1098,500 @@ Missing anything? Install it. (see tarballs/)
 
 # perl bin/prove -lv t/01-classes.t
 
-Iterate til this passes all its tests
+Iterate til this passes all its tests</pre>
+</div>
 
+<div class="slide fake-slide0">
+  <h1>Part 2: Roles</h1>
+</div>
+
+<div class="slide">
+  <h1>Just What Is a Role?</h1>
+
+  <ul>
+    <li>Mixin? Interface? Trait?</li>
+    <li>Yes ... and more!</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Roles Can Have State <strong>and</strong> Behavior</h1>
+
+  <pre><code>package HasPermissions;
+use Moose::Role;
+
+<span class="current"># state
+has access_level =&gt; ( is =&gt; 'rw' );</span>
+
+<span class="incremental"># behavior
+sub can_access {
+    my $self     = shift;
+    my $required = shift;
+
+    return $self-&gt;access_level &gt;= $required;
+}</span></code></pre>
+
+</div>
+
+<div class="slide">
+  <h1>Roles Can Define Interfaces</h1>
+
+  <pre><code>package Printable;
+use Moose::Role;
+
+requires 'as_string';</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Roles Can Do All Three</h1>
+
+  <pre><code>package Printable;
+use Moose::Role;
+
+requires 'as_string';
+
+has has_been_printed =&gt; ( is =&gt; 'rw'  );
+
+sub print {
+    my $self = shift;
+    print $self-&gt;as_string;
+    $self-&gt;has_been_printed(1);
+}</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Classes Consume Roles</h1>
+
+  <pre><code>package Person;
+use Moose;
+
+with 'HasPermissions';</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Classes Consume Roles</h1>
+
+<pre><code>my $person = Person-&gt;new(
+    first_name => 'Kenichi',
+    last_name => 'Asai',
+    access_level =&gt; 42,
+);
+
+print $person-&gt;full_name
+    . ' has '
+    . $person-&gt;can_access(42)
+        ? 'great power'
+        : 'little power';</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Roles in Practice</h1>
+
+  <ul>
+    <li>Consuming a role =~ inlining the role</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>In Other Words ...</h1>
+
+<pre><code>package Person;
+use Moose;
+
+<span class="highlight">with 'Printable';</span></code></pre>
+</div>
+
+<div class="slide">
+  <h1>In Other Words ...</h1>
+
+<pre><code>package Person;
+use Moose;
+
+<span class="delete">with 'Printable';</span>
+
+<span class="highlight">has has_been_printed =&gt; ( is =&gt; 'rw'  );
+
+sub print {
+    my $self = shift;
+    print $self-&gt;as_string;
+    $self-&gt;has_been_printed(1);
+}</span></code></pre>
+</div>
+
+<div class="slide">
+  <h1>Except</h1>
+
+  <ul>
+    <li>Role consumption is introspectable</li>
+  </ul>
+
+  <pre><code>if ( Person-&gt;does('Printable') ) { ... }
+
+# or ...
+
+if ( Person-&gt;meta-&gt;does('Printable') ) { ... }</code></pre>
+
+</div>
+
+<div class="slide">
+  <h1>These Names Are the Same</h1>
+
+  <ul>
+    <li>What if a role and class define the same method?</li>
+    <li>A class's <em>local</em> methods win over the role's</li>
+    <li>The role's methods win over the class's <em>inherited</em> methods</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Conflicts Between Roles</h1>
+
+  <ul>
+    <li>Two roles with a method of the same name</li>
+    <li>Generates a compile-time error when consumed by a class</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Conflict Example</h1>
+
+  <pre><code>package IsFragile;
+use Moose::Role;
+
+sub break { ... }
+
+package CanBreakdance;
+use Moose::Role;
+
+sub break { ... }</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Conflict Example</h1>
+
+  <pre><code>package FragileDancer;
+use Moose;
+
+<span class="highlight">with 'IsFragile', 'CanBreakdance';</span></code></pre>
+
+  <ul>
+    <li>Only one <code>with</code>!</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Conflict Resolution</h1>
+
+  <ul>
+    <li>The consuming class must resolve the conflict by implementing th emethod</li>
+    <li>Can use some combination of method exclusion and aliasing</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Method Aliasing</h1>
+
+  <pre><code>package FragileDancer;
+use Moose;
+
+<span class="highlight">with 'IsFragile' =>
+         { alias =>
+               { break => 'break_bone' } },
+     'CanBreakdance' =>
+         { alias =>
+               { break => 'break_it_down' } };</span></code></pre>
+
+  <ul>
+    <li>Renames the roles' methods</li>
+    <li>Still conflicts, need to <code>exclude</code> as well</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Method Exclusion</h1>
+
+  <pre><code>package FragileDancer;
+use Moose;
+
+<span class="highlight">with 'IsFragile' =>
+         { alias =>
+               { break => 'break_bone' },
+           exclude => 'break' },
+     'CanBreakdance' =>
+         { alias =>
+               { break => 'break_dance' },
+           exclude => 'break' };</span></code></pre>
+</div>
+
+<div class="slide">
+  <h1>And then ...</h1>
+
+  <pre><code>package FragileDancer;
+use Moose;
+
+sub break {
+    my $self = shift;
+
+    $self->break_dance;
+    if ( rand(1) < 0.5 ) {
+        $self->break_bone;
+    }
+}</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Still Full of Fail</h1>
+
+  <ul>
+    <li>Roles are also about semantics!</li>
+    <li>We've fulfilled the letter and lost the spirit</li>
+    <li>Roles have a <em>meaning</em></li>
+    <li>Think twice before blindly aliasing and excluding methods!</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Hot Role-on-Role Action</h1>
+
+  <pre><code>package Comparable;
+use Moose::Role;
+
+requires 'compare';</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Hot Role-on-Role Action</h1>
+
+  <pre><code>package TestsEquality;
+use Moose::Role;
+
+with 'Comparable';
+
+sub is_equal {
+    my $self = shift;
+    return $self->compare(@_) == 0;
+}</code></pre>
+</div>
+
+<div class="slide">
+  <h1>And then ...</h1>
+
+  <pre><code>package Integer;
+use Moose;
+
+with 'TestsEquality';
+
+# Satisfies the Comparable role
+sub compare { ... }
+
+Integer->does('TestsEquality'); # true
+Integer->does('Comparable'); # also true!</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Name Conflicts Between Roles</h1>
+
+  <pre><code>package HasSubProcess;
+use Moose::Role;
+
+<span class="highlight">sub execute { ... }</span>
+
+package Killer;
+use Moose::Role;
+
+with 'HasSubProcess';
+
+<span class="highlight">sub execute { ... }</span></code></pre>
+</div>
+
+<div class="slide">
+  <h1>Delayed Conflict</h1>
+
+  <pre><code>package StateOfTexas;
+with 'Killer';</code></pre>
+
+  <ul>
+    <li><code>StateOfTexas</code> must implement its own <code>execute</code></li>
+    <li>But loading the <code>Killer</code> role by itself does not cause an error</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Roles as Interfaces</h1>
+
+  <ul>
+    <li>Roles can <code>require</code> methods of their consumers</li>
+    <li>Compile-time checks</li>
+    <li>Method must exist when the role is consumed</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>The Attribute Gotcha</h1>
+
+<pre><code>package HasSize;
+use Moose::Role;
+
+<span class="current">requires 'size';</span>
+
+package Shirt;
+use Moose;
+
+<span class="incremental">with 'HasSize';
+
+has size => ( is => 'ro' );</span></code></pre>
+</div>
+
+<div class="slide">
+  <h1>The Attribute Gotcha Workaround</h1>
+
+  <pre><code>package HasSize;
+use Moose::Role;
+
+requires 'size';
+
+package Shirt;
+use Moose;
+
+has size => ( is => 'ro' );
+
+with 'HasSize';</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Compile-time Is a Lie</h1>
+
+  <ul>
+    <li>Really, it's <em>package load</em> time</li>
+    <li>That's run-time, but before the "real" run-time</li>
+    <li>Moose does not rewire Perl, it's just sugar!</li>
+    <li>(but <code>MooseX::Declare</code> <em>does</em> rewire Perl)</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Enforcing Roles</h1>
+
+  <pre><code>package Comparison;
+use Moose;
+
+has [ 'left', 'right' ] => (
+    is   => 'ro',
+    <span class="highlight">does => 'Comparable',</span>
+);
+</code></pre>
+
+  <ul>
+    <li>A sneak peek at type constraints</li>
+  </ul>
+</div>
+
+
+<div class="slide">
+  <h1>Roles Can Be Applied to Objects</h1>
+
+  <pre><code>use Moose::Util qw( apply_all_roles );
+
+my $fragile_person = Person->new( ... );
+apply_all_roles( $fragile_person, 'IsFragile' );</code></pre>
+
+  <ul>
+    <li>Does not change the <code>Person</code> class</li>
+    <li>Works with non-Moose classes, great for monkey-patching!</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Roles Are Dirty Too</h1>
+
+  <ul>
+    <li>Once again, clean up those Moose droppings</li>
+  </ul>
+
+  <pre><code>package Comparable;
+use Moose::Role;
+
+requires 'compare';
+
+<span class="highlight">no Moose::Role;</span></code></pre>
+
+  <ul>
+    <li>But roles cannot be made immutable</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>The Zen of Roles</h1>
+
+  <ul>
+    <li>Roles represent discrete units of ...
+      <ul>
+        <li>state</li>
+        <li>behavior</li>
+        <li>interface</li>
+      </ul>
+    </li>
+    <li>Roles are shareable between unrelated classes</li>
+    <li>Roles are what a class <em>does</em>, not what it <em>is</em></li>
+    <li>Roles <em>add</em> functionality, inheritance <em>specializes</em></li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Abstract Examples</h1>
+
+  <ul>
+    <li>Human <em>@ISA</em> Animal</li>
+    <li>Human <em>does</em> Toolmaker (as <em>does</em> Chimpanzee)</li>
+    <li>Car <em>@ISA</em> Vehicle</li>
+    <li>Car <em>does</em> HasEngine</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Real Examples</h1>
+
+  <ul>
+    <li>Objects representing SQL database components and queries
+      <ul>
+        <li>Schema, Table, Column, ColumnAlias</li>
+        <li>Select, Insert, Update, Delete</li>
+      </ul>
+    </li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Real Examples</h1>
+
+  <ul>
+    <li>Column and ColumnAlias both <em>do</em> ColumnLike</li>
+    <li>ColumnLike things can be used in certain parts of queries</li>
+    <li>All queries <em>do</em> HasWhereClause</li>
+    <li>Select <em>does</em> Comparable and Selectable (for subselects)</li>
+    <li>A where clause requires its components to <em>do</em> Comparable</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Exercises</h1>
+
+  <pre>$ cd exercises
+# perl bin/prove -lv t/02-roles.t
+
+Iterate til this passes all its tests</pre>
+</div>
+
+</div> 
 </body>
 </html>
+
+<!--
+
+Copyright 2009 David Rolsky. All Rights Reserved.
+
+This work is licensed under a Creative Commons Attribution-Share Alike
+3.0 United States License See
+http://creativecommons.org/licenses/by-sa/3.0/us/ for details.
+
+-->
