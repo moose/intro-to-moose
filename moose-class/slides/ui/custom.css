@@ -12,6 +12,13 @@ div#header, div#footer {
     background: #eddbb4;
 }
 
+div#license {
+    float: left;
+    font-size: 20%;
+    margin-left: 1em;
+    width: 40%;
+}
+
 .slide h1 {
     background: #eddbb4;
     color: black;
@@ -52,7 +59,7 @@ img.for-slide {
 }
 
 .highlight {
-    color: #03c;
+    color: #B02;
 }
 
 .slide pre.small {
@@ -64,10 +71,10 @@ img.for-slide {
 }
 
 .match-moose {
-    color: #03c;
+    color: #B02;
 }
 .match-unsweet {
-    color: #03c;
+    color: #B02;
     font-weight: bold;
 }
 
