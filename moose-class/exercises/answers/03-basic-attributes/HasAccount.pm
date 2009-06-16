@@ -2,7 +2,10 @@ package HasAccount;
 
 use Moose::Role;
 
-has balance => ( is => 'rw' );
+has balance => (
+    is      => 'rw',
+    default => 100,
+);
 
 sub deposit {
     my $self   = shift;

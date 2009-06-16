@@ -44,7 +44,11 @@
 * required
 * default & builder
 * lazy
+* predicate, clearer
 * init_arg
+* reader & writer
+* attribute inheritance
+* MX attribute naming modules
 
 == Exercises
 
@@ -52,6 +56,7 @@
 ** make first & last name required
 * Go back to Employee
 ** make title default to "Worker"
+** add predicate & clearer for title
 ** add salary_level attribute, number from 1-10
 ** salary, lazy default of salary_level * 1,000, init_arg is undef
 
@@ -73,13 +78,6 @@
 
 == Exercises
 
-= Advanced attributes
-
-* delegation
-* metaclass & traits
-
-== Exercises
-
 = Types
 
 * built-in types
@@ -90,6 +88,15 @@
 ** class names & role names
 * coercions
 * attribute isa & does
+
+== Exercises
+
+= Advanced attributes
+
+* weak_ref
+* triggers
+* delegation
+* metaclass & traits
 
 == Exercises
 

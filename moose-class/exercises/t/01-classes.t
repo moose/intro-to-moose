@@ -18,7 +18,7 @@
 #
 # An Employee has the following read-write attributes:
 #
-# * position - read-write
+# * title - read-write
 # * salary - read-write
 # * ssn - read-only
 #

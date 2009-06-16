@@ -58,8 +58,9 @@ img.for-slide {
     line-height: 110%;
 }
 
+.slide .current,
 .highlight {
-    color: #B02;
+    color: #03c;
 }
 
 .slide pre.small {
@@ -71,10 +72,11 @@ img.for-slide {
 }
 
 .match-moose {
-    color: #B02;
+    color: #03c;
 }
+
 .match-unsweet {
-    color: #B02;
+    color: #03c;
     font-weight: bold;
 }
 

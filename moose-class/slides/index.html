@@ -61,7 +61,7 @@ img#me05 {top: 43px;left: 36px;}
   <ul>
     <li><strong>Declarative</strong> OO sugar</li>
     <li>Introspectable</li>
-    <li>Extensible</li>
+    <li>Extensible (MooseX::* on CPAN)</li>
   </ul>
 </div>
 
@@ -814,7 +814,7 @@ sub last_name {
 
 <div class="slide">
     <h1>Typo?</h1>
-    <code>$self-&gt;{last_na<span class="highlight">n</span>e}</code>
+    <code>$self-&gt;{last_na<span class="wrong">n</span>e}</code>
 </div>
 
 <div class="slide">
@@ -1090,7 +1090,7 @@ use Moose;
 <div class="slide">
   <h1>Exercises</h1>
 
-  <pre>$ cd exercises
+  <pre># cd exercises
 $ perl bin/prove -lv t/00-prereq.t
 
 Missing anything? Install it. (see tarballs/)
@@ -1575,8 +1575,490 @@ requires 'compare';
 <div class="slide">
   <h1>Exercises</h1>
 
-  <pre>$ cd exercises
+  <pre># cd exercises
 # perl bin/prove -lv t/02-roles.t
+
+Iterate til this passes all its tests</pre>
+</div>
+
+<div class="slide fake-slide0">
+  <h1>Part 3: Basic Attributes</h1>
+</div>
+
+<div class="slide">
+  <h1>Attributes Are Huge</h1>
+
+  <ul>
+    <li>Moose's biggest feature</li>
+    <li>The target of <em>many</em> MooseX modules</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Quick Review</h1>
+
+  <ul>
+    <li>Declared with <code>has</code></li>
+    <li>Read-only or read-write</li>
+  </ul>
+
+  <pre><code>package Shirt;
+use Moose;
+
+has 'color'     =&gt; ( is =&gt; 'ro' );
+has 'is_ripped' =&gt; ( is =&gt; 'rw' );</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Required-ness</h1>
+
+  <ul>
+    <li>Required means "must be passed to the constructor"</li>
+    <li>But can be <code>undef</code></li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Required-ness</h1>
+
+  <pre><code>package Person;
+use Moose;
+
+has first_name =&gt; (
+    is       =&gt; 'ro',
+    <span class="current">required =&gt; 1,</span>
+);
+
+<span class="incremental">Person->new( first_name =&gt; undef ); # ok
+Person->new(); # kaboom</span></code></pre>
+</div>
+
+<div class="slide">
+  <h1>Default and Builder</h1>
+
+  <ul>
+    <li>Attributes can have defaults</li>
+    <li>Simple non-referecne scalars (number, string)</li>
+    <li>Subroutine reference</li>
+    <li>A builder method</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Default</h1>
+
+  <ul>
+    <li>Can be a non-reference scalar (including <code>undef</code>)</li>
+  </ul>
+
+  <pre><code>package Person;
+use Moose;
+
+has bank =&gt; (
+    is      =&gt; 'rw',
+    default =&gt; 'Spire FCU',
+);</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Default</h1>
+
+  <ul>
+    <li>Can be a subroutine reference</li>
+  </ul>
+
+  <pre><code>package Person;
+use Moose;
+
+has bank =&gt; (
+    is      =&gt; 'rw',
+    default =&gt;
+        sub { Bank-&gt;new(
+                  name =&gt; 'Spire FCU' ) },
+);</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Default as a Subroutine Reference</h1>
+
+  <ul>
+    <li>Called as a method on the object</li>
+    <li>Called anew for each object</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Why No Other Reference Types?</h1>
+
+  <pre><code>package Person;
+use Moose;
+
+has bank =&gt; (
+    is      =&gt; 'rw',
+    <span class="wrong">default =&gt; Bank-&gt;new(
+                   name =&gt; 'Spire FCU' ),</span>
+);</code></pre>
+
+  <ul>
+    <li>Now <strong>every</strong> person shares the <strong>same</strong> Bank object!</li>
+  </ul>
+</div>
+
+<div class="slide">
+     <h1>Defaulting to an Empty Reference</h1>
+
+  <pre><code>package Person;
+use Moose;
+
+has packages =&gt; (
+    is      =&gt; 'rw',
+    default =&gt; <span class="highlight">sub { [] }</span>,
+);</code></pre>
+</div>
+
+<div class="slide">
+  <h1>What if I Want to Share?</h1>
+
+  <pre><code>package Person;
+use Moose;
+
+my $highlander_bank =
+    Bank-&gt;new( name =&gt; 'Spire FCU' );
+
+has bank =&gt; (
+    is      =&gt; 'rw',
+    default =&gt; sub { $highlander_bank },
+);</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Builder</h1>
+
+  <ul>
+    <li>A method <em>name</em> which returns the default</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Builder</h1>
+
+  <pre><code>package Person;
+use Moose;
+
+has bank =&gt; (
+    is      =&gt; 'rw',
+    builder =&gt; '_build_bank',
+);
+
+sub _build_bank {
+    my $self = shift;
+    return Bank-&gt;new( name => 'Spire FCU' );
+}</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Default vs Builder</h1>
+
+  <ul>
+    <li>Use default for simple scalars</li>
+    <li>Use default to return empty references</li>
+    <li>Use default for <em>very</em> trivial subroutine references</li>
+    <li>Use builder for everything else</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Builder Bonuses</h1>
+
+  <ul>
+    <li>Can be overridden and method modified, because it's called by <em>name</em></li>
+    <li>Roles can require a builder</li>
+  </ul>
+</div>
+      
+<div class="slide">
+  <h1>Role Requires Builder</h1>
+
+  <pre><code>package HasBank;
+use Moose::Role;
+
+requires '_build_bank';
+
+has bank =&gt; (
+    is      =&gt; 'ro',
+    builder =&gt; '_build_bank',
+);</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Lazy, Good for Nothing Attributes</h1>
+
+  <ul>
+    <li>Normally, defaults are generated during object construction</li>
+    <li>This can be expensive</li>
+    <li>We want to default to <code>$self-&gt;size * 2</code>, but attribute initialization order is unpredictable</li>
+    <li>Use lazy attributes!</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>The Power of Dynamic Defaults</h1>
+
+  <pre><code>package Person;
+use Moose;
+
+has shoe_size =&gt; (
+    is =&gt; 'ro',
+);</code></pre>
+</div>
+
+<div class="slide">
+  <h1>The Power of Dynamic Defaults</h1>
+
+  <pre><code>has shoes =&gt; (
+    is      =&gt; 'ro',
+    <span class="highlight">lazy    =&gt; 1,</span>
+    builder => '_build_shoes',
+);
+
+sub _build_shoes {
+    my $self = shift;
+
+    return Shoes-&gt;new(
+        size =&gt; <span class="highlight">$_[0]-&gt;shoe_size</span> );
+}</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Lazy is Good</h1>
+
+  <ul>
+    <li>Lazy defaults are executed when the attribute is read</li>
+    <li>Can see other object attributes</li>
+    <li>Still need to watch out for circular laziness</li>
+  </ul>
+</div>    
+
+<div class="slide">
+  <h1>Clearer and Predicate</h1>
+
+  <ul>
+    <li>Attributes can have a value, including <code>undef</code>, or not</li>
+    <li>Can clear the value with a clearer method</li>
+    <li>Can check for the existence of a value with a predicate method</li>
+    <li>By default, these methods are not created</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Clearer and Predicate</h1>
+
+  <pre><code>package Person;
+use Moose;
+
+has account =&gt; (
+    is        =&gt; 'ro',
+    lazy      =&gt; 1,
+    builder   =&gt; '_build_account',
+    <span class="highlight">clearer   =&gt; '_clear_account',
+    predicate =&gt; 'has_account',</span>
+);</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Clearer and Lazy Defaults</h1>
+
+  <ul>
+    <li>Lazy defaults are good for computed attributes</li>
+    <li>Clear the attribute when the source data changes</li>
+    <li>Recalculated at next access</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Renaming constructor arguments</h1>
+
+  <ul>
+    <li>By default, constructor names = attribute names</li>
+    <li>Use <code>init_arg</code> to change this</li>
+    <li>Set <code>init_arg =&gt; undef</code> to make it unconstructable</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Some <code>init_arg</code> examples</h1>
+
+  <pre><code>package Person;
+use Moose;
+
+has shoe_size => (
+    is       =&gt; 'ro',
+    <span class="highlight">init_arg =&gt; 'foot_size',</span>
+);
+
+Person->new( <span class="wrong">shoe_size =&gt; 13</span> );
+
+my $person =
+    Person->new( <span class="right">foot_size =&gt; 13</span> );
+print $person->shoe_size;</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Some <code>init_arg</code> examples</h1>
+
+<pre><code>package Person;
+use Moose;
+
+has shoes => (
+    is       =&gt; 'ro',
+    <span class="highlight">init_arg =&gt; undef,</span>
+);
+
+Person->new( <span class="wrong">shoes =&gt; Shoes-&gt;new</span> );</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Why Set <code>init_arg =&gt; undef</code>?</h1>
+
+  <ul>
+    <li>Use this with a lazy default for attributes-as-cache</li>
+    <li>Compute the value as needed</li>
+    <li>Ensure that it is always generated correctly (not set by constructor)</li>
+    <li>Use triggers or method modifiers (coming soon) to clear the value</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Attribute Inheritance</h1>
+
+  <ul>
+    <li>By default, subclasses inherit attribute as-is</li>
+    <li>Can change some attribute parameters in subclasses
+      <ul>
+        <li>default</li>
+        <li>builder</li>
+        <li>required</li>
+        <li>lazy</li>
+        <li>others we've not yet covered</li>
+      </ul>
+    </li>
+  </ul>
+</div>   
+
+<div class="slide">
+  <h1>Attribute Inheritance Example</h1>
+
+  <pre><code>package Employee;
+use Moose;
+
+extends 'Person';
+
+has '<span class="highlight">+first_name</span>' =&gt; (
+    default =&gt; 'Joe',
+);</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Attribute Inheritance Warning</h1>
+
+  <ul>
+    <li>An attribute is a contract about a class's API</li>
+    <li>Don't break that contract in a subclass</li>
+    <li>Especially important in the context of types</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Changing Accessor Names</h1>
+
+  <pre><code>package Person;
+use Moose;
+
+has first_name =&gt; (
+    <span class="highlight">reader</span> =&gt; 'first_name',
+    <span class="highlight">writer</span> =&gt; 'first_name',
+);</code></pre>
+
+  <ul>
+    <li>The long-hand version of <code>is =&gt; 'rw'</code></li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Changing Accessor Names</h1>
+
+  <pre><code>package Person;
+use Moose;
+
+has first_name =&gt; (
+    <span class="highlight">reader</span> =&gt; 'first_name',
+    <span class="highlight">writer</span> =&gt; undef,
+);</code></pre>
+
+  <ul>
+    <li>The long-hand version of <code>is =&gt; 'ro'</code></li>
+  </ul>
+</div>
+
+
+<div class="slide">
+  <h1>Changing Accessor Names</h1>
+
+  <pre><code>package Person;
+use Moose;
+
+has first_name =&gt; (
+    <span class="highlight">reader</span> =&gt; 'get_first_name',
+    <span class="highlight">writer</span> =&gt; 'set_first_name,
+);</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Changing Accessor Names</h1>
+
+  <pre><code>package Person;
+use Moose;
+
+has first_name =&gt; (
+    <span class="highlight">is</span>     =&gt; 'rw',
+    <span class="highlight">writer</span> =&gt; '_first_name',
+);</code></pre>
+
+  <ul>
+    <li>Can also mix-and-match</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>ETOOMUCHTYPING</h1>
+
+  <ul>
+    <li><code>MooseX::FollowPBP</code><br /><code>get_foo</code> and <code>set_foo</code></li>
+    <li><code>MooseX::SemiAffordanceAccessor</code><br /><code>foo</code> and <code>set_foo</code></li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>ETOOMUCHTYPING</h1>
+
+  <pre><code>package Person;
+use Moose;
+<span class="highlight">use MooseX::SemiAffordanceAccessor;</span>
+
+has first_name =&gt; (
+    is =&gt; 'rw',
+);</code></pre>
+
+  <ul>
+    <li>Creates <code>first_name</code> and <code>set_first_name</code></li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Exercises</h1>
+
+  <pre># cd exercises
+# perl bin/prove -lv t/03-basic-attributes.t
 
 Iterate til this passes all its tests</pre>
 </div>
@@ -1594,3 +2076,4 @@ This work is licensed under a Creative Commons Attribution-Share Alike
 http://creativecommons.org/licenses/by-sa/3.0/us/ for details.
 
 -->
+
