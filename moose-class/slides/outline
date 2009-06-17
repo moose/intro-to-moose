@@ -67,14 +67,9 @@
 ** after for additional state changes
 * around
 ** modifying arguments & return values
-
-== Exercises
-
-= More roles
-
-* methods and attributes
-* method modifiers (and requiring the wrapped method)
-* attributes in roles
+* method modifiers in roles
+** requiring the wrapped method
+* augment/inner
 
 == Exercises
 
@@ -104,6 +99,8 @@
 
 == Exercises
 
-= MooseX
+= Tour of MooseX
+
+= Writing a MooseX Module
 
 == Exercises

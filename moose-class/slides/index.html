@@ -214,7 +214,7 @@ use Moose;
 </div>
 
 <div class="slide">
-  <h1>Before &amp; After</h1>
+  <h1>Before and After</h1>
 
 <pre><code>before 'foo'
     =&gt; sub { warn 'About to call foo()' };
@@ -932,7 +932,7 @@ extends 'LWP';</code></pre>
   <pre><code>package Employee;
 use Moose;
 
-<span class="current">extends 'Person';</span>
+<span class="current incremental">extends 'Person';</span>
 
 <span class="incremental">overrides</span> work =&gt; sub {
     my $self = shift;
@@ -1088,6 +1088,10 @@ use Moose;
 </div>
 
 <div class="slide">
+  <h1>Questions?</h1>
+</div>  
+
+<div class="slide">
   <h1>Exercises</h1>
 
   <pre># cd exercises
@@ -1119,7 +1123,7 @@ Iterate til this passes all its tests</pre>
   <pre><code>package HasPermissions;
 use Moose::Role;
 
-<span class="current"># state
+<span class="current incremental"># state
 has access_level =&gt; ( is =&gt; 'rw' );</span>
 
 <span class="incremental"># behavior
@@ -1431,7 +1435,7 @@ with 'Killer';</code></pre>
 <pre><code>package HasSize;
 use Moose::Role;
 
-<span class="current">requires 'size';</span>
+<span class="current incremental">requires 'size';</span>
 
 package Shirt;
 use Moose;
@@ -1573,6 +1577,23 @@ requires 'compare';
 </div>
 
 <div class="slide">
+  <h1>Roles Summary</h1>
+
+  <ul>
+    <li>Roles can define an interface with <code>requires</code></li>
+    <li>Roles can have state (attributes) and behavior (methods)</li>
+    <li>Roles can mix interface, state, &amp; behavior</li>
+    <li>Roles are composed (flattened) into classes</li>
+    <li>Roles can do other roles</li>
+    <li>Roles can be used as a type in APIs (must do Comparable)</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Questions?</h1>
+</div>  
+
+<div class="slide">
   <h1>Exercises</h1>
 
   <pre># cd exercises
@@ -1626,7 +1647,7 @@ use Moose;
 
 has first_name =&gt; (
     is       =&gt; 'ro',
-    <span class="current">required =&gt; 1,</span>
+    <span class="current incremental">required =&gt; 1,</span>
 );
 
 <span class="incremental">Person->new( first_name =&gt; undef ); # ok
@@ -2055,10 +2076,301 @@ has first_name =&gt; (
 </div>
 
 <div class="slide">
+  <h1>Basic Attributes Summary</h1>
+
+  <ul>
+    <li>Attributes can be <code>required</code></li>
+    <li>Attributes can have a <code>default</code> or <code>builder</code></li>
+    <li>Attributes with a default or builder can be <code>lazy</code></li>
+    <li>Attributes can have a <code>clearer</code> and/or <code>predicate</code></li>
+    <li>An attribute's constructor name can be changed with <code>init_arg</code></li>
+    <li>A subclass can alter its parents' attributes</li>
+    <li>Attribute accessor names can be changed</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Questions?</h1>
+</div>  
+
+<div class="slide">
   <h1>Exercises</h1>
 
   <pre># cd exercises
 # perl bin/prove -lv t/03-basic-attributes.t
+
+Iterate til this passes all its tests</pre>
+</div>
+
+<div class="slide fake-slide0">
+  <h1>Part 4: Method Modifiers</h1>
+</div>
+
+<div class="slide">
+  <h1>What is a Method Modifier</h1>
+
+  <ul>
+    <li>Apply to an existing method</li>
+    <li>... from a parent class, the current class, or a role</li>
+    <li>Roles can provide modifiers that are applied at composition time</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>What is a Method Modifier</h1>
+
+  <ul>
+    <li>"Iinject" behavior</li>
+    <li>Add behavior to generated methods (accessors, delegations)</li>
+    <li>Provide roles which modify existing behavior</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Before and After</h1>
+
+  <ul>
+    <li>Simplest modifiers - <code>before</code> and <code>after</code></li>
+    <li>Guess when they run!</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Uses for <code>before</code></h1>
+
+  <ul>
+    <li>As a pre-call check</li>
+  </ul>
+
+  <pre><code>package Person;
+use Moose;
+
+before work =&gt; sub {
+    my $self = shift;
+    die 'I have no job!'
+        unless $self-&gt;has_title;
+};</code></pre>
+</div>    
+
+<div class="slide">
+  <h1>Uses for <code>before</code></h1>
+
+  <ul>
+    <li>Logging/Debugging</li>
+  </ul>
+
+  <pre><code>package Person;
+use Moose;
+
+before work =&gt; sub {
+    my $self = shift;
+    return unless $DEBUG;
+
+    warn "Called work on ", $self->full_name,
+         "with the arguments: [@_]\n";
+};</code></pre>
+</div>    
+
+<div class="slide">
+  <h1>Uses for <code>after</code></h1>
+
+  <ul>
+    <li>Also works for logging/debugging</li>
+    <li>Post-X side-effects (recording audit info)</li>
+  </ul>
+
+  <pre><code>package Person;
+use Moose;
+
+after work =&gt; sub {
+    my $self = shift;
+    $self-&gt;work_count(
+        $self-&gt;work_count + 1 );
+};</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Other Uses</h1>
+
+  <ul>
+    <li>Modifiers are useful for adding behavior to generated methods</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Other Uses Example</h1>
+
+  <pre><code>has password =&gt; (
+     is      =&gt; 'rw',
+     clearer =&gt; 'clear_password',
+);
+
+has hashed_password =&gt; (
+     is      =&gt; 'ro',
+     builder =&gt; '_build_hashed_password',
+     clearer =&gt; '_clear_hashed_password',
+);
+
+after clear_password =&gt; sub {
+    my $self = shift;
+    $self-&gt;_clear_hashed_password;
+};</code></pre>
+</div>
+
+<div class="slide">
+  <h1><code>before</code> and <code>after</code> Limitations</h1>
+
+  <ul>
+    <li>Cannot alter method parameters</li>
+    <li>Cannot alter return value</li>
+    <li>But <strong>can</strong> throw an exception</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>The <code>around</code> Modifier</h1>
+
+  <ul>
+    <li>The big gun</li>
+    <li>Can alter parameters <strong>and/or</strong> return values</li>
+    <li>Can skip calling the wrapped method entirely</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>The power of <code>around</code></h1>
+
+  <pre><code>around insert =&gt; sub {
+    my $orig = shift;
+    my $self = shift;
+
+    $self-&gt;_validate_insert(@_);
+
+    my $new_user =
+        $self-&gt;$orig(
+            $self-&gt;_munge_insert(@_) );
+
+    $new_user->_assign_uri;
+
+    return $new_user;
+};</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Modifier Order</h1>
+
+  <ul>
+    <li>Before runs order from last to first</li>
+    <li>After runs in order from first to last</li>
+    <li>Around runs in order from last to first</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Modifier Order Illustrated</h1>
+
+<pre>
+<span class="current incremental">before 2
+ before 1</span>
+  <span class="incremental">around 2
+   around 1</span>
+    <span class="incremental">wrapped method</span>
+   <span class="incremental">around 1
+  around 2</span>
+ <span class="incremental">after 1
+after 2</span>
+</pre>
+</div>
+
+<div class="slide">
+  <h1>Modifiers in Roles</h1>
+
+  <ul>
+    <li>Roles can use these modifiers</li>
+    <li>Very powerful!</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Modifiers in Roles</h1>
+
+  <pre><code>package IsUnreliable;
+use Moose::Role;
+
+<span class="highlight">requires 'run';
+
+around run</span> =&gt; sub {
+    my $orig = shift;
+    my $self = shift;
+
+    return if rand(1) &lt; 0.5;
+
+    return $self-&gt;$orig(@_);
+};</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Augment and Inner</h1>
+
+  <ul>
+    <li>Inverted <code>super</code></li>
+    <li>From least- to most-specific</li>
+    <li>Grandparent to parent to child</li>
+    <li>Not allowed in roles</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Augment and Inner</h1>
+
+  <pre><code>package Document;
+
+sub xml { '&lt;doc&gt;' . <span class="highlight">inner()</span> . '&lt;/doc&gt;' }
+
+package Report;
+extends 'Document';
+
+<span class="highlight">augment xml</span> =&gt; { title() . <span class="highlight">inner()</span> . summary() };
+
+package TPSReport;
+extends 'Report';
+
+<span class="highlight">augment xml</span> =&gt; { tps_xml() . <span class="highlight">inner()</span> };</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Augment and Inner</h1>
+
+  <ul>
+    <li>When we call <code>$tps-&gt;xml</code> ...
+      <ul>
+        <li><code>Document-&gt;xml</code></li>
+        <li><code>Report-&gt;xml</code></li>
+        <li><code>TPSReport-&gt;xml</code></li>
+      </ul>
+    </li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Augment and Inner Usage</h1>
+
+  <ul>
+    <li>Call <code>inner()</code> to "fill in the blank"</li>
+    <li>Requires designing for subclassing</li>
+    <li>Call <code>inner()</code> in the terminal class, just in case</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Questions?</h1>
+</div>  
+
+<div class="slide">
+  <h1>Exercises</h1>
+
+  <pre># cd exercises
+# perl bin/prove -lv t/04-method-modifiers.t
 
 Iterate til this passes all its tests</pre>
 </div>
@@ -2076,4 +2388,3 @@ This work is licensed under a Creative Commons Attribution-Share Alike
 http://creativecommons.org/licenses/by-sa/3.0/us/ for details.
 
 -->
-

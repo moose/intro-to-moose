@@ -53,6 +53,10 @@ img.for-slide {
     line-height: 1.2em;
 }
 
+.slide li {
+    margin-top: 0.5em;
+}
+
 .slide pre {
     font-size: 100%;
     line-height: 110%;
@@ -61,6 +65,11 @@ img.for-slide {
 .slide .current,
 .highlight {
     color: #03c;
+}
+
+.delete {
+    text-decoration: line-through;
+    color: #eee;
 }
 
 .slide pre.small {

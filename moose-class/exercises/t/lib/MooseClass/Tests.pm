@@ -105,6 +105,25 @@ sub tests03 {
     employee03();
 }
 
+sub tests04 {
+    {
+        local $Test::Builder::Level = $Test::Builder::Level + 1;
+
+        no_droppings('OutputsXML');
+
+        does_role( 'Person', 'OutputsXML' );
+    }
+
+    ok( scalar OutputsXML->meta->get_around_method_modifiers('as_xml'),
+        'OutputsXML has an around modifier for as_xml' );
+
+    isa_ok( Employee->meta->get_method('as_xml'),
+            'Moose::Meta::Method::Augmented', 'as_xml is augmented in Employee' );
+
+    person04();
+    employee04();
+}
+
 sub has_meta {
     my $class = shift;
 
@@ -287,6 +306,48 @@ sub employee03 {
 
     is( $employee->salary, 30000,
         'salary is calculated from salary_level, and salary passed to constructor is ignored' );
+}
+
+
+sub person04 {
+    my $person = Person->new(
+        first_name => 'Bilbo',
+        last_name  => 'Baggins',
+    );
+
+    my $xml = <<'EOF';
+<?xml version="1.0" encoding="UTF-8"?>
+<Person>
+<first_name>Bilbo</first_name>
+<last_name>Baggins</last_name>
+<title></title>
+</Person>
+EOF
+
+    is( $person->as_xml, $xml, 'Person outputs expected XML' );
+}
+
+sub employee04 {
+    my $employee = Employee->new(
+        first_name   => 'Jimmy',
+        last_name    => 'Foo',
+        ssn          => '123-99-4567',
+        salary_level => 3,
+    );
+
+    my $xml = <<'EOF';
+<?xml version="1.0" encoding="UTF-8"?>
+<Employee>
+<first_name>Jimmy</first_name>
+<last_name>Foo</last_name>
+<title>Worker</title>
+<salary>30000</salary>
+<salary_level>3</salary_level>
+<ssn>123-99-4567</ssn>
+</Employee>
+EOF
+
+    is( $employee->as_xml, $xml, 'Employee outputs expected XML' );
 }
 
 sub account_tests {
