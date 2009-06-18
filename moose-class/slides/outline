@@ -82,9 +82,15 @@
 ** Email
 ** class names & role names
 * coercions
+* duck_type
 * attribute isa & does
+* attribute coerce => 1
+* MX::Types
 
 == Exercises
+
+* Add sane types to all existing attributes in Person, Employee, roles
+* Add an email attribute. Make a new email type that does some minimal validate like /[^@]+\@[\w\-]+(?:\.[\w\-]+)+/
 
 = Advanced attributes
 
@@ -95,11 +101,35 @@
 
 == Exercises
 
+* Make the bank account a proper object and delegate to it for deposit & withdraw
+* Add an overdraft account like in the cookbook
+* Make the overdraft account link bank to accounts which link to it as a weak_ref
+* metaclass & traits?
+
 = Introspection
 
-== Exercises
+* List of attributes for a class
+** attribute options
+** associated methods
+* List of methods for a class
+** associated attributes
+** check original_package for source of method (did it come from a role?)
+** $method->isa(...) to determine if it's wrapped/augmented/overridden
+* List of parent classes, subclasses
 
 = Tour of MooseX
+
+* MX::AH
+** delegation for Perl built-ins
+** private accessor with public provides (_options as the attribute, get_option, set_option, options_list)
+** lazy default of an empty reference
+* ::StrictConstructor
+* ::Getopt
+* ::Clone
+* ::Declare
+* ::Workers
+* ::Singleton
+* ::ClassAttribute
 
 = Writing a MooseX Module
 
