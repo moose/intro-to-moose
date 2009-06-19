@@ -127,7 +127,8 @@
 * ::Getopt
 * ::Clone
 * ::Declare
-* ::Workers
+* ::Workers ?
+* ::NonMoose
 * ::Singleton
 * ::ClassAttribute
 
