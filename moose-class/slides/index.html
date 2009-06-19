@@ -884,14 +884,14 @@ use Moose;
     <li>Each call to <code>extends</code> <strong>resets</strong> your parents</li>
   </ul>
 
-  <h2 class="wrong">WRONG</h2>
+  <h2 class="wrong">Wrong</h2>
 
   <pre><code>package EvilEmployee;
 use Moose;
 extends 'Person';
 extends 'Thief';</code></pre>
 
-  <h2 class="right">RIGHT</h2>
+  <h2 class="right">Right</h2>
 
   <pre><code>package EvilEmployee;
 use Moose;
@@ -2363,6 +2363,50 @@ extends 'Report';
 </div>
 
 <div class="slide">
+  <h1>Method Modifiers Summary</h1>
+
+  <ul>
+    <li>Use <code>before</code> and <code>after</code> for ...
+      <ul>
+        <li>logging</li>
+        <li>pre- or post-validation</li>
+        <li>to add behavior to generated methods</li>
+      </ul>
+    </li>
+    <li>These two modifiers cannot change parameters or return values</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Method Modifiers Summary</h1>
+
+  <ul>
+    <li>Use <code>around</code> to ...
+      <ul>
+        <li>alter parameters passed to the original method</li>
+        <li>alter the return value of the original method</li>
+        <li>not call the original method at all (or call a <em>different</em> method)</li>
+      </ul>
+    </li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Method Modifiers Summary</h1>
+
+  <ul>
+    <li>When using modifiers in a role, require the modified method</li>
+    <li>Use <code>augment</code> and <code>inner</code> to invert the normal subclassing flow ...
+      <ul>
+        <li>Least- to most-specific (parents to children)</li>
+        <li>Build in "insertability" (stick more stuff in the "middle")</li>
+      </ul>
+    </li>
+    <li>Always call <code>inner</code> in the most specific subclass to allow for future extension</li>
+  </ul>
+</div>
+
+<div class="slide">
   <h1>Questions?</h1>
 </div>  
 
@@ -2373,6 +2417,356 @@ extends 'Report';
 # perl bin/prove -lv t/04-method-modifiers.t
 
 Iterate til this passes all its tests</pre>
+</div>
+
+<div class="slide fake-slide0">
+  <h1>Part 5: Types</h1>
+</div>
+
+<div class="slide fake-slide0">
+  <h1>Part 6: Advanced Attributes</h1>
+</div>
+
+<div class="slide">
+  <h1>Weak References</h1>
+
+  <ul>
+    <li>A weak reference lets you avoid circular references</li>
+    <li>Weak references do not increase the reference count</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Circular Reference Illustrated</h1>
+
+  <pre><code>my $foo = {};
+my $bar = { foo =&gt; $foo };
+$foo-&gt;{bar} = $bar;</code></pre>
+
+  <ul>
+    <li>Neither <code>$foo</code> nor <code>$bar</code> go out of scope<br />
+        (until the program exits)</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Weakening Circular References</h1>
+
+  <pre><code>use Scalar::Util qw( weaken );
+
+my $foo = {};
+my $bar = { foo =&gt; $foo };
+$foo-&gt;{bar} = $bar;
+weaken $foo-&gt;{bar}</code></pre>
+
+  <ul>
+    <li>When <code>$bar</code> goes out of scope, <code>$foo-&gt;{bar}</code> becomes <code>undef</code></li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Circular References in Attributes</h1>
+
+  <pre><code>package Person;
+use Moose;
+
+has name   =&gt; ( is =&gt; 'ro' );
+has friend =&gt; ( is =&gt; 'rw' );
+
+my $alice = Person-&gt;new( name =&gt; 'Alice' );
+my $bob   = Person-&gt;new( name =&gt; 'Bob' );
+$bob-&gt;friend($alice);
+$alice-&gt;friend($bob);</code></pre>
+</div>
+
+<div class="slide">
+  <h1>The Fix</h1>
+
+  <pre><code>package Person;
+use Moose;
+
+has name   =&gt; ( is =&gt; 'ro' );
+has friend =&gt; ( is =&gt; 'rw', <span class="highlight">weak_ref =&gt; 1</span> );
+
+my $alice = Person-&gt;new( name =&gt; 'Alice' );
+my $bob   = Person-&gt;new( name =&gt; 'Bob' );
+$bob-&gt;friend($alice);
+$alice-&gt;friend($bob);</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Under the Hood</h1>
+
+  <ul>
+    <li>A <code>weak_ref</code> attribute calls <code>weaken</code> ...
+      <ul>
+        <li>during object construction</li>
+        <li>when the attribute is set via a writer</li>
+      </ul>
+    </li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Triggers</h1>
+
+  <ul>
+    <li>A code reference run after an attribute is <em>set</em></li>
+    <li>Like an <code>after</code> modifier, but makes intentions clearer</li>
+  </ul>
+
+  <h2 class="wrong">Gross</h2>
+
+  <pre><code>after salary_level =&gt; {
+    my $self = shift;
+    return unless @_;
+    $self-&gt;clear_salary;
+};</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Use a Trigger Instead</h1>
+
+  <h2 class="right">Cleaner</h2>
+
+  <pre><code>has salary_level =&gt; (
+    is      =&gt; 'rw',
+    trigger =&gt; sub { $_[0]-&gt;clear_salary },
+);</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Delegation</h1>
+
+  <ul>
+    <li>Attributes can be objects</li>
+    <li>Delegation transparently calls methods on those objects</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Delegation Examples</h1>
+
+  <pre><code>package Person;
+
+has lungs =&gt; (
+    is      =&gt; 'ro',
+    isa     => 'Lungs',
+    <span class="highlight">handles =&gt; [ 'inhale', 'exhale' ],</span>
+);</code></pre>
+
+  <ul>
+    <li>Creates <code>$person-&gt;inhale</code> and <code>-&gt;exhale</code> methods</li>
+    <li>Internally calls <code>$person-&gt;lungs-&gt;inhale</code></li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Why Delegation?</h1>
+
+  <ul>
+    <li>Reduce the number of classes exposed</li>
+    <li>Re-arrange class internals -<br />
+        turn a method into an attribute with delegation</li>
+    <li>Provide convenenience methods</li>
+  </ul>
+</div> 
+
+<div class="slide">
+  <h1>Moose's <code>handles</code> Parameter</h1>
+
+  <ul>
+    <li>Accepts many arguments ...
+      <ul>
+        <li>Array reference - list of methods to delegate as-is</li>
+        <li>Hash reference - map of method names</li>
+        <li>Regex - delegates all matching methods</li>
+        <li>Role name - delegates all methods in the role</li>
+        <li>Sub reference - does something complicated ;)</li>
+      </ul>
+    </li>
+  </ul>
+</div>      
+
+<div class="slide">
+  <h1>Array Reference</h1>
+
+  <ul>
+    <li>Takes each method name and creates a simple delegation from the delegating class to the delegatee attribute</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Hash Reference</h1>
+
+  <ul>
+    <li>Mapping of names in the delegating class to the delegatee class</li>
+  </ul>
+
+  <pre><code>package Person;
+use Moose;
+
+has account =&gt; (
+    is      =&gt; 'ro',
+    isa     =&gt; 'BankAccount',
+    <span class="highlight">handles =&gt; {
+        receive_money =&gt; 'deposit',
+        give_money    =&gt; 'withdraw',
+    },</span>
+);</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Hash Reference Detailed</h1>
+
+  <pre><code>    handles =&gt; {
+        receive_money =&gt; 'deposit',
+        give_money    =&gt; 'withdraw',
+    },</code></pre>
+
+  <ul>
+    <li><code>$person-&gt;receive_money</code> = <code>$person-&gt;account-&gt;deposit</code></li>
+    <li><code>$person-&gt;give_money</code> = <code>$person-&gt;account-&gt;withdraw</code></li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Regex</h1>
+
+  <pre><code>package Person;
+use Moose;
+
+has name =&gt; (
+    is      =&gt; 'ro',
+    isa     =&gt; 'Name',
+    handles =&gt; qr/.*/,
+);</code></pre>
+
+  <ul>
+    <li>Creates a delegation for every method in the Name class</li>
+    <li>Excludes <code>meta</code> and methods inherited from <code>Moose::Object</code></li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Role Name</h1>
+
+  <pre><code>package Auditor;
+use Moose::Role;
+
+sub record_change  { ... }
+sub change_history { ... }
+
+package Account;
+use Moose;
+
+has history =&gt; (
+    is      =&gt; 'ro',
+    does    =&gt; 'Auditor',
+    <span class="highlight">handles =&gt; 'Auditor',</span>
+);</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Role Name Detailed</h1>
+
+  <ul>
+    <li>Account gets delegate methods for each method in the <code>Auditor</code> role
+      <ul>
+        <li>record_history</li>
+        <li>change_history</li>
+      </ul>
+    </li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Traits and Metaclasses</h1>
+
+  <ul>
+    <li>The ultimate in customization</li>
+    <li>Per attribute metaclasses</li>
+    <li>Per attribute roles applied to the attribute metaclass</li>
+    <li>Change the meta-level behavior</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Traits and Metaclasses</h1>
+
+  <ul>
+    <li>The default metaclass is <code>Moose::Meta::Attribute</code></li>
+    <li>Controls accessor generation, defaults, delegation, etc.</li>
+    <li>Adding a role to this metaclass (or replacing it) allows for infinite customization</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Traits and Metaclasses</h1>
+
+  <ul>
+    <li>Can add/alter/remove attribute parameter (from <code>has</code>)</li>
+    <li>Can change behavior of created attribute</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Simple Trait Example</h1>
+
+  <pre><code>package Person;
+use Moose;
+use MooseX::LabeledAttributes;
+
+has ssn =&gt; (
+    <span class="highlight">traits =&gt; [ 'Labeled' ],</span>
+    is     =&gt; 'ro',
+    isa    =&gt; 'Str',
+    <span class="highlight">label  =&gt; 'Social Security Number',</span>
+);
+
+print <span class="highlight">Person-&gt;meta
+            -&gt;get_attribute('ssn')-&gt;label;</span></code></pre>
+</div>
+
+<div class="slide">
+  <h1>Simple Metaclass Example</h1>
+
+  <pre><code>package Person;
+use Moose;
+use MooseX::LabeledAttributes;
+
+has ssn =&gt; (
+    <span class="highlight">metaclass =&gt;
+        'MooseX::Meta::Attribute::Labeled',</span>
+    is        =&gt; 'ro',
+    isa       =&gt; 'Str',
+    <span class="highlight">label     =&gt; 'Social Security Number',</span>
+);
+
+print <span class="highlight">Person-&gt;meta
+            -&gt;get_attribute('ssn')-&gt;label;</span></code></pre>
+</div>
+
+<div class="slide">
+  <h1>Traits vs Metaclass</h1>
+
+  <ul>
+    <li>Can apply any mix of traits to an attribute</li>
+    <li>But just one metaclass</li>
+    <li>Traits (aka roles) can cooperate</li>
+    <li>Metaclasses require you to pick just one</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Advanced Attributes Summary</h1>
+
+  <ul>
+    <li>Use <code>weak_ref</code> to avoid circular references</li>
+    <li>Use trigger to do an action post-attribute write</li>
+    <li>Use delegations to hide "internal" objects</li>
+    <li>Traits and metaclasses let you extend Moose's core attribute features</li>
+  </ul>
 </div>
 
 </div> 

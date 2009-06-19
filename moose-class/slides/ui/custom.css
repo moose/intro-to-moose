@@ -76,6 +76,10 @@ img.for-slide {
     font-size: 33%;
 }
 
+.slide pre.medium {
+    font-size: 80%;
+}
+
 .slide table.side-by-side tr {
     vertical-align: top;
 }
