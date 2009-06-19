@@ -11,7 +11,6 @@
 # method should return the first and last name separated by a string
 # ("Jon Smith").
 #
-#
 # Create an Employee class in lib/Employee.pm
 #
 # The Employee class is a subclass of Person

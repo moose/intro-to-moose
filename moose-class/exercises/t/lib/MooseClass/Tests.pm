@@ -124,6 +124,36 @@ sub tests04 {
     employee04();
 }
 
+sub tests06 {
+    {
+        local $Test::Builder::Level = $Test::Builder::Level + 1;
+
+        has_meta('BankAccount');
+        no_droppings('BankAccount');
+
+        has_rw_attr( 'BankAccount', 'balance' );
+        has_rw_attr( 'BankAccount', 'owner' );
+        has_ro_attr( 'BankAccount', 'history' );
+    }
+
+    my $person_meta = Person->meta;
+    ok( ! $person_meta->has_attribute('balance'),
+        'Person class does not have a balance attribute' );
+
+    my $deposit_meth = $person_meta->get_method('deposit');
+    isa_ok( $deposit_meth, 'Moose::Meta::Method::Delegation' );
+
+    my $withdraw_meth = $person_meta->get_method('withdraw');
+    isa_ok( $withdraw_meth, 'Moose::Meta::Method::Delegation' );
+
+    my $ba_meta = BankAccount->meta;
+    ok( $ba_meta->get_attribute('owner')->is_weak_ref,
+        'owner attribute is a weak ref' );
+
+    person06();
+}
+
+
 sub has_meta {
     my $class = shift;
 
@@ -348,6 +378,25 @@ sub employee04 {
 EOF
 
     is( $employee->as_xml, $xml, 'Employee outputs expected XML' );
+}
+
+sub person06 {
+    my $person = Person->new(
+        first_name => 'Bilbo',
+        last_name  => 'Baggins',
+    );
+
+    isa_ok( $person->account, 'BankAccount' );
+    is( $person->account->owner, $person,
+        'owner of bank account is person that created account' );
+
+    $person->deposit(10);
+    is_deeply( $person->account->history, [ 100, 10 ],
+               'deposit was recorded in account history' );
+
+    $person->withdraw(15);
+    is_deeply( $person->account->history, [ 100, 10, -15 ],
+               'withdrawal was recorded in account history' );
 }
 
 sub account_tests {
