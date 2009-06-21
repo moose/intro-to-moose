@@ -986,23 +986,23 @@ extends 'LWP';</code></pre>
 </div>  
 
 <div class="slide">
-  <h1><code>overrides</code> and <code>super</code></h1>
+  <h1><code>override</code> and <code>super</code></h1>
 
   <ul>
-    <li><code>overrides</code> is another method modifier</li>
+    <li><code>override</code> is another method modifier</li>
     <li>An alternative to Perl's <code>SUPER::</code></li>
   </ul>
 </div>
 
 <div class="slide">
-  <h1><code>overrides</code> and <code>super</code></h1>
+  <h1><code>override</code> and <code>super</code></h1>
 
   <pre><code>package Employee;
 use Moose;
 
 <span class="current incremental">extends 'Person';</span>
 
-<span class="incremental">overrides</span> work =&gt; sub {
+<span class="incremental">override</span> work =&gt; sub {
     my $self = shift;
 
     die "Pay me first" unless $self-&gt;got_paid;
@@ -1148,7 +1148,7 @@ use Moose;
     <li><code>use Moose</code></li>
     <li><code>Class-&gt;meta</code></li>
     <li><code>Moose::Object</code> base class</li>
-    <li><code>extends</code>, <code>overrides</code>, and <code>super</code></li>
+    <li><code>extends</code>, <code>override</code>, and <code>super</code></li>
     <li>Simple attributes: <code>has</code>, <code>is&nbsp;=&gt;&nbsp;'ro'</code>, &amp; <code>is&nbsp;=&gt;&nbsp;'rw'</code></li>
     <li><code>no Moose</code></li>
     <li><code>__PACKAGE__-&gt;meta-&gt;make_immutable</code></li>
