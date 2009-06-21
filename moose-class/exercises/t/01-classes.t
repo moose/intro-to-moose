@@ -7,7 +7,7 @@
 # * first_name - read-write
 # * last_name - read-write
 #
-# This class should also have a method named "printable_name". This
+# This class should also have a method named "full_name". This
 # method should return the first and last name separated by a string
 # ("Jon Smith").
 #
@@ -21,7 +21,7 @@
 # * salary - read-write
 # * ssn - read-only
 #
-# The Employee class should override the "printable_name" method to
+# The Employee class should override the "full_name" method to
 # append the employee's title in parentheses ("Jon Smith
 # (Programmer)"). Use override() and super() for this.
 #

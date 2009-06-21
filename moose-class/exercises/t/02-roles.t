@@ -4,7 +4,7 @@
 # consuming class implement an "as_string" method.
 #
 # Make the Person class from the last set of exercises consume this
-# role. Use printable_name as the output for the as_string method. The
+# role. Use full_name as the output for the as_string method. The
 # Employee subclass should still override this output.
 #
 # Implement a role HasMoney. This should provide a read-write
