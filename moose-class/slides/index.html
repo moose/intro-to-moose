@@ -866,6 +866,74 @@ use Moose;</code></pre>
 </div>
 
 <div class="slide">
+  <h1>BUILDARGS</h1>
+
+  <ul>
+    <li>Takes <code>@_</code>, returns a hash reference of attribute names/value</li>
+    <li>Accepts a hash or hashref; throws otherwise</li>
+    <li>Provide your own for other cases</li>
+    <li><strong>Always</strong> call <code>$class-&gt;SUPER::BUILDARGS(@_)</code> as a fallback!</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>BUILDARGS Example</h1>
+
+  <pre><code>package Person;
+use Moose;
+
+sub BUILDARGS {
+    my $class = shift;
+
+    if ( @_ == 1 && ! ref $_[0] ) {
+        <span class="highlight">return { ssn =&gt; $_[0] };</span>
+    }
+
+    <span class="highlight">return $class-&gt;SUPER::BUILDARGS(@_)</span>;
+}
+
+<span class="highlight">Person-&gt;new('123-45-6789')</span></code></pre>
+</div>
+
+<div class="slide">
+  <h1>BUILD</h1>
+
+  <ul>
+    <li>Called after object is created, before <code>new</code> returns</li>
+    <li>Chance to do more complex validation, set complex attributes</li>
+    <li>Called in reverse inheritance order, parents to children</li>
+    <li>Return value is ignored</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>BUILD Example</h1>
+
+  <pre><code>package Person;
+use Moose;
+
+sub BUILD {
+    my $self = shift;
+
+    if ( $self-&gt;country_of_residence
+         eq 'USA' ) {
+        die 'All US residents'
+            . ' must have an SSN'
+            unless $self-&gt;has_ssn;
+    }
+}</code></pre>
+</div>
+
+<div class="slide">
+  <h1>DEMOLISH</h1>
+
+  <ul>
+    <li>Like <code>DESTROY</code>, but Moose makes sure all <code>DEMOLISH</code> methods in a hierarchy are called</li>
+    <li>Called in normal inheritance order, children to parents</li>
+  </ul>
+</div>
+
+<div class="slide">
   <h1>extends</h1>
 
   <ul>
