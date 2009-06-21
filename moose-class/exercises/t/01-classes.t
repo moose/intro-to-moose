@@ -11,6 +11,12 @@
 # method should return the first and last name separated by a string
 # ("Jon Smith").
 #
+# Write a BUILDARGS method for this class which allows the caller to
+# pass a two argument array reference. These should be assigned to the
+# first and last name respectively.
+#
+#   Person->new( [ 'Lisa', 'Smith' ] );
+#
 # Create an Employee class in lib/Employee.pm
 #
 # The Employee class is a subclass of Person

@@ -265,6 +265,14 @@ sub person01 {
 
     is( $person->full_name, 'Bilbo Baggins',
         'full_name() is correctly implemented' );
+
+    $person = Person->new( [ qw( Lisa Smith ) ] );
+    is( $person->first_name, 'Lisa', 'set first_name from two-arg arrayref' );
+    is( $person->last_name, 'Smith', 'set last_name from two-arg arrayref' );
+
+    eval { Person->new( sub { 'foo' } ) };
+    like( $@, qr/\QSingle parameters to new() must be a HASH ref/,
+          'Person constructor still rejects bad parameters' );
 }
 
 sub employee01 {
