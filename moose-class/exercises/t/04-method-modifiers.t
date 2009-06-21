@@ -24,7 +24,7 @@
 # </Person>
 #
 # Use the role to create the xml declaration (the first line) and the
-# container tags (<person> or <employee)
+# container tags (<person> or <employee>)
 #
 # The classes should return a list strings. Each string should be a
 # tagged value for an attribute. For consistency, return the
