@@ -7,7 +7,7 @@
 # role. Use full_name as the output for the as_string method. The
 # Employee subclass should still override this output.
 #
-# Implement a role HasMoney. This should provide a read-write
+# Implement a role HasAccount. This should provide a read-write
 # "balance" attribute. It should also implement "deposit" and
 # "withdraw" methods. Attempting to reduce the cash balance below 0
 # via "withdraw" should die with an error that includes the string:
