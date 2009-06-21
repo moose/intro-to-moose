@@ -2397,12 +2397,12 @@ sub xml { '&lt;doc&gt;' . <span class="highlight">inner()</span> . '&lt;/doc&gt;
 package Report;
 extends 'Document';
 
-<span class="highlight">augment xml</span> =&gt; { title() . <span class="highlight">inner()</span> . summary() };
+<span class="highlight">augment xml</span> =&gt; sub { title() . <span class="highlight">inner()</span> . summary() };
 
 package TPSReport;
 extends 'Report';
 
-<span class="highlight">augment xml</span> =&gt; { tps_xml() . <span class="highlight">inner()</span> };</code></pre>
+<span class="highlight">augment xml</span> =&gt; sub { tps_xml() . <span class="highlight">inner()</span> };</code></pre>
 </div>
 
 <div class="slide">
