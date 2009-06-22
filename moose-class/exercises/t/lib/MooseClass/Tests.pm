@@ -282,7 +282,8 @@ sub employee01 {
         title      => 'Singer',
     );
 
-    is(        $employee->full_name, 'Amanda Palmer (Singer)',        'full_name() is properly overriden in Employee'    );
+    is( $employee->full_name, 'Amanda Palmer (Singer)',
+        'full_name() is properly overriden in Employee' );
 }
 
 sub person02 {
