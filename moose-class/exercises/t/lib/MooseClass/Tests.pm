@@ -321,12 +321,17 @@ sub person03 {
     is( $person->full_name, 'Bilbo Baggins',
         'full_name() is correctly implemented for a Person without a title' );
     ok( !$person->has_title,
-        'Person has_title predicate is working correctly' );
+        'Person has_title predicate is working correctly (returns false)' );
 
     $person->title('Ringbearer');
-    ok( $person->has_title, 'Person has_title predicate is working correctly' );
+    ok( $person->has_title, 'Person has_title predicate is working correctly (returns true)' );
+
+    Person->meta->make_mutable;
+    my $called = 0;
+    Person->meta->add_after_method_modifier( 'has_title' => sub { $called++ } );
     is( $person->full_name, 'Bilbo Baggins (Ringbearer)',
         'full_name() is correctly implemented for a Person with a title' );
+    ok( $called, 'full_name in person uses the predicate for the title attribute' );
 
     $person->clear_title;
     ok( !$person->has_title, 'Person clear_title method cleared the title' );
