@@ -282,8 +282,14 @@ sub employee01 {
         title      => 'Singer',
     );
 
+    my $called = 0;
+    my $orig_super = \&Employee::super;
+    no warnings 'redefine';
+    local *Employee::super = sub { $called++; goto &$orig_super };
+
     is( $employee->full_name, 'Amanda Palmer (Singer)',
         'full_name() is properly overriden in Employee' );
+    ok( $called, 'Employee->full_name calls super()' );
 }
 
 sub person02 {
@@ -327,9 +333,11 @@ sub person03 {
     $person->title('Ringbearer');
     ok( $person->has_title, 'Person has_title predicate is working correctly (returns true)' );
 
-    Person->meta->make_mutable;
     my $called = 0;
-    Person->meta->add_after_method_modifier( 'has_title' => sub { $called++ } );
+    my $orig_pred = \&Person::has_title;
+    no warnings 'redefine';
+    local *Person::has_title = sub { $called++; goto &$orig_pred };
+
     is( $person->full_name, 'Bilbo Baggins (Ringbearer)',
         'full_name() is correctly implemented for a Person with a title' );
     ok( $called, 'full_name in person uses the predicate for the title attribute' );
