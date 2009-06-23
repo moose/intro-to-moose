@@ -925,6 +925,30 @@ sub BUILD {
 </div>
 
 <div class="slide">
+  <h1>Object Construction a la Moose</h1>
+
+  <pre><code>Person-&gt;new(@_)</code></pre>
+
+  <ol>
+    <li>Calls <code>Person-&gt;BUILDARGS(@_)</code> to turn <code>@_</code> into a hashref</li>
+    <li>Blesses a reference</li>
+    <li>Populates attributes based on the hashref from #1</li>
+    <li>Calls <code>$new_object->BUILDALL($constructor_args)</code>
+        <br />... which calls all <code>BUILD</code> methods</li>    
+    <li>Returns the object</li>
+  </ol>
+</div>
+
+<div class="slide">
+  <h1>The Object is Oqaque</h1>
+
+  <ul>
+    <li>Technically it's a hash reference</li>
+    <li><span class="wrong">If you <em>ever</em> treat it as one <strong>you are doing it wrong!</strong></span></li>
+  </ul>
+</div>
+
+<div class="slide">
   <h1>DEMOLISH</h1>
 
   <ul>

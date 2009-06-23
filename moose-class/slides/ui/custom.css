@@ -49,7 +49,10 @@ img.for-slide {
     float: right;
 }
 
-.slide ul, .slide ul li ul {
+/* copied from pretty.css for ul */
+.slide ol {margin-left: 5%; margin-right: 7%;}
+
+.slide ul, .slide ul li ul, .slide ol {
     line-height: 1.2em;
 }
 
