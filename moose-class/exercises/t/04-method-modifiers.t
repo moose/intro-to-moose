@@ -1,41 +1,43 @@
 # Your tasks ...
 #
-# You are going to make our Person and Employee classes capable of
-# outputting an XML document describing the object.
+# First, we will create a set of three new classes to make use of the
+# augment method modifier. The class hierarchy will look like this:
 #
-# The document will contain a tag and value for each attribute.
+#   Document
+#      |
+#   Report
+#      |
+#   TPSReport
 #
-# You will use method modifiers and roles to achieve this.
+# The Document class should have two read-only attributes: "title" and
+# "author".
 #
-# Start by creating a new role, OutputsXML.
+# The Report class should have one read-only attributes: "summary".
 #
-# This role should require an "as_xml" method in the classes which
-# consume it.
+# Finally, the TPSReport class should have three read-only attributes:
+# "t", "p", and "s".
 #
-# This role should also use an around modifier on the as_xml method in
-# order to make sure the document is well-formed XML.
+# The goal is to produce a report that looks this:
 #
-# This document will look something like this:
+# $title
 #
-# <?xml version="1.0" encoding="UTF-8"?>
-# <Person>
-# <first_name>Joe</first_name>
-# <last_name>Smith</last_name>
-# </Person>
+# $summary
 #
-# Use the role to create the xml declaration (the first line) and the
-# container tags (<person> or <employee>)
+# t: $t
+# p: $p
+# s: $s
 #
-# The classes should return a list strings. Each string should be a
-# tagged value for an attribute. For consistency, return the
-# attributes in sorted order.
+# Written by $author
 #
-# ( '<first_name>Joe</first_name>', '<last_name>Smith</last_name>' )
+# This report will be a string returned by the Document->output
+# method.
 #
-# If an attribute is empty, just output an empty tag (<foo></foo>).
+# Don't worry too much about how many newlines separate each item (as
+# long as it's at least one). The test does a little massaging to make
+# this more forgiving.
 #
-# Use an augment modifier in the Person and Employee classes to allow
-# Employee to return just its own attributes.
+# Use augment method modifiers in Report and TPSReport to "inject" the
+# relevant content, while Document will output the $title and $author.
 
 use strict;
 use warnings;
@@ -44,7 +46,6 @@ use lib 't/lib';
 
 use MooseClass::Tests;
 
-use Person;
-use Employee;
+use TPSReport;
 
 MooseClass::Tests::tests04();

@@ -26,14 +26,6 @@ sub full_name {
 
 sub as_string { $_[0]->full_name }
 
-sub as_xml {
-    my $self = shift;
-
-    return
-        ( map { "<$_>" . ( $self->$_ || q{} ) . "</$_>" } qw( first_name last_name title ) ),
-        inner();
-}
-
 no Moose;
 
 __PACKAGE__->meta->make_immutable;

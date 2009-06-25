@@ -109,19 +109,43 @@ sub tests04 {
     {
         local $Test::Builder::Level = $Test::Builder::Level + 1;
 
-        no_droppings('OutputsXML');
+        has_meta('Document');
+        has_meta('Report');
+        has_meta('TPSReport');
 
-        does_role( 'Person', 'OutputsXML' );
+        no_droppings('Document');
+        no_droppings('Report');
+        no_droppings('TPSReport');
+
+        has_ro_attr( 'Document',  $_ ) for qw( title author );
+        has_ro_attr( 'Report',    'summary' );
+        has_ro_attr( 'TPSReport', $_ ) for qw( t p s );
+
+        has_method( 'Document', 'output' );
+        has_augmented_method( 'Report', 'output' );
+        has_augmented_method( 'TPSReport', 'output' );
     }
 
-    ok( scalar OutputsXML->meta->get_around_method_modifiers('as_xml'),
-        'OutputsXML has an around modifier for as_xml' );
+    my $tps = TPSReport->new(
+        title   => 'That TPS Report',
+        author  => 'Peter Gibbons (for Bill Lumberg)',
+        summary => 'I celebrate his whole collection!',
+        t       => 'PC Load Letter',
+        p       => 'Swingline',
+        s       => 'flair!',
+    );
 
-    isa_ok( Employee->meta->get_method('as_xml'),
-            'Moose::Meta::Method::Augmented', 'as_xml is augmented in Employee' );
+    my $output = $tps->output;
+    $output =~ s/\n\n+/\n/g;
 
-    person04();
-    employee04();
+    is( $output, <<'EOF', 'output returns expected report' );
+That TPS Report
+I celebrate his whole collection!
+t: PC Load Letter
+p: Swingline
+s: flair!
+Written by Peter Gibbons (for Bill Lumberg)
+EOF
 }
 
 sub tests06 {
@@ -236,6 +260,17 @@ sub has_overridden_method {
 
     my $meth = $class->meta->get_method($name);
     isa_ok( $meth, 'Moose::Meta::Method::Overridden' );
+}
+
+sub has_augmented_method {
+    my $class = shift;
+    my $name  = shift;
+
+    my $articled = A($name);
+    ok( $class->meta->has_method($name), "$class has $articled method" );
+
+    my $meth = $class->meta->get_method($name);
+    isa_ok( $meth, 'Moose::Meta::Method::Augmented' );
 }
 
 sub no_droppings {
@@ -358,48 +393,6 @@ sub employee03 {
 
     is( $employee->salary, 30000,
         'salary is calculated from salary_level, and salary passed to constructor is ignored' );
-}
-
-
-sub person04 {
-    my $person = Person->new(
-        first_name => 'Bilbo',
-        last_name  => 'Baggins',
-    );
-
-    my $xml = <<'EOF';
-<?xml version="1.0" encoding="UTF-8"?>
-<Person>
-<first_name>Bilbo</first_name>
-<last_name>Baggins</last_name>
-<title></title>
-</Person>
-EOF
-
-    is( $person->as_xml, $xml, 'Person outputs expected XML' );
-}
-
-sub employee04 {
-    my $employee = Employee->new(
-        first_name   => 'Jimmy',
-        last_name    => 'Foo',
-        ssn          => '123-99-4567',
-        salary_level => 3,
-    );
-
-    my $xml = <<'EOF';
-<?xml version="1.0" encoding="UTF-8"?>
-<Employee>
-<first_name>Jimmy</first_name>
-<last_name>Foo</last_name>
-<title>Worker</title>
-<salary>30000</salary>
-<salary_level>3</salary_level>
-<ssn>123-99-4567</ssn>
-</Employee>
-EOF
-
-    is( $employee->as_xml, $xml, 'Employee outputs expected XML' );
 }
 
 sub person06 {
