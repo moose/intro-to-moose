@@ -885,7 +885,7 @@ use Moose;
 sub BUILDARGS {
     my $class = shift;
 
-    if ( @_ == 1 && ! ref $_[0] ) {
+    if ( @_ == 1 &amp;&amp; ! ref $_[0] ) {
         <span class="highlight">return { ssn =&gt; $_[0] };</span>
     }
 
@@ -2888,7 +2888,7 @@ Iterate til this passes all its tests</pre>
 </div>
 
 <div class="slide fake-slide0">
-  <h1>The End<?h1>
+  <h1>The End</h1>
 </div>
 
 <div class="slide">
@@ -2901,7 +2901,7 @@ Iterate til this passes all its tests</pre>
     <li>mailing list - <a href="mailto:moose@perl.org">moose@perl.org</a></li>
     <li>Slides and exercises are in Moose's git repo:
         <br />
-        <nobr>git://jules.scsys.co.uk/gitmo/moose-presentations</nobr></li>
+        <span style="white-space: nowrap">git://jules.scsys.co.uk/gitmo/moose-presentations</span></li>
   </ul>
 </div>
 
