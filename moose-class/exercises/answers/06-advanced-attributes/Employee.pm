@@ -28,14 +28,6 @@ sub _build_salary {
     return $self->salary_level * 10000;
 }
 
-augment as_xml => sub {
-    my $self = shift;
-
-    return
-        ( map { "<$_>" . ( $self->$_ || q{} ) . "</$_>" } qw( salary salary_level ssn ) ),
-        inner();
-};
-
 no Moose;
 
 __PACKAGE__->meta->make_immutable;

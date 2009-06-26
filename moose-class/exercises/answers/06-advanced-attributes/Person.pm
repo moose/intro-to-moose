@@ -3,7 +3,7 @@ package Person;
 use BankAccount;
 use Moose;
 
-with 'Printable', 'OutputsXML';
+with 'Printable';
 
 has account => (
     is      => 'rw',
@@ -39,14 +39,6 @@ sub full_name {
 }
 
 sub as_string { $_[0]->full_name }
-
-sub as_xml {
-    my $self = shift;
-
-    return
-        ( map { "<$_>" . ( $self->$_ || q{} ) . "</$_>" } qw( first_name last_name title ) ),
-        inner();
-}
 
 no Moose;
 
