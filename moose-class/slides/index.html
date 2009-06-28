@@ -2599,7 +2599,8 @@ undef</code></pre>
   <h1>Value (and subtypes)</h1>
 
   <ul>
-    <li>Value is true when <code>! ref $thing</code></li>
+    <li><code>Value</code> is true when <code>! ref $thing</code></li>
+    <li><code>Value</code> and <code>Str</code> are effectively the same, but <code>Str</code> is more expressive</li>
     <li>An overloaded object which numifies does not pass the <code>Num</code> constraint!</li>
     <li>Perl 5's overloading is hopelessly broken</li>
   </ul>
@@ -2641,12 +2642,14 @@ undef</code></pre>
 </div>
 
 <div class="slide">
-  <h1>Union Types</h1>
+  <h1>Type Union</h1>
 
   <ul>
     <li>This or that (or that or ...)</li>
     <li><code>Int | ArrayRef[Int]</code></li>
     <li>But use a coercion instead when possible</li>
+    <li>Or use a <code>role_type</code>,  <code>duck_type</code>, or anything not a union</li>
+    <li>A union is often a code smell</li>
   </ul>
 </div>
 
@@ -2784,6 +2787,94 @@ has shouty_name =&gt; (
 </div>
 
 <div class="slide">
+  <h1>Coercion Examples</h1>
+
+  <pre><code>subtype 'My::DateTime',
+    as class_type 'DateTime';
+
+coerce 'My::DateTime',
+    from 'HashRef',
+    via  { DateTime-&gt;new( %{$_} ) };
+
+coerce 'My::DateTime',
+    from 'Int',
+    via  { DateTime-&gt;from_epoch(
+               epoch =&gt; $_ ) };</code></pre>
+
+  <ul>
+    <li>Use coercion to inflate a value</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Coercion Examples</h1>
+
+  <pre><code>coerce 'ArrayRef[Int]',
+    from 'Int',
+    via  { [ $_ ] };</code></pre>
+
+  <ul>
+    <li>Coerce instead of a union like <code style="white-space: nowrap">Int | ArrayRef[Int]</code></li>
+  </ul>
+</div>
+
+
+<div class="slide">
+  <h1>Using Types with Attributes</h1>
+
+  <pre><code>package Person;
+
+use Moose::Util::TypeConstraints;
+
+has height =&gt; (
+    is  =&gt; 'rw',
+    <span class="highlight">isa =&gt; 'Num',</span>
+);
+
+has favorite_numbers =&gt; (
+    is     =&gt; 'rw',
+    <span class="highlight">isa    =&gt; 'ArrayRef[Int]',
+    coerce =&gt; 1,</span>
+);</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Typed Methods (Low-tech)</h1>
+
+  <pre class="medium"><code>package Person;
+<span class="highlight">use MooseX::Params::Validate qw( validated_list );</span>
+
+sub work {
+    my $self = shift;
+    <span class="highlight">my ( $tasks, $can_rest ) =
+        validated_list(
+            \@_,
+            tasks    =&gt;
+                { isa    =&gt; 'ArrayRef[Task]',
+                  coerce =&gt;1 },
+            can_rest =&gt;
+                { isa     =&gt; 'Bool',
+                  default =&gt; 0 },
+        );</span>
+
+    ...
+}</code></pre>
+
+<div class="slide">
+  <h1>Typed Methods (High-tech)</h1>
+
+  <pre class="medium"><code>package Person;
+
+<span class="highlight">use MooseX::Method::Signatures;</span>
+
+<span class="highlight">method work ( ArrayRef[Task] :$tasks,
+                        Bool :$can_rest = 0 )</span> {
+    my $self = shift;
+
+    ...
+}</code></pre>
+
+<div class="slide">
   <h1>Digression: The Type Registry</h1>
 
   <ul>
@@ -2804,7 +2895,7 @@ has shouty_name =&gt; (
 </div>
 
 <div class="slide">
-  <h1>Fix #1</h1>
+  <h1>Namespace Fix</h1>
 
   <ul>
     <li>Use some sort of pseudo-namespacing scheme</li>
@@ -2841,37 +2932,81 @@ coerce 'MyApp::Type::ArrayOfInt',
     from 'Int',
     via  { [ $_ ] };</code></pre>
 </div>
-    
 
 <div class="slide">
-  <h1>Coercion Examples</h1>
-
-  <pre><code>subtype 'My::DateTime',
-    as class_type 'DateTime';
-
-coerce 'My::DateTime',
-    from 'HashRef',
-    via  { DateTime-&gt;new( %{$_} ) };
-
-coerce 'My::DateTime',
-    from 'Int',
-    via  { DateTime-&gt;from_epoch(
-               epoch =&gt; $_ ) };</code></pre>
+  <h1>Namespace Fix Pros and Cons</h1>
 
   <ul>
-    <li>Using a coercion to inflate a value</li>
+    <li><span class="right">Relatively simple</span></li>
+    <li><span class="right">Already built into Moose</span></li>
+    <li><span class="wrong">Conflates type and module namespaces</span></li>
+    <li><span class="wrong">Type names are strings, so typos are easy to make and may be hard to find</span></li>
   </ul>
 </div>
 
 <div class="slide">
-  <h1>Coercion Examples</h1>
+  <h1>MooseX::Types</h1>
 
-  <pre><code>coerce 'ArrayRef[Int]',
-    from 'Int',
+  <pre><code>package MyApp::Types;
+
+use MooseX::Types
+    <span class="highlight">-declare =&gt; [ qw( ArrayOfInt ) ]</span>;
+use MooseX::Types::Moose
+    qw( ArrayRef Int );
+
+subtype <span class="highlight">ArrayOfInt</span>,
+    as ArrayRef[Int];
+
+coerce <span class="highlight">ArrayOfInt</span>
+    from Int,
     via  { [ $_ ] };</code></pre>
+</div>
+
+<div class="slide">
+  <h1>MooseX::Types</h1>
+
+  <pre><code>package MyApp::Account;
+
+use MyApp::Types qw( ArrayOfInt );
+
+has transaction_history => (
+    is  => 'rw',
+    isa => ArrayOfInt,
+);</code></pre>
+
+<div class="slide">
+  <h1>MooseX::Types</h1>
 
   <ul>
-    <li>Coerce instead of a union like <code style="white-space: nowrap">Int | ArrayRef[Int]</code></li>
+    <li>Type names are exported functions, catches typos early</li>
+    <li>Types must be pre-declared</li>
+    <li>Types are stored with namespaces internally, but externally are short</li>
+    <li>Import existing Moose types as functions from <code>MooseX::Types::Moose</code></li>
+    <li>Still need string names for things like <code>ArrayRef['Email::Address']</code></li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>MooseX::Types Pros and Cons</h1>
+
+  <ul>
+    <li><span class="right">Catches typos at compile time</span></li>
+    <li><span class="right">Automatic namespacing</span></li>
+    <li><span class="wrong">One more thing to install and learn</span></li>
+    <li><span class="wrong">Every name gets types twice (declared and then defined)</span></li>
+    <li><span class="wrong">Still stuck with strings when referring to class or role names</span></li>
+    <li><span class="wrong">Coercion gotcha from earlier still applies to types exported from <code>MooseX::Types::Moose<?code></span></li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Recommendation</h1>
+
+  <ul>
+    <li>Use <code>MooseX::Types</code></li>
+    <li>Compile time error catching and automatic namespacing are huge wins</li>
+    <li>Docs from <code>Moose::Util::TypeConstraints</code> are 98% compatible with <code>MooseX::Types</code> anyway</li>
+    <li>A function exported by a type library works wherever a type name would</li>
   </ul>
 </div>
 
