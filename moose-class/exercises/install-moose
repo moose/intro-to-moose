@@ -1,0 +1,14 @@
+#!/usr/bin/perl
+
+use Cwd qw( abs_path );
+use CPAN;
+use File::Spec;
+
+CPAN::Config->load;
+
+$CPAN::Config->{urllist} =
+    [ 'file://' . File::Spec->catdir( abs_path(q{.}), 'moosepan' ),
+      @{ $CPAN::Config->{urllist} } ];
+
+CPAN::Shell->install('Moose');
+

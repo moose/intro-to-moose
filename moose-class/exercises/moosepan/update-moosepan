@@ -1,0 +1,61 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use CPAN::FindDependencies qw( finddeps );
+use CPAN::Mini;
+use List::AllUtils qw( any );
+use Module::CoreList;
+use version;
+
+
+sub main {
+    my @deps = grep { is_real_dep($_) } finddeps('Moose');
+
+    my @distros = map { $_->distribution() } @deps;
+
+    my $filter_sub = sub { return ! any { $_[0] eq $_ } @distros };
+
+    CPAN::Mini->update_mirror(
+        remote       => 'ftp://mirrors2.kernel.org/pub/CPAN/',
+        local        => '.',
+        path_filters => $filter_sub,
+        trace        => 1,
+        skip_perl    => 1,
+    );
+}
+
+my %skip_deps = map { $_ => 1 } qw(
+    ExtUtils::MakeMaker
+    Archive::Tar
+    Compress::Zlib
+    Compress::Raw::Bzip2
+    Compress::Raw::Zlib
+    IO::Zlib
+    Package::Constants
+    ExtUtils::CBuilder
+    Pod::Simple
+    Pod::Escapes
+    Task::Weaken
+    Module::Build
+);
+
+my $min_perl = version->new('5.8.5');
+sub is_real_dep {
+    my $dep = shift;
+
+    # Include this just to make sure the user gets a version with
+    # weaken available.
+    return 1 if $dep->name eq 'Scalar::Util';
+
+    return if $skip_deps{ $dep->name() };
+
+    my $perl = Module::CoreList->first_release( $dep->name() );
+
+    return if defined $perl && version->new($perl) le $min_perl;
+
+    return 1;
+}
+
+main();
