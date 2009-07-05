@@ -19,7 +19,7 @@ sub main {
 
     CPAN::Mini->update_mirror(
         remote       => 'ftp://mirrors2.kernel.org/pub/CPAN/',
-        local        => '.',
+        local        => './moosepan',
         path_filters => $filter_sub,
         trace        => 1,
         skip_perl    => 1,
