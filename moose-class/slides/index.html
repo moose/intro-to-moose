@@ -2819,7 +2819,6 @@ coerce 'My::DateTime',
   </ul>
 </div>
 
-
 <div class="slide">
   <h1>Using Types with Attributes</h1>
 
@@ -2837,6 +2836,24 @@ has favorite_numbers =&gt; (
     <span class="highlight">isa    =&gt; 'ArrayRef[Int]',
     coerce =&gt; 1,</span>
 );</code></pre>
+</div>
+
+<div class="slide">
+  <h1>More Droppings</h1>
+
+  <ul>
+    <li><code>Moose::Util::TypeConstraint</code> also needs cleanup</li>
+  </ul>
+
+  <pre><code>package Person;
+
+use Moose;
+use Moose::Util::TypeConstraints;
+
+subtype ...;
+
+no Moose;
+<span class="highlight">no Moose::Util::TypeConstraints;</span></code></pre>
 </div>
 
 <div class="slide">
