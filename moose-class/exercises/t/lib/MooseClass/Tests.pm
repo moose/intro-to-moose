@@ -148,6 +148,84 @@ Written by Peter Gibbons (for Bill Lumberg)
 EOF
 }
 
+sub tests05 {
+    {
+        local $Test::Builder::Level = $Test::Builder::Level + 1;
+
+        has_meta('Person');
+        has_meta('Employee');
+        no_droppings('Employee');
+    }
+
+    for my $attr_name ( qw( first_name last_name title ) ) {
+        my $attr = Person->meta->get_attribute($attr_name);
+
+        ok( $attr->has_type_constraint,
+            "Person $attr_name has a type constraint" );
+        is( $attr->type_constraint->name, 'Str',
+            "Person $attr_name type is Str" );
+    }
+
+    {
+        my $salary_level_attr = Employee->meta->get_attribute('salary_level');
+        ok( $salary_level_attr->has_type_constraint,
+            'Employee salary_level has a type constraint' );
+
+        my $tc = $salary_level_attr->type_constraint;
+
+        for my $invalid ( 0, 11, -14, 'foo', undef ) {
+            my $str = defined $invalid ? $invalid : 'undef';
+            ok( ! $tc->check($invalid),
+                "salary_level type rejects invalid value - $str" );
+        }
+
+        for my $valid ( 1..10 ) {
+            ok( $tc->check($valid),
+                "salary_level type accepts valid value - $valid" );
+        }
+    }
+
+    {
+        my $salary_attr = Employee->meta->get_attribute('salary');
+
+        ok( $salary_attr->has_type_constraint,
+            'Employee salary has a type constraint' );
+
+        my $tc = $salary_attr->type_constraint;
+
+        for my $invalid ( 0, -14, 'foo', undef ) {
+            my $str = defined $invalid ? $invalid : 'undef';
+            ok( ! $tc->check($invalid),
+                "salary type rejects invalid value - $str" );
+        }
+
+        for my $valid ( 1, 100_000, 10**10 ) {
+            ok( $tc->check($valid),
+                "salary type accepts valid value - $valid" );
+        }
+    }
+
+    {
+        my $ssn_attr = Employee->meta->get_attribute('ssn');
+
+        ok( $ssn_attr->has_type_constraint,
+            'Employee ssn has a type constraint' );
+
+        my $tc = $ssn_attr->type_constraint;
+
+        for my $invalid ( 0, -14, 'foo', undef, '123-ab-1241', '123456789' ) {
+            my $str = defined $invalid ? $invalid : 'undef';
+            ok( ! $tc->check($invalid),
+                "ssn type rejects invalid value - $str" );
+        }
+
+        for my $valid ( '041-12-1251', '123-45-6789', '926-41-5820' ) {
+            ok( $tc->check($valid),
+                "ssn type accepts valid value - $valid" );
+        }
+    }
+}
+
 sub tests06 {
     {
         local $Test::Builder::Level = $Test::Builder::Level + 1;
@@ -277,6 +355,7 @@ sub no_droppings {
     my $class = shift;
 
     ok( !$class->can('has'), "no Moose droppings in $class" );
+    ok( !$class->can('subtype'), "no Moose::Util::TypeConstraints droppings in $class" );
 }
 
 sub is_immutable {
