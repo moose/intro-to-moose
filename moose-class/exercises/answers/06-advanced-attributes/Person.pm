@@ -28,6 +28,20 @@ sub BUILD {
     $self->account->owner($self);
 }
 
+sub BUILDARGS {
+    my $class = shift;
+
+    if ( @_ == 1 && 'ARRAY' eq ref $_[0] ) {
+        return {
+            first_name => $_[0]->[0],
+            last_name  => $_[0]->[1],
+        };
+    }
+    else {
+        return $class->SUPER::BUILDARGS(@_);
+    }
+}
+
 sub full_name {
     my $self = shift;
 
