@@ -2,7 +2,7 @@
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-# CHECKSUMS file written on Wed May 13 01:39:54 2009 GMT by CPAN::Checksums (v2.00)
+# CHECKSUMS file written on Sun Jul 26 15:27:00 2009 GMT by CPAN::Checksums (v2.00)
 $cksum = {
   'Audio-MPC-0.01.meta' => {
     'md5' => 'fd7aa63f361670687569007a7163c135',
@@ -496,6 +496,20 @@ $cksum = {
     'sha256-ungz' => 'bf186f6bcca4b35d93817f4357510b2fa3e5967f9aab7f9fd74c1360b4a7516f',
     'size' => '22570'
   },
+  'List-MoreUtils-0.24.meta' => {
+    'md5' => 'c75a9098112d944c72b5a8416b092f0e',
+    'mtime' => '2009-07-26',
+    'sha256' => '23c3017576a25b6f145fa656273f4d96bd92fcb3f177c3e0ad788f85a0e51bf8',
+    'size' => '571'
+  },
+  'List-MoreUtils-0.24.tar.gz' => {
+    'md5' => 'efeda0ded6bc3f469082e2b99cfd5aed',
+    'md5-ungz' => '992ef0aa9d0930e328eb064b55943589',
+    'mtime' => '2009-07-26',
+    'sha256' => '1cd69b8a8c12a1903b57f2b3574c061d9e74f9e7cf011f09f3053f10819d5c33',
+    'sha256-ungz' => '870ef3027d446c8e133e72675fc0dc0b0eb7e790f723b7623e470839649fd93f',
+    'size' => '24224'
+  },
   'MP3-Mplib-0.02.meta' => {
     'md5' => '3049b41b56f8d28c95f8e1c91f56b4c6',
     'mtime' => '2004-03-07',
@@ -613,7 +627,7 @@ __END__
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.6 (GNU/Linux)
 
-iD8DBQFKCiTqMo2oZ0UPiewRAiSbAJ9lJUE/JUbW7kWVJTb9brUdKO0+lwCeJiwe
-pzb56f6IH5bLz8q/+NRBiP0=
-=3+Xl
+iD8DBQFKbHXEMo2oZ0UPiewRAi+xAJsFSgF86EawUwe/PH+iDyDjiTyKiACfZ1Dk
+DYHh8PMDrQZhq6cXpskT9Xw=
+=2YEZ
 -----END PGP SIGNATURE-----
