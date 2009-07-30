@@ -10,15 +10,42 @@ use Module::CoreList;
 use version;
 
 
+{
+    package CPAN::FindDependencies;
+
+    no warnings 'redefine';
+    # The real function assumes that if you provide an argument it's a
+    # local file, not a URI.
+    sub _get02packages {
+        my $file = shift;
+
+        get($file) ||
+            die(__PACKAGE__.": Couldn't fetch 02packages index file\n");
+    }
+}
+
+
 sub main {
-    my @deps = grep { is_real_dep($_) } finddeps('Moose');
+    # If this isn't fetched fresh each time, then CPAN::Mini gets
+    # confused (maybe it's a timestamp issue because of git?)
+    unlink './moosepan/modules/02packages.details.txt.gz'
+        or die $!;
+
+    my @deps
+        = grep { is_real_dep($_) }
+        finddeps( 'Moose',
+        '02packages' =>
+            'http://mirrors.kernel.org/cpan/modules/02packages.details.txt.gz'
+        );
 
     my @distros = map { $_->distribution() } @deps;
 
-    my $filter_sub = sub { return ! any { $_[0] eq $_ } @distros };
+    my $filter_sub = sub {
+        return !any { $_[0] eq $_ } @distros;
+    };
 
     CPAN::Mini->update_mirror(
-        remote       => 'ftp://mirrors2.kernel.org/pub/CPAN/',
+        remote       => 'http://mirrors.kernel.org/cpan/',
         local        => './moosepan',
         path_filters => $filter_sub,
         trace        => 1,
