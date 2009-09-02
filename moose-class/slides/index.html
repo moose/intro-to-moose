@@ -3303,6 +3303,58 @@ has history =&gt; (
 </div>
 
 <div class="slide">
+  <h1>Native Delegation</h1>
+
+  <ul>
+    <li>Delegate to <em>unblessed</em> Perl types</li>
+    <li>Scalar, array or hash ref, etc</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Native Delegation - Array</h1>
+
+  <pre><code>package Person;
+use Moose;
+
+has _favorite_numbers =&gt; (
+    traits   =&gt; [ 'Array' ],
+    is       =&gt; 'ro',
+    isa      =&gt; 'ArrayRef[Int]',
+    default  =&gt; sub { [] },
+    init_arg =&gt; undef,
+    <span class="highlight">handles  =&gt;
+      { favorite_numbers    =&gt; 'elements',
+        add_favorite_number =&gt; 'push',
+      },</span>
+);</code></pre>
+
+  <ul>
+    <li>Automatically defaults to <code>[]</code></li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Native Delegation - Counter</h1>
+
+  <pre><code>package Stack;
+use Moose;
+
+has depth =&gt; (
+    traits   =&gt; [ 'Counter' ],
+    is       =&gt; 'ro',
+    isa      =&gt; 'Int',
+    default  =&gt; 0,
+    init_arg =&gt; undef,
+    <span class="highlight">handles  =&gt;
+      { _inc_depth =&gt; 'inc',
+        _dec_depth =&gt; 'dec',
+      },</span>
+);</code></pre>
+</div>
+
+
+<div class="slide">
   <h1>Traits and Metaclasses</h1>
 
   <ul>
