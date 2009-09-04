@@ -12,7 +12,7 @@
 # The Document class should have two read-only attributes: "title" and
 # "author".
 #
-# The Report class should have one read-only attributes: "summary".
+# The Report class should have one read-only attribute: "summary".
 #
 # Finally, the TPSReport class should have three read-only attributes:
 # "t", "p", and "s".
