@@ -1,7 +1,7 @@
 # Your tasks ...
 #
-# First, we will create a set of three new classes to make use of the
-# augment method modifier. The class hierarchy will look like this:
+# First, we will create a set of three new classes to make use of the augment
+# method modifier. The class hierarchy will look like this:
 #
 #   Document
 #      |
@@ -14,8 +14,8 @@
 #
 # The Report class should have one read-only attribute: "summary".
 #
-# Finally, the TPSReport class should have three read-only attributes:
-# "t", "p", and "s".
+# Finally, the TPSReport class should have three read-only attributes: "t",
+# "p", and "s".
 #
 # The goal is to produce a report that looks this:
 #
@@ -29,12 +29,11 @@
 #
 # Written by $author
 #
-# This report will be a string returned by the Document->output
-# method.
+# This report should be returned as a string from the Document->output method.
 #
-# Don't worry too much about how many newlines separate each item (as
-# long as it's at least one). The test does a little massaging to make
-# this more forgiving.
+# Don't worry too much about how many newlines separate each item (as long as
+# it's at least one). The test does a little massaging to make this more
+# forgiving.
 #
 # Use augment method modifiers in Report and TPSReport to "inject" the
 # relevant content, while Document will output the $title and $author.
