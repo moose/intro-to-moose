@@ -20,7 +20,7 @@ for my $mod ( keys %prereqs ) {
     }
 
     if ( $mod->VERSION < $prereqs{$mod} ) {
-        push @missing, "$mod must be version $prereqs{$mod} or greater";
+        push @missing, "$mod must be version $prereqs{$mod} or greater (you have " . $mod->VERSION . ")";
     }
 }
 
