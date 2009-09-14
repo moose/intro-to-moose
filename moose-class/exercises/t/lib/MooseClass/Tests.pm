@@ -260,7 +260,7 @@ sub has_meta {
     my $class = shift;
 
     ok( $class->can('meta'), "$class has a meta() method" )
-        or BAIL_OUT("Cannot run tests against a class without a meta! (Did you forget to 'use Moose'?)");
+        or BAIL_OUT("$class does not have a meta() method (did you forget to 'use Moose'?)");
 }
 
 sub check_isa {
