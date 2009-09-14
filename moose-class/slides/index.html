@@ -40,7 +40,7 @@ img#me05 {top: 43px;left: 36px;}
 <div id="header"></div>
 <div id="footer">
   <div id="license">
-    <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/us/88x31.png" /></a>
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/"><img alt="Creative Commons License" style="border-width:0" src="ui/creative-commons.png" /></a>
     <br /><span xmlns:dc="http://purl.org/dc/elements/1.1/" href="http://purl.org/dc/dcmitype/Text" property="dc:title" rel="dc:type">Introduction to Moose</span> by <span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">David Rolsky</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/">Creative Commons Attribution-Share Alike 3.0 United States License</a>.
   </div>
 
@@ -126,7 +126,7 @@ img#me05 {top: 43px;left: 36px;}
     <li>
       Attributes have ...
       <ul>
-        <li>Access-control (read-only vs read-write)</li>
+        <li>Mutability (read-only vs read-write)</li>
         <li>An optional type</li>
         <li>Accessor methods</li>
         <li>Delegation methods</li>
@@ -235,7 +235,10 @@ after  'foo'
     my @return =
         $self-&gt;$real_foo( @_, bar =&gt; 42 );
 
-    return ( @return, 'modify return values' );
+    return (
+        @return,
+        'modify return values'
+    );
 };</code></pre>
 </div>
 
@@ -284,10 +287,10 @@ use Moose;
 has blog_uri =&gt; (
     is      =&gt; 'rw',
     isa     =&gt; 'URI',
-    <span class="highlight">handles =&gt; { 'blog_hostname' =&gt; 'host' },</span>
+    <span class="highlight">handles =&gt; { 'blog_host' =&gt; 'host' },</span>
 );
 
-<span class="highlight">$person->blog_hostname;</span>
+<span class="highlight">$person->blog_host;</span>
 # really calls $person->blog_uri->host</code></pre>
 </div>
 
@@ -296,7 +299,7 @@ has blog_uri =&gt; (
 
   <ul>
     <li>Moose creates <code>new()</code> for you</li>
-    <li>Provide an optional <code>BUILDARGS()</code> and <code>BUILD()</code></li>
+    <li>Provide an optional <code>BUIDARGS()</code> and <code>BUILD()</code></li>
   </ul>
 </div>
 
@@ -888,7 +891,6 @@ sub BUILDARGS {
     if ( @_ == 1 &amp;&amp; ! ref $_[0] ) {
         <span class="highlight">return { ssn =&gt; $_[0] };</span>
     }
-
     <span class="highlight">return $class-&gt;SUPER::BUILDARGS(@_)</span>;
 }
 
@@ -1029,7 +1031,8 @@ use Moose;
 <span class="incremental">override</span> work =&gt; sub {
     my $self = shift;
 
-    die "Pay me first" unless $self-&gt;got_paid;
+    die "Pay me first"
+        unless $self-&gt;got_paid;
     <span class="incremental">super();</span>
 }<span class="incremental">;</span></code></pre>
 </div>
@@ -1127,7 +1130,7 @@ Person->can('extends');</code></pre>
 
   <ul>
     <li><code>no Moose</code> at the end of a package is a best practice</li>
-    <li>Or <code>namespace::clean</code> at the top</li>
+    <li>Or <code>use namespace::autoclean</code> at the top</li>
     <li>Just do it</li>
   </ul>
 </div>
@@ -1214,11 +1217,10 @@ Iterate til this passes all its tests</pre>
 </div>
 
 <div class="slide">
-  <h1>Roles Can Have State <strong>and</strong> Behavior</h1>
+  <h1>Roles - State <strong>and</strong> Behavior</h1>
 
   <pre><code>package HasPermissions;
 use Moose::Role;
-
 <span class="current incremental"># state
 has access_level =&gt; ( is =&gt; 'rw' );</span>
 
@@ -1227,7 +1229,8 @@ sub can_access {
     my $self     = shift;
     my $required = shift;
 
-    return $self-&gt;access_level &gt;= $required;
+    return $self-&gt;access_level
+             &gt;= $required;
 }</span></code></pre>
 
 </div>
@@ -1271,8 +1274,8 @@ with 'HasPermissions';</code></pre>
   <h1>Classes Consume Roles</h1>
 
 <pre><code>my $person = Person-&gt;new(
-    first_name => 'Kenichi',
-    last_name => 'Asai',
+    first_name   =&gt; 'Kenichi',
+    last_name    =&gt; 'Asai',
     access_level =&gt; 42,
 );
 
@@ -1328,7 +1331,7 @@ sub print {
 
 # or ...
 
-if ( Person-&gt;meta-&gt;does('Printable') ) { ... }</code></pre>
+Person-&gt;meta-&gt;does('Printable')</code></pre>
 
 </div>
 
@@ -1394,10 +1397,10 @@ use Moose;
 use Moose;
 
 <span class="highlight">with 'IsFragile' =>
-         { alias =>
+         { -alias =>
                { break => 'break_bone' } },
      'CanBreakdance' =>
-         { alias =>
+         { -alias =>
                { break => 'break_it_down' } };</span></code></pre>
 
   <ul>
@@ -1413,13 +1416,13 @@ use Moose;
 use Moose;
 
 <span class="highlight">with 'IsFragile' =>
-         { alias =>
+         { -alias =>
                { break => 'break_bone' },
-           exclude => 'break' },
+           -excludes => 'break' },
      'CanBreakdance' =>
-         { alias =>
+         { -alias =>
                { break => 'break_dance' },
-           exclude => 'break' };</span></code></pre>
+           -excludes => 'break' };</span></code></pre>
 </div>
 
 <div class="slide">
@@ -1592,7 +1595,8 @@ has [ 'left', 'right' ] => (
   <pre><code>use Moose::Util qw( apply_all_roles );
 
 my $fragile_person = Person->new( ... );
-apply_all_roles( $fragile_person, 'IsFragile' );</code></pre>
+apply_all_roles( $fragile_person,
+                 'IsFragile' );</code></pre>
 
   <ul>
     <li>Does not change the <code>Person</code> class</li>
@@ -1796,7 +1800,7 @@ has bank =&gt; (
 </div>
 
 <div class="slide">
-  <h1>Default as a Subroutine Reference</h1>
+  <h1>Subroutine Reference Default</h1>
 
   <ul>
     <li>Called as a method on the object</li>
@@ -1869,7 +1873,8 @@ has bank =&gt; (
 
 sub _build_bank {
     my $self = shift;
-    return Bank-&gt;new( name => 'Spire FCU' );
+    return Bank-&gt;new(
+        name => 'Spire FCU' );
 }</code></pre>
 </div>
 
@@ -1908,7 +1913,7 @@ has bank =&gt; (
 </div>
 
 <div class="slide">
-  <h1>Lazy, Good for Nothing Attributes</h1>
+  <h1>Lazy, Good for Nothin' Attributes</h1>
 
   <ul>
     <li>Normally, defaults are generated during object construction</li>
@@ -2192,7 +2197,8 @@ has first_name =&gt; (
   <h1>Exercises</h1>
 
   <pre># cd exercises
-# perl bin/prove -lv t/03-basic-attributes.t
+# perl bin/prove -lv \
+      t/03-basic-attributes.t
 
 Iterate til this passes all its tests</pre>
 </div>
@@ -2261,7 +2267,8 @@ before work =&gt; sub {
     my $self = shift;
     return unless $DEBUG;
 
-    warn "Called work on ", $self->full_name,
+    warn "Called work on ",
+         $self-&gt;full_name,
          "with the arguments: [@_]\n";
 };</code></pre>
 </div>    
@@ -2293,19 +2300,17 @@ after work =&gt; sub {
 </div>
 
 <div class="slide">
-  <h1>Other Uses Example</h1>
+  <h1>More Modifier Examples</h1>
 
   <pre><code>has password =&gt; (
      is      =&gt; 'rw',
      clearer =&gt; 'clear_password',
 );
-
 has hashed_password =&gt; (
      is      =&gt; 'ro',
      builder =&gt; '_build_hashed_password',
      clearer =&gt; '_clear_hashed_password',
 );
-
 after clear_password =&gt; sub {
     my $self = shift;
     $self-&gt;_clear_hashed_password;
@@ -2346,7 +2351,6 @@ after clear_password =&gt; sub {
             $self-&gt;_munge_insert(@_) );
 
     $new_user->_assign_uri;
-
     return $new_user;
 };</code></pre>
 </div>
@@ -2424,13 +2428,11 @@ sub xml { '&lt;doc&gt;' . <span class="highlight">inner()</span> . '&lt;/doc&gt;
 
 package Report;
 extends 'Document';
-
 <span class="highlight">augment xml</span> =&gt;
     sub { title() . <span class="highlight">inner()</span> . summary() };
 
 package TPSReport;
 extends 'Report';
-
 <span class="highlight">augment xml</span> =&gt;
     sub { tps_xml() . <span class="highlight">inner()</span> };</code></pre>
 </div>
@@ -2511,7 +2513,8 @@ extends 'Report';
   <h1>Exercises</h1>
 
   <pre># cd exercises
-# perl bin/prove -lv t/04-method-modifiers.t
+# perl bin/prove -lv \
+      t/04-method-modifiers.t
 
 Iterate til this passes all its tests</pre>
 </div>
@@ -2665,8 +2668,9 @@ undef</code></pre>
 <span class="incremental current">subtype 'PositiveInt',</span>
     <span class="incremental">as      'Int',</span>
     <span class="incremental">where   { $_ &gt; 0 },</span>
-    <span class="incremental">message { "The value you provided ($_)"
-              . " was not a positive number." };</span>
+    <span class="incremental">message
+        { "The value you provided ($_)"
+          . " was not a positive int." };</span>
 
 has size =&gt; (
     is  =&gt; 'ro',
@@ -2745,7 +2749,9 @@ subtype 'Car',
   <pre><code>use Moose::Util::TypeConstraints;
 enum Color =&gt; qw( red blue green ) );
 
-my %ok = map { $_ =&gt; 1 } qw( red blue green );
+my %ok = map { $_ =&gt; 1 }
+             qw( red blue green );
+
 subtype 'Color'
     as      'Str',
     where   { $ok{$_} },
@@ -2777,9 +2783,13 @@ has size =&gt; (
 
 subtype 'UCStr',
     as    'Str',
-    where { ! /[a-z]/ };
+    where { ! /[a-z]/ };</code></pre>
+</div>
 
-<span class="incremental current">coerce 'UCStr',</span>
+<div class="slide">
+  <h1>Coercions</h1>
+
+  <pre><code><span class="incremental current">coerce 'UCStr',</span>
     <span class="incremental">from 'Str',</span>
     <span class="incremental">via  { uc };</span>
 
@@ -2826,8 +2836,6 @@ coerce 'My::DateTime',
   <h1>Using Types with Attributes</h1>
 
   <pre><code>package Person;
-
-use Moose::Util::TypeConstraints;
 
 has height =&gt; (
     is  =&gt; 'rw',
@@ -2877,7 +2885,6 @@ sub work {
                 { isa     =&gt; 'Bool',
                   default =&gt; 0 },
         );</span>
-
     ...
 }</code></pre>
 </div>
@@ -2930,7 +2937,6 @@ sub work {
   <h1>Namespace Fix</h1>
 
   <pre><code>use Moose::Util::TypeConstraints;
-
 subtype <span class="highlight">'MyApp::Type::DateTime',</span>
     as 'DateTime';
 
@@ -3110,7 +3116,8 @@ $alice-&gt;friend($bob);</code></pre>
 use Moose;
 
 has name   =&gt; ( is =&gt; 'ro' );
-has friend =&gt; ( is =&gt; 'rw', <span class="highlight">weak_ref =&gt; 1</span> );
+has friend =&gt; ( is       =&gt; 'rw',
+                <span class="highlight">weak_ref =&gt; 1</span> );
 
 my $alice = Person-&gt;new( name =&gt; 'Alice' );
 my $bob   = Person-&gt;new( name =&gt; 'Bob' );
@@ -3229,7 +3236,6 @@ has lungs =&gt; (
 
   <pre><code>package Person;
 use Moose;
-
 has account =&gt; (
     is      =&gt; 'ro',
     isa     =&gt; 'BankAccount',
@@ -3277,7 +3283,6 @@ has name =&gt; (
 
   <pre><code>package Auditor;
 use Moose::Role;
-
 sub record_change  { ... }
 sub change_history { ... }
 
@@ -3318,7 +3323,6 @@ has history =&gt; (
 
   <pre><code>package Person;
 use Moose;
-
 has _favorite_numbers =&gt; (
     traits   =&gt; [ 'Array' ],
     is       =&gt; 'ro',
@@ -3330,10 +3334,6 @@ has _favorite_numbers =&gt; (
         add_favorite_number =&gt; 'push',
       },</span>
 );</code></pre>
-
-  <ul>
-    <li>Automatically defaults to <code>[]</code></li>
-  </ul>
 </div>
 
 <div class="slide">
@@ -3341,7 +3341,6 @@ has _favorite_numbers =&gt; (
 
   <pre><code>package Stack;
 use Moose;
-
 has depth =&gt; (
     traits   =&gt; [ 'Counter' ],
     is       =&gt; 'ro',
@@ -3399,7 +3398,6 @@ has ssn =&gt; (
     isa    =&gt; 'Str',
     <span class="highlight">label  =&gt; 'Social Security Number',</span>
 );
-
 print <span class="highlight">Person-&gt;meta
             -&gt;get_attribute('ssn')-&gt;label;</span></code></pre>
 </div>
@@ -3418,7 +3416,6 @@ has ssn =&gt; (
     isa       =&gt; 'Str',
     <span class="highlight">label     =&gt; 'Social Security Number',</span>
 );
-
 print <span class="highlight">Person-&gt;meta
             -&gt;get_attribute('ssn')-&gt;label;</span></code></pre>
 </div>
@@ -3453,7 +3450,8 @@ print <span class="highlight">Person-&gt;meta
   <h1>Exercises</h1>
 
   <pre># cd exercises
-# perl bin/prove -lv t/06-advanced-attributes.t
+# perl bin/prove -lv \
+      t/06-advanced-attributes.t
 
 Iterate til this passes all its tests</pre>
 </div>
