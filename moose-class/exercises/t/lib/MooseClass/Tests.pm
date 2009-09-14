@@ -7,19 +7,11 @@ use Lingua::EN::Inflect qw( A PL_N );
 use Test::More 'no_plan';
 
 sub tests01 {
-    my %p = (
-        person_attr_count   => 2,
-        employee_attr_count => 3,
-        @_,
-    );
-
     local $Test::Builder::Level = $Test::Builder::Level + 1;
 
     has_meta('Person');
 
     check_isa( 'Person', ['Moose::Object'] );
-
-    count_attrs( 'Person', $p{person_attr_count} );
 
     has_rw_attr( 'Person', $_ ) for qw( first_name last_name );
 
@@ -34,8 +26,6 @@ sub tests01 {
 
     check_isa( 'Employee', [ 'Person', 'Moose::Object' ] );
 
-    count_attrs( 'Employee', $p{employee_attr_count} );
-
     has_rw_attr( 'Employee', $_ ) for qw( title salary );
     has_ro_attr( 'Employee', 'ssn' );
 
@@ -45,7 +35,7 @@ sub tests01 {
 }
 
 sub tests02 {
-    tests01( person_attr_count => 3, @_ );
+    tests01();
 
     local $Test::Builder::Level = $Test::Builder::Level + 1;
 
@@ -278,15 +268,6 @@ sub check_isa {
     for ( my $i = 0; $i < @{$parents}; $i++ ) {
         is( $isa[$i], $parents->[$i], "parent[$i] is $parents->[$i]" );
     }
-}
-
-sub count_attrs {
-    my $class = shift;
-    my $count = shift;
-
-    my $noun = PL_N( 'attribute', $count );
-    is( scalar $class->meta->get_attribute_list, $count,
-        "$class defines $count $noun" );
 }
 
 sub has_rw_attr {
