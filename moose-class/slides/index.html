@@ -1421,7 +1421,7 @@ use Moose;
            -excludes => 'break' },
      'CanBreakdance' =>
          { -alias =>
-               { break => 'break_dance' },
+               { break => 'break_it_down' },
            -excludes => 'break' };</span></code></pre>
 </div>
 
@@ -1434,7 +1434,7 @@ use Moose;
 sub break {
     my $self = shift;
 
-    $self->break_dance;
+    $self->break_it_down;
     if ( rand(1) &lt; 0.5 ) {
         $self->break_bone;
     }
