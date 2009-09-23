@@ -964,6 +964,8 @@ sub BUILD {
 
   <ul>
     <li><code>extends</code> is sugar for declaring parent classes</li>
+    <li>Also ensures metaclass compatibility between parent and child</li>
+    <li>Do not <code>use base</code></li>
   </ul>
 
   <pre><code>package Employee;
