@@ -2,7 +2,7 @@
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-# CHECKSUMS file written on Sun Sep 20 07:25:01 2009 GMT by CPAN::Checksums (v2.00)
+# CHECKSUMS file written on Tue Sep 22 22:26:43 2009 GMT by CPAN::Checksums (v2.00)
 $cksum = {
   'Alzabo-0.73.meta' => {
     'md5' => '931747deebdc72df0318c433973af2ba',
@@ -1157,6 +1157,20 @@ $cksum = {
     'sha256' => '59e98c9343651b9cbf10edb02da4a602acc9f96dc3f29a8eb4ff4e1b0bd5239c',
     'sha256-ungz' => '35ee64017e7c90cc8fbd273bcbe1e6f0fe99e8a40c1551c55c9f7c7e13f7a15b',
     'size' => '185713'
+  },
+  'Class-MOP-0.94.meta' => {
+    'md5' => 'bc3dcd283f6ed0fb69b908aa33fecbe7',
+    'mtime' => '2009-09-22',
+    'sha256' => '0b37edda2f83b4661259d4e2844ccd1c035501ff90aa4ffd231a5f0fbb974da2',
+    'size' => '717'
+  },
+  'Class-MOP-0.94.tar.gz' => {
+    'md5' => '19fa19752df27396cfb9d826002ccdce',
+    'md5-ungz' => 'a77fb17b5160e1a426f02f42048699d2',
+    'mtime' => '2009-09-22',
+    'sha256' => 'b12d1d235b6b524435fca73053ca1926e9dce5f786a646f2f2183388b9a7af56',
+    'sha256-ungz' => '7dda7bdef438648863f9094d6e2d47592121f8492ea12bb1c32a34d100fb1194',
+    'size' => '185950'
   },
   'DBD-Mock-1.37.meta' => {
     'md5' => '342c00af3b87a8a675d5d7a01ab551a2',
@@ -4194,6 +4208,34 @@ $cksum = {
     'sha256-ungz' => '4c76cfc5b76f6bcd0ef36c998274a43707f598363773a18001144e6acc363d9e',
     'size' => '396910'
   },
+  'HTML-WikiConverter-MultiMarkdown-0.01.meta' => {
+    'md5' => 'f8dfa0abbb24119788a21fe829f2b020',
+    'mtime' => '2009-09-22',
+    'sha256' => '47cfa7e0ea8172121e0fc0f0f8eb4a062e8631e029d69f56bc0f3df67e3df5b4',
+    'size' => '613'
+  },
+  'HTML-WikiConverter-MultiMarkdown-0.01.tar.gz' => {
+    'md5' => 'b15ad28e77e8f65110327777315cdab3',
+    'md5-ungz' => 'd5793cfac7175766321fb15bbc5cf995',
+    'mtime' => '2009-09-22',
+    'sha256' => '9cec8473eadb12265a39c92fe6880c59b94fc0e685e58f1af85e834351c2d35b',
+    'sha256-ungz' => '7af5031d7884c4159bd58cb3ef4b522817e5ee2f7443d5772833aaa8e84387a1',
+    'size' => '5294'
+  },
+  'HTML-WikiConverter-MultiMarkdown-0.02.meta' => {
+    'md5' => 'c710d4c14090e79f28a6e7ee11b2bb6d',
+    'mtime' => '2009-09-22',
+    'sha256' => 'fa0df0298a1b40f20c5eb37b4de36c20ecf368713b8e7e99e5f6014b0b0a8f8f',
+    'size' => '613'
+  },
+  'HTML-WikiConverter-MultiMarkdown-0.02.tar.gz' => {
+    'md5' => '2ada2249d2a62b72ab3efa4869f27c1b',
+    'md5-ungz' => '37c4ec2ff0dda3e1502f42e76f2a50d3',
+    'mtime' => '2009-09-22',
+    'sha256' => '45491805644c5eae992fc15965e4bfae3a5b76d8a5c966a53cf4f49984312013',
+    'sha256-ungz' => '1e5d320b2ebc4d6103862072dab85ca5b885b8bbb94b5130a8e1b27b80d5058a',
+    'size' => '5437'
+  },
   'JSAN-ServerSide-0.01.meta' => {
     'md5' => '943a2189d38a9a78beb800e4b81ab040',
     'mtime' => '2005-08-27',
@@ -4559,6 +4601,20 @@ $cksum = {
     'sha256' => '7ccbe1db261f6f027e95295c4263b446f2b6e59ab7b28c40cd464bc53eba7a97',
     'sha256-ungz' => 'ed5d206d7cacffe5bf2730034d160034c61cc4162230280e6c43380ba89f27cd',
     'size' => '41668'
+  },
+  'Log-Dispatch-2.26.meta' => {
+    'md5' => '875a89d38269ae75fd9b96b27405cf35',
+    'mtime' => '2009-09-22',
+    'sha256' => '8aee0e48e49fe999309bf72ed8e99fe28a63acbf74874fc656d77acde2940591',
+    'size' => '1755'
+  },
+  'Log-Dispatch-2.26.tar.gz' => {
+    'md5' => 'd15559297f7c73a311ede78f97174d2a',
+    'md5-ungz' => '95d5fcd91059d1de631202be9c3a50ca',
+    'mtime' => '2009-09-22',
+    'sha256' => '7a5ea7b423fd1815ace727347ddd64189056e263a147bf7ef1531d36396388ff',
+    'sha256-ungz' => '7ea7353287d2963f822657edb6f383780cd9e4d052e33c2fc638b041b1742e1d',
+    'size' => '41591'
   },
   'Log-Dispatch-Email-EmailSend-0.01.meta' => {
     'md5' => 'f65ffdeb2fa75ed0532cdf536a8e6135',
@@ -5241,6 +5297,20 @@ $cksum = {
     'sha256' => '3f8499a4587d64f02ad5ad52940b6bf0fd6a117e9949d7e0287e4d710df743ad',
     'sha256-ungz' => 'e6659d74073ee943ecfbbbeefacfc7a06199375b96b64784dc806fdf98ea5090',
     'size' => '361413'
+  },
+  'Moose-0.92.meta' => {
+    'md5' => '0b0c71d4b09585ca762bd083349b4fd9',
+    'mtime' => '2009-09-22',
+    'sha256' => '00f2ccbf2a5c747f588999b185646bc52268097ead1c23713139c47ebb0ec866',
+    'size' => '772'
+  },
+  'Moose-0.92.tar.gz' => {
+    'md5' => 'c6dfb7bc8b3ae2bb677e0ce53818348e',
+    'md5-ungz' => 'a30eecb0bb81b4f599e478b7e81cc66b',
+    'mtime' => '2009-09-22',
+    'sha256' => '93df55a43e96ca08aa6102ec18695f2d614badb11158bcf74e6e76c3d55fd0a0',
+    'sha256-ungz' => 'f18f027961df0316f83da296c71169651a33c9c5a2b8e884bf6de7965f778ccb',
+    'size' => '364208'
   },
   'MooseX-AttributeHelpers-0.13.meta' => {
     'md5' => '8f49fd91fbd5fa4d24ae211065da95d8',
@@ -6547,7 +6617,7 @@ __END__
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.6 (GNU/Linux)
 
-iD8DBQFKtdjNMo2oZ0UPiewRAlmIAJ9kEpNjJxtMNOKmltJLSJWKTmwHkwCgmYNr
-WhspxvJJ8Zv1P0qIpSymhA4=
-=xI+W
+iD8DBQFKuU8jMo2oZ0UPiewRAjAFAJ9WTxEBKTB/PpdvIiJqbPRc7lATlwCfUgfi
+hCwaqmn6GpsknCsuM1SUrnA=
+=KGtH
 -----END PGP SIGNATURE-----
