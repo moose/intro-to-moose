@@ -45,6 +45,8 @@ use lib 't/lib';
 
 use MooseClass::Tests;
 
+use Document;
+use Report;
 use TPSReport;
 
 MooseClass::Tests::tests04();
