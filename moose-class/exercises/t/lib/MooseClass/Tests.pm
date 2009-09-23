@@ -60,7 +60,7 @@ sub tests03 {
 
         has_rw_attr( 'Person', 'title' );
 
-        has_rw_attr( 'Employee', 'title' );
+        has_rw_attr( 'Employee', 'title', 'overridden' );
         has_rw_attr( 'Employee', 'salary_level' );
         has_ro_attr( 'Employee', 'salary' );
 
@@ -271,10 +271,11 @@ sub check_isa {
 }
 
 sub has_rw_attr {
-    my $class = shift;
-    my $name  = shift;
+    my $class      = shift;
+    my $name       = shift;
+    my $overridden = shift;
 
-    my $articled = A($name);
+    my $articled = $overridden ? "an overridden $name" : A($name);
     ok( $class->meta->has_attribute($name),
         "$class has $articled attribute" );
 
