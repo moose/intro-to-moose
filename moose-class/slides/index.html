@@ -3534,8 +3534,198 @@ Iterate til this passes all its tests</pre>
 </div>
 
 <div class="slide fake-slide0">
-  <h1>Part 8: A Tour of MooseX</h1>
+  <h1>Part 8: A Brief Tour of MooseX</h1>
 </div>
+
+<div clas="slide">
+  <h1>Notable Moose Extensions on CPAN</h1>
+
+  <ul>
+    <li><strong>Not comprehensive</strong></li>
+    <li>128 MooseX distributions on CPAN as of 09/24/2009</li>
+    <li>Some of them are crap</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Already Mentioned Several</h1>
+
+  <ul>
+    <li>MooseX::NonMoose - best solution for subclassing non-Moose parents</li>
+    <li>MooseX::Declare - <em>real</em> Perl 5 OO</li>
+    <li>MooseX::FollowPBP and MooseX::SemiAffordanceAccessor</li>
+    <li>MooseX::Params::Validate and MooseX::Method::Signatures</li>
+    <li>MooseX::Types</li>
+  </ul>
+</div>    
+
+<div class="slide">
+  <h1>MooseX::Declare</h1>
+
+<pre><code>use MooseX::Declare;
+use 5.10.0; # for say
+
+class Person {
+    has greeting
+        =&gt; ( is =&gt; 'ro', isa =&gt; 'Str' );
+
+    method speak {
+        say $self-&gt;greeting;
+    }
+}</code></pre>
+</div>
+
+<div class="slide">
+  <h1>MooseX::Declare</h1>
+
+  <ul>
+    <li>Still experimental-ish, but seeing more and more use</li>
+    <li><strong>Not</strong> a source filter!</li>
+    <li>Hooks into the Perl parser rather than filtering all your code</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>MooseX::StrictConstructor</h1>
+
+  <ul>
+    <li>By default, unknown constructor arguments are ignore</li>
+    <li>MX::StrictConstructor turns these into an error</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>MooseX::StrictConstructor</h1>
+
+  <pre><code>package Person;
+
+use Moose;
+<span class="highlight">use MooseX::StrictConstructor;</span>
+
+has name =&gt; ( is =&gt; 'ro' );
+
+Person-&gt;new
+    ( na<span class="wrong">n</span>e =&gt; 'Ringo Shiina' ); # kaboom</code></pre>
+</div>
+
+<div class="slide">
+  <h1>MooseX::Traits</h1>
+
+  <ul>
+    <li>Combines object construction and role application</li>
+    <li>Makes it easy to create one-off customized objects</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>MooseX::Traits</h1>
+
+  <pre><code>package MyApp::Thingy;
+use Moose;
+
+<span class="highlight">with 'MooseX::Traits';</span>
+
+my $thing =
+    MyApp::Thingy-&gt;<span class="highlight">new_with_traits</span>
+        ( <span class="highlight">traits =&gt; [ 'Foo', 'Bar' ],</span>
+          size   =&gt; 42 );</code></pre>
+</div>
+
+<div class="slide">
+  <h1>MooseX::Getopt</h1>
+
+  <ul>
+    <li>Makes command-line interface programs easy!</li>
+    <li>Construct an object from CLI arguments</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>MooseX::Getopt</h1>
+
+  <pre><code>package App::CLI;
+use Moose;
+
+<span class="highlight">with 'MooseX::Getopt';</span>
+
+has file    =&gt;
+    ( is =&gt; 'ro', required =&gt; 1 );
+has filters =&gt;
+    ( is =&gt; 'ro', isa =&gt; 'Str' );
+
+sub run { ... }</code></pre>
+</div>
+
+<div class="slide">
+  <h1>MooseX::Getopt</h1>
+
+  <ul>
+    <li>Then call it like this:</li>
+  </ul>
+
+<pre><code>#!/usr/bin/perl
+
+use App::CLI;
+
+<span class="highlight">App::CLI->new_with_options()</span>->run();</code></pre>
+
+<pre>$ myapp-cli \
+   --file foo \
+   --filters compress \
+   --filters sanitize</pre>
+</div>
+
+<div class="slide">
+  <h1>MooseX::Clone</h1>
+
+  <pre><code>package Person;
+
+use Moose;
+<span class="highlight">with 'MooseX::Clone';</span>
+
+my $person = Person-&gt;new;
+my $clone  = <span class="highlight">$person-&gt;clone;</span></code></pre>
+</div>
+
+<div class="slide">
+  <h1>MooseX::NonMoose</h1>
+
+  <ul>
+    <li>Highly recommended for subclassing non-Moose parents</li>
+    <li>Gets all the little annoying details right</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>MooseX::Role::Parameterized</h1>
+
+  <pre><code>package HasCollection;
+use MooseX::Role::Parameterized;
+
+parameter type =&gt; ( isa     =&gt; 'Str',
+                    default =&gt; 'Item' );
+role {
+    my $p = shift;
+
+    my $type = 'ArrayRef[' . $p-&gt;type() . ']';
+    has collection =&gt;
+        ( is  =&gt; 'ro',
+          isa =&gt; $type );
+};</code></pre>
+</div>
+
+<div class="slide">
+  <h1>MooseX::Role::Parameterized</h1>
+
+  <pre><code>package Person;
+
+use Moose;
+with HasCollection =&gt; { type =&gt; 'Int' };</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Questions?</h1>
+</div>  
 
 <div class="slide fake-slide0">
   <h1>Part 9: Writing Moose Extensions</h1>
