@@ -56,6 +56,16 @@ img#me05 {top: 43px;left: 36px;}
 </div>
 
 <div class="slide">
+  <h1>Introduce Yourselves</h1>
+
+  <ul>
+    <li>Your name</li>
+    <li>What you do with Perl</li>
+    <li>Why you're here today (optional)</li>
+  </ul>
+</div>
+
+<div class="slide">
   <h1>Moose Summed Up</h1>
 
   <ul>
@@ -3318,11 +3328,31 @@ has history =&gt; (
   <ul>
     <li>Delegate to <em>unblessed</em> Perl types</li>
     <li>Scalar, array or hash ref, etc</li>
+    <li>Treat Perl types as objects</li>
+    <li>Still uses <code>handles</code></li>
+    <li>Pretend that native Perl types have methods</li>
   </ul>
 </div>
 
 <div class="slide">
-  <h1>Native Delegation - Array</h1>
+  <h1>Native Delegation - Array(Ref)</h1>
+
+  <ul>
+    <li>Methods include:
+      <ul>
+        <li><code>push</code></li>
+        <li><code>shift</code></li>
+        <li><code>elements</code> - returns all elements</li>
+        <li><code>count</code></li>
+        <li><code>is_empty</code></li>
+        <li>quite a few more</li>
+      </ul>
+    </li>
+  </ul>
+<div>
+
+<div class="slide">
+  <h1>Native Delegation - Array(Ref)</h1>
 
   <pre><code>package Person;
 use Moose;
@@ -3340,23 +3370,63 @@ has _favorite_numbers =&gt; (
 </div>
 
 <div class="slide">
-  <h1>Native Delegation - Counter</h1>
+  <h1>Native Delegation - Array(Ref)</h1>
 
-  <pre><code>package Stack;
-use Moose;
-has depth =&gt; (
-    traits   =&gt; [ 'Counter' ],
-    is       =&gt; 'ro',
-    isa      =&gt; 'Int',
-    default  =&gt; 0,
-    init_arg =&gt; undef,
-    <span class="highlight">handles  =&gt;
-      { _inc_depth =&gt; 'inc',
-        _dec_depth =&gt; 'dec',
-      },</span>
-);</code></pre>
+  <pre><code>my $person = Person-&gt;new();
+
+$person-&gt;add_favorite_number(7);
+$person-&gt;add_favorite_number(42);
+
+print "$_\n"
+    for $person-&gt;favorite_numbers;
+
+# 7
+# 42</code></pre>
 </div>
 
+<div class="slide">
+  <h1>Native Delegation</h1>
+
+  <ul>
+    <li>Native types are ...
+      <ul>
+        <li>Number - <code>add</code>, <code>mul</code>, ...</li>
+        <li>String - <code>append</code>, <code>chop</code>, ...</li>
+        <li>Counter - <code>inc</code>, <code>dec</code>, ...</li>
+        <li>Bool - <code>set</code>, <code>toggle</code>, ...</li>
+        <li>Hash - <code>get</code>, <code>set</code>, ...</li>
+        <li>Array - already saw it</li>
+        <li>Code - <code>execute</code>, that's it</li>
+      </ul>
+    </li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Curried Delegation</h1>
+
+  <ul>
+    <li>A delegation with some preset arguments</li>
+    <li>Works with object or Native delegation</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Curried Delegation</h1>
+
+  <pre><code>package Person;
+use Moose;
+has account =&gt; (
+    is      =&gt; 'ro',
+    isa     =&gt; 'BankAccount',
+    handles =&gt; {
+        receive_100 =&gt;
+            <span class="highlight">[ 'deposit', 100 ]</span>
+        give_100    =&gt;
+            <span class="highlight">[ 'withdraw', 100 ]</span>
+    },</span>
+);</code></pre>
+</div>
 
 <div class="slide">
   <h1>Traits and Metaclasses</h1>
