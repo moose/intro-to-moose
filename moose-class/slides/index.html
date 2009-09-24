@@ -3429,6 +3429,14 @@ has account =&gt; (
 </div>
 
 <div class="slide">
+  <h1>Curried Delegation</h1>
+
+  <pre><code>$person-&gt;receive_100;
+# really is
+$person-&gt;account-&gt;deposit(100);</code></pre>
+</div>
+
+<div class="slide">
   <h1>Traits and Metaclasses</h1>
 
   <ul>
@@ -3538,7 +3546,7 @@ Iterate til this passes all its tests</pre>
 </div>
 
 <div class="slide">
-  <h1>Notable Moose Extensions on CPAN</h1>
+  <h1>Notable MX Modules on CPAN</h1>
 
   <ul>
     <li><strong>Not comprehensive</strong></li>
@@ -3700,18 +3708,18 @@ my $clone  = <span class="highlight">$person-&gt;clone;</span></code></pre>
   <h1>MooseX::Role::Parameterized</h1>
 
   <pre><code>package HasCollection;
-use MooseX::Role::Parameterized;
-
-parameter type =&gt; ( isa     =&gt; 'Str',
-                    default =&gt; 'Item' );
-role {
+<span class="current incremental">use MooseX::Role::Parameterized;</span>
+<span class="incremental">parameter type =&gt; ( isa     =&gt; 'Str',
+                    default =&gt; 'Item' );</span>
+<span class="incremental">role {
     my $p = shift;
 
-    my $type = 'ArrayRef[' . $p-&gt;type() . ']';
+    my $type =
+        'ArrayRef[' . $p-&gt;type() . ']';
     has collection =&gt;
         ( is  =&gt; 'ro',
           isa =&gt; $type );
-};</code></pre>
+};</span></code></pre>
 </div>
 
 <div class="slide">
