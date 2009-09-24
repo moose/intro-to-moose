@@ -228,6 +228,13 @@ sub tests06 {
         has_ro_attr( 'BankAccount', 'history' );
     }
 
+    my $ba_meta = BankAccount->meta;
+    ok( $ba_meta->has_attribute('balance'),
+        'BankAccount class has a balance attribute' );
+
+    ok( $ba_meta->get_attribute('balance')->has_trigger,
+        'BankAccount balance attribute has a trigger' );
+
     my $person_meta = Person->meta;
     ok( ! $person_meta->has_attribute('balance'),
         'Person class does not have a balance attribute' );
