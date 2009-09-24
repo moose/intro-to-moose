@@ -467,11 +467,15 @@ sub person06 {
         'owner of bank account is person that created account' );
 
     $person->deposit(10);
-    is_deeply( $person->account->history, [ 100, 10 ],
+    is_deeply( $person->account->history, [ 100 ],
                'deposit was recorded in account history' );
 
     $person->withdraw(15);
-    is_deeply( $person->account->history, [ 100, 10, -15 ],
+    is_deeply( $person->account->history, [ 100, 110 ],
+               'withdrawal was recorded in account history' );
+
+    $person->withdraw(45);
+    is_deeply( $person->account->history, [ 100, 110, 95 ],
                'withdrawal was recorded in account history' );
 }
 

@@ -13,11 +13,8 @@
 # Finally, add a read-only history attribute. This will be an ArrayRef
 # of Int's. This should default to an empty array reference.
 #
-# Use a trigger to record the _difference_ after each change to the
-# balance. The previous balance is the sum of all the previous
-# changes. You can use List::Util's sum function to calculate this. To
-# avoid warnings the first time history is recorded, default to 0 if
-# history is empty.
+# Use a trigger to record the _old value_ of the balance each time it
+# changes.
 #
 # Use a BUILD method in BankAccount to record the original balance in
 # the history.

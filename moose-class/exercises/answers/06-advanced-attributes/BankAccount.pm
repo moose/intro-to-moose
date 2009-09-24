@@ -7,7 +7,7 @@ has balance => (
     is      => 'rw',
     isa     => 'Int',
     default => 100,
-    trigger => sub { $_[0]->_record_difference( $_[1] ) },
+    trigger => sub { shift->_record_balance(@_) },
 );
 
 has owner => (
@@ -21,12 +21,6 @@ has history => (
     isa     => 'ArrayRef[Int]',
     default => sub { [] },
 );
-
-sub BUILD {
-    my $self = shift;
-
-    $self->_record_difference( $self->balance );
-}
 
 sub deposit {
     my $self   = shift;
@@ -45,13 +39,12 @@ sub withdraw {
     $self->balance( $self->balance - $amount );
 }
 
-sub _record_difference {
-    my $self      = shift;
-    my $new_value = shift;
+sub _record_balance {
+    my $self = shift;
+    shift;
+    my $old_value = shift;
 
-    my $old_value = sum @{ $self->history };
-
-    push @{ $self->history }, $new_value - ( $old_value || 0 );
+    push @{ $self->history }, $old_value;
 }
 
 no Moose;
