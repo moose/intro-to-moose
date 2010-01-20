@@ -3570,11 +3570,11 @@ Iterate til this passes all its tests</pre>
   <h1>Already Mentioned Several</h1>
 
   <ul>
-    <li>MooseX::NonMoose - best solution for subclassing non-Moose parents</li>
-    <li>MooseX::Declare - <em>real</em> Perl 5 OO</li>
-    <li>MooseX::FollowPBP and MooseX::SemiAffordanceAccessor</li>
-    <li>MooseX::Params::Validate and MooseX::Method::Signatures</li>
-    <li>MooseX::Types</li>
+    <li><code>MooseX::NonMoose</code> - best solution for subclassing non-Moose parents</li>
+    <li><code>MooseX::Declare</code> - <em>real</em> Perl 5 OO</li>
+    <li><code>MooseX::FollowPBP</code> and <code>MooseX::SemiAffordanceAccessor</code></li>
+    <li><code>MooseX::Params::Validate</code> and <code>MooseX::Method::Signatures</code></li>
+    <li><code>MooseX::Types</code></li>
   </ul>
 </div>    
 
@@ -3585,8 +3585,8 @@ Iterate til this passes all its tests</pre>
 use 5.10.0; # for say
 
 class Person {
-    has greeting
-        =&gt; ( is =&gt; 'ro', isa =&gt; 'Str' );
+    has greeting =&gt;
+        ( is =&gt; 'ro', isa =&gt; 'Str' );
 
     method speak {
         say $self-&gt;greeting;
@@ -3601,6 +3601,7 @@ class Person {
     <li>Still experimental-ish, but seeing more and more use</li>
     <li><strong>Not</strong> a source filter!</li>
     <li>Hooks into the Perl parser rather than filtering all your code</li>
+    <li>But not supported by <code>PPI</code>, <code>perltidy</code>, etc.</li> (yet?)
   </ul>
 </div>
 
@@ -3608,7 +3609,7 @@ class Person {
   <h1>MooseX::StrictConstructor</h1>
 
   <ul>
-    <li>By default, unknown constructor arguments are ignore</li>
+    <li>By default, unknown constructor arguments are ignored</li>
     <li>MX::StrictConstructor turns these into an error</li>
   </ul>
 </div>
