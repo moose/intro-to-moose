@@ -245,7 +245,6 @@ sub tests06 {
     my $withdraw_meth = $person_meta->get_method('withdraw');
     isa_ok( $withdraw_meth, 'Moose::Meta::Method::Delegation' );
 
-    my $ba_meta = BankAccount->meta;
     ok( $ba_meta->get_attribute('owner')->is_weak_ref,
         'owner attribute is a weak ref' );
 
