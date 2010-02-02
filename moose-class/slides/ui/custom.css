@@ -118,3 +118,5 @@ img.for-slide {
 .fake-slide0 h1 {position: static; margin: 1em 0 0; padding: 0;
    font: bold 2em Helvetica, sans-serif; white-space: normal;
    color: #000; background: transparent;}
+
+.slide code { padding: 0; font-weight: bold; color: #533;}
