@@ -1152,7 +1152,8 @@ Person->can('extends');</code></pre>
   <h1>No Moose</h1>
 
   <ul>
-    <li><code>no Moose</code> at the end of a package is a best practice</li>
+    <li>Cleaning up is a best practice</li>
+    <li>Say <code>no Moose</code> at the end of a package</li>
     <li>Or <code>use namespace::autoclean</code> at the top</li>
     <li>Just do it</li>
   </ul>
@@ -1867,7 +1868,8 @@ has packages =&gt; (
 use Moose;
 
 my $highlander_bank =
-    Bank-&gt;new( name =&gt; 'Spire FCU' );
+    Bank-&gt;new(
+        name =&gt; 'Clan MacLeod Trust' );
 
 has bank =&gt; (
     is      =&gt; 'rw',
@@ -1879,7 +1881,8 @@ has bank =&gt; (
   <h1>Builder</h1>
 
   <ul>
-    <li>A method <em>name</em> which returns the default</li>
+    <li>A method <em>name</em></li>
+    <li>When called, this methods returns the default value</li>
   </ul>
 </div>
 
@@ -2206,6 +2209,13 @@ has first_name =&gt; (
     <li>Attributes can have a <code>default</code> or <code>builder</code></li>
     <li>Attributes with a default or builder can be <code>lazy</code></li>
     <li>Attributes can have a <code>clearer</code> and/or <code>predicate</code></li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Basic Attributes Summary</h1>
+
+  <ul>
     <li>An attribute's constructor name can be changed with <code>init_arg</code></li>
     <li>A subclass can alter its parents' attributes</li>
     <li>Attribute accessor names can be changed</li>
@@ -2235,18 +2245,18 @@ Iterate til this passes all its tests</pre>
 
   <ul>
     <li>Apply to an existing method</li>
-    <li>... from a parent class, the current class, or a role</li>
+    <li>... that comes from a parent class, the current class, or a role</li>
     <li>Roles can provide modifiers that are applied at composition time</li>
   </ul>
 </div>
 
 <div class="slide">
-  <h1>What is a Method Modifier</h1>
+  <h1>What Are Method Modifiers For?</h1>
 
   <ul>
     <li>"Inject" behavior</li>
     <li>Add behavior to generated methods (accessors, delegations)</li>
-    <li>Provide roles which modify existing behavior</li>
+    <li>Added from a role, can modify existing behavior</li>
   </ul>
 </div>
 
@@ -2437,6 +2447,7 @@ around run</span> =&gt; sub {
   <ul>
     <li>Inverted <code>super</code></li>
     <li>From least- to most-specific</li>
+    <li>Like Mason's autohandler feature</li>
     <li>Grandparent to parent to child</li>
     <li>Not allowed in roles</li>
   </ul>
@@ -2579,11 +2590,10 @@ Item
     Undef
     Defined
         Value
-           Str
-             Num
-               Int
-             ClassName
-             RoleName
+            Str
+                Num
+                    Int
+                ClassName
 </pre>
 </div>
 
@@ -2601,7 +2611,7 @@ Item
             CodeRef
             RegexpRef
             GlobRef
-              FileHandle
+                FileHandle
             Object
 </pre>
 </div>
@@ -2733,9 +2743,11 @@ has start_date =&gt; (
   <h1>Subtype Shortcuts - <code>class_type</code></h1>
 
   <pre><code>use Moose::Util::TypeConstraints;
-class_type 'DateTime';
+class_type 'DateTime';</code></pre>
 
-subtype 'DateTime',
+<hr />
+
+<pre><code>subtype 'DateTime',
     as      'Object',
     where   { $_-&gt;isa('DateTime') },
     message { ... };</code></pre>
@@ -2745,9 +2757,11 @@ subtype 'DateTime',
   <h1>Subtype Shortcuts - <code>role_type</code></h1>
 
   <pre><code>use Moose::Util::TypeConstraints;
-role_type 'Printable';
+role_type 'Printable';</coe></pre>
 
-subtype 'Printable',
+<hr />
+
+<pre><code>subtype 'Printable',
     as      'Object',
     where
         { Moose::Util::does_role(
@@ -2759,9 +2773,11 @@ subtype 'Printable',
   <h1>Subtype Shortcuts - <code>duck_type</code></h1>
 
   <pre><code>use Moose::Util::TypeConstraints;
-duck_type Car =&gt; qw( run break_down );
+duck_type Car =&gt; qw( run break_down );</code></pre>
 
-subtype 'Car',
+<hr />
+
+<pre><code>subtype 'Car',
     as      'Object',
     where   { all { $_-&gt;can($_) }
               qw( run break_down ) },
@@ -2772,9 +2788,11 @@ subtype 'Car',
   <h1>Subtype Shortcuts - <code>enum</code></h1>
 
   <pre><code>use Moose::Util::TypeConstraints;
-enum Color =&gt; qw( red blue green ) );
+enum Color =&gt; qw( red blue green ) );</code></pre>
 
-my %ok = map { $_ =&gt; 1 }
+<hr />
+
+<pre><code>my %ok = map { $_ =&gt; 1 }
              qw( red blue green );
 
 subtype 'Color'
@@ -3035,7 +3053,7 @@ has transaction_history => (
   <ul>
     <li>Type names are exported functions, catches typos early</li>
     <li>Types must be pre-declared</li>
-    <li>Types are stored with namespaces internally, but externally are short</li>
+    <li>Types are stored with namespaces internally, but you use short names</li>
     <li>Import existing Moose types as functions from <code>MooseX::Types::Moose</code></li>
     <li>Still need string names for things like <code>ArrayRef['Email::Address']</code></li>
   </ul>
@@ -3048,7 +3066,7 @@ has transaction_history => (
     <li><span class="right">Catches typos at compile time</span></li>
     <li><span class="right">Automatic namespacing</span></li>
     <li><span class="wrong">One more thing to install and learn</span></li>
-    <li><span class="wrong">Every name gets types twice (declared and then defined)</span></li>
+    <li><span class="wrong">Every name is typed twice (declared and then defined)</span></li>
     <li><span class="wrong">Still stuck with strings when referring to class or role names</span></li>
     <li><span class="wrong">Coercion gotcha from earlier still applies to types exported from <code>MooseX::Types::Moose</code></span></li>
   </ul>
@@ -3175,7 +3193,7 @@ $alice-&gt;friend($bob);</code></pre>
 
   <pre><code>after salary_level =&gt; {
     my $self = shift;
-    return unless @_;
+    <span class="highlight">return unless @_;</span>
     $self-&gt;clear_salary;
 };</code></pre>
 </div>
@@ -3187,7 +3205,8 @@ $alice-&gt;friend($bob);</code></pre>
 
   <pre><code>has salary_level =&gt; (
     is      =&gt; 'rw',
-    trigger =&gt; sub { $_[0]-&gt;clear_salary },
+    trigger =&gt;
+        sub { $_[0]-&gt;clear_salary },
 );</code></pre>
 </div>
 
@@ -3248,6 +3267,7 @@ has lungs =&gt; (
   <h1>Array Reference</h1>
 
   <ul>
+    <li>1-to-1 mapping</li>
     <li>Takes each method name and creates a simple delegation from the delegating class to the delegatee attribute</li>
   </ul>
 </div>
@@ -3408,7 +3428,7 @@ print "$_\n"
         <li>Bool - <code>set</code>, <code>toggle</code>, ...</li>
         <li>Hash - <code>get</code>, <code>set</code>, ...</li>
         <li>Array - already saw it</li>
-        <li>Code - <code>execute</code>, that's it</li>
+        <li>Code - <code>execute</code> and <code>execute_method</code></li>
       </ul>
     </li>
   </ul>
@@ -3473,7 +3493,7 @@ $person-&gt;account-&gt;deposit(100);</code></pre>
   <h1>Traits and Metaclasses</h1>
 
   <ul>
-    <li>Can add/alter/remove attribute parameter (from <code>has</code>)</li>
+    <li>Can add/alter/remove an attribute parameter (from <code>has</code>)</li>
     <li>Can change behavior of created attribute</li>
   </ul>
 </div>
@@ -3562,7 +3582,7 @@ Iterate til this passes all its tests</pre>
 
   <ul>
     <li><strong>Not comprehensive</strong></li>
-    <li>128 MooseX distributions on CPAN as of 09/24/2009</li>
+    <li>152 MooseX distributions on CPAN as of 02/02/2010</li>
     <li>Some of them are crap</li>
   </ul>
 </div>
@@ -3672,7 +3692,7 @@ use Moose;
 has file    =&gt;
     ( is =&gt; 'ro', required =&gt; 1 );
 has filters =&gt;
-    ( is =&gt; 'ro', isa =&gt; 'Str' );
+    ( is =&gt; 'ro', isa =&gt; 'ArrayRef[Str]' );
 
 sub run { ... }</code></pre>
 </div>
@@ -3766,7 +3786,7 @@ with HasCollection =&gt; { type =&gt; 'Int' };</code></pre>
     <li>mailing list - <a href="mailto:moose@perl.org">moose@perl.org</a></li>
     <li>Slides and exercises are in Moose's git repo:
         <br />
-        <span style="white-space: nowrap">git://jules.scsys.co.uk/gitmo/moose-presentations</span></li>
+        <span style="font-size:80%; white-space: nowrap">git://jules.scsys.co.uk/gitmo/moose-presentations</span></li>
   </ul>
 </div>
 
