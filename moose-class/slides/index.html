@@ -1066,6 +1066,7 @@ use Moose;
     <li>Mostly like <code>$self-&gt;SUPER::work(@_)</code></li>
     <li><strong>But</strong> cannot change <code>@_</code>!</li>
     <li>Binds the parent's method at compile time</li>
+    <li>Parent determined by checking <code>Child-&gt;meta()-&gt;superclasses()</code></li>
   </ul>
 </div>
 
