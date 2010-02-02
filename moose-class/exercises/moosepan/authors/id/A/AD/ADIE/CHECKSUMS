@@ -2,7 +2,7 @@
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-# CHECKSUMS file written on Sat Mar 28 12:40:11 2009 GMT by CPAN::Checksums (v2.00)
+# CHECKSUMS file written on Tue Jan 12 07:30:12 2010 GMT by CPAN::Checksums (v2.00)
 $cksum = {
   'Test-Block-0.10.meta' => {
     'md5' => 'c0d7745d8ab537ba145aee934a919f0f',
@@ -179,13 +179,27 @@ $cksum = {
     'sha256' => '32ad1e5e12d562a9f65e68c096dc4978e567c7f7263a171af75f8bed8f0c22e9',
     'sha256-ungz' => '4187192815f772f61377f1b4ff1bb01e1e673fc32589418e49733b92330a5b9a',
     'size' => '12940'
+  },
+  'Test-Exception-0.29.meta' => {
+    'md5' => '97a72dc8834f3ac73401de5e5a26988b',
+    'mtime' => '2010-01-12',
+    'sha256' => '2314642c8a4b2c72699f166302de1025761fea0efb6493908b13d01228c73d08',
+    'size' => '587'
+  },
+  'Test-Exception-0.29.tar.gz' => {
+    'md5' => '9aea475db531d4fd4ce40cf25a0acd14',
+    'md5-ungz' => 'fb2b7581572758ec05858ca38a5fc608',
+    'mtime' => '2010-01-12',
+    'sha256' => 'bf3e4f788ad11f8d63e4e5faad2d9dc5b8b8eec3e2cfe120053edd45a4c783f8',
+    'sha256-ungz' => '2822a683da2b432940c3ea56f49ed8e29e4a175c3e13b68b248e37932cbef3e5',
+    'size' => '15946'
   }
 };
 __END__
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.6 (GNU/Linux)
 
-iD8DBQFJzhqrMo2oZ0UPiewRAmNUAJ9FlUEwObc0pyOQcSsdYPT6iSr/hACeJekX
-LlDfxu7XzZomYZwjeBadI5U=
-=tVMk
+iD8DBQFLTCUFMo2oZ0UPiewRAslPAKCXnY3lWZfBr/3Z1pjWQYEBFPgx0QCaAoiB
+QvqoyzpJLu+6a+ONP6xYu4Y=
+=EJif
 -----END PGP SIGNATURE-----
