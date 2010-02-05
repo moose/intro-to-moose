@@ -4,7 +4,12 @@ use Cwd qw( abs_path );
 use CPAN;
 use File::Spec;
 
-CPAN::Config->load;
+if ( CPAN::HandleConfig->can('load') ) {
+    CPAN::HandleConfig->load();
+}
+else {
+    CPAN::Config->load();
+}
 
 $CPAN::Config->{urllist} =
     [ 'file://' . File::Spec->catdir( abs_path(q{.}), 'moosepan' ),
