@@ -1882,7 +1882,7 @@ has bank =&gt; (
 
   <ul>
     <li>A method <em>name</em></li>
-    <li>When called, this methods returns the default value</li>
+    <li>When called, this method returns the default value</li>
   </ul>
 </div>
 
@@ -1956,7 +1956,8 @@ has bank =&gt; (
 use Moose;
 
 has shoe_size =&gt; (
-    is =&gt; 'ro',
+    is       =&gt; 'ro',
+    required =&gt; 'ro',
 );</code></pre>
 </div>
 
