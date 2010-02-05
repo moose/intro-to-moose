@@ -17,6 +17,10 @@
 #
 #   Person->new( [ 'Lisa', 'Smith' ] );
 #
+# Hint: A quick and dirty way to check this is to use ref() to check if the
+# first value in @_ is an array reference (perldoc -f ref). A nicer way to do
+# this would be use to use Scalar::Util::reftype().
+#
 # Create an Employee class in lib/Employee.pm
 #
 # The Employee class is a subclass of Person
