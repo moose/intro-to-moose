@@ -17,9 +17,11 @@ has owner => (
 );
 
 has history => (
+    traits  => ['Array'],
     is      => 'ro',
     isa     => 'ArrayRef[Int]',
     default => sub { [] },
+    handles => { add_history => 'push' },
 );
 
 sub deposit {
@@ -42,9 +44,12 @@ sub withdraw {
 sub _record_balance {
     my $self = shift;
     shift;
+
+    return unless @_;
+
     my $old_value = shift;
 
-    push @{ $self->history }, $old_value;
+    $self->add_history($old_value);
 }
 
 no Moose;

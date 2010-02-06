@@ -232,6 +232,14 @@ sub tests06 {
     ok( $ba_meta->has_attribute('balance'),
         'BankAccount class has a balance attribute' );
 
+    my $history_attr = $ba_meta->get_attribute('history');
+
+    ok(
+        $history_attr->meta()
+            ->does_role('Moose::Meta::Attribute::Native::Trait::Array'),
+        'BankAccount history attribute uses native delegation to an array ref'
+    );
+
     ok( $ba_meta->get_attribute('balance')->has_trigger,
         'BankAccount balance attribute has a trigger' );
 
