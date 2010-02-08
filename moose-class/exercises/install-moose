@@ -11,9 +11,8 @@ else {
     CPAN::Config->load();
 }
 
-$CPAN::Config->{urllist} =
-    [ 'file://' . File::Spec->catdir( abs_path(q{.}), 'moosepan' ),
-      @{ $CPAN::Config->{urllist} } ];
+$CPAN::Config->{urllist}
+    = [ 'file://' . File::Spec->catdir( abs_path(q{.}), 'moosepan' ) ];
 
 CPAN::Shell->install('Moose');
 
