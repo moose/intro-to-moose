@@ -46,6 +46,21 @@ This assumes that you have already configured the CPAN shell on your
 system in the past. If you haven't, it may still work, or it may
 prompt you for a bunch of configuration items first.
 
+This script may try to connect to the net (even though it shouldn't). If you
+are behind a firewal that requires a proxy for http, this may cause the script
+to simply hang.
+
+In that case, try setting the "http_proxy" environment variable to appropriate
+value before running the script.
+
+WINDOWS USERS
+============
+
+The above installation script may only work with strawberry perl, and has not
+been tested with ActiveState.
+
+If you are using ActiveState, please install Moose from an appropriate PPM
+repository.
 
 EXERCISES HOW-TO
 ================
