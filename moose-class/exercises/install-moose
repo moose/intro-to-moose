@@ -11,6 +11,7 @@ else {
     CPAN::Config->load();
 }
 
+$CPAN::Config->{connect_to_internet_ok} = 0;
 $CPAN::Config->{urllist}
     = [ 'file://' . File::Spec->catdir( abs_path(q{.}), 'moosepan' ) ];
 
