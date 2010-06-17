@@ -25,7 +25,7 @@
 #
 # The Employee class is a subclass of Person
 #
-# An Employee has the following read-write attributes:
+# An Employee has the following attributes:
 #
 # * title - read-write
 # * salary - read-write
