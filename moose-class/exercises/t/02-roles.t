@@ -14,7 +14,7 @@
 #
 #  Balance cannot be negative
 #
-# Make the Person class consumes this role as well.
+# Make the Person class consumes thi role as well.
 #
 # Make sure all roles are free of Moose droppings.
 
