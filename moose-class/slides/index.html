@@ -3415,7 +3415,7 @@ has history =&gt; (
 use Moose;
 has _favorite_numbers =&gt; (
     traits   =&gt; [ 'Array' ],
-    is       =&gt; 'ro',
+    is       =&gt; 'bare',
     isa      =&gt; 'ArrayRef[Int]',
     default  =&gt; sub { [] },
     init_arg =&gt; undef,
