@@ -7,9 +7,9 @@ what's what ...
 t/*.t - each .t file contains instructions on what the exercise is,
 and runs the tests to check your code.
 
-t/lib - includes a recent copy of the Test-Harness and Test-Simple
-distributions so we're all on the same page, as well as some other
-modules used in the tests.
+t/lib - includes a recent (enough) copy of the Test-Harness and Test-Simple
+distributions so we're all on the same page, as well as some other modules
+used in the tests.
 
 t/lib/MooseClass/Tests.pm - the actual tests all live in this
 module. It also shows many examples of how to use Moose's metaclass
