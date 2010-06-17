@@ -47,7 +47,7 @@ system in the past. If you haven't, it may still work, or it may
 prompt you for a bunch of configuration items first.
 
 This script may try to connect to the net (even though it shouldn't). If you
-are behind a firewal that requires a proxy for http, this may cause the script
+are behind a firewall that requires a proxy for http, this may cause the script
 to simply hang.
 
 In that case, try setting the "http_proxy" environment variable to appropriate
