@@ -2762,7 +2762,7 @@ class_type 'DateTime';</code></pre>
 
 <hr />
 
-<pre><code>subtype 'DateTime',
+<pre><code>subtype     'DateTime',
     as      'Object',
     where   { $_-&gt;isa('DateTime') },
     message { ... };</code></pre>
@@ -2777,7 +2777,7 @@ role_type 'Printable';</coe></pre>
 <hr />
 
 <pre><code>subtype 'Printable',
-    as      'Object',
+    as  'Object',
     where
         { Moose::Util::does_role(
               $_, 'Printable' ) },
@@ -2810,7 +2810,7 @@ enum Color =&gt; qw( red blue green ) );</code></pre>
 <pre><code>my %ok = map { $_ =&gt; 1 }
              qw( red blue green );
 
-subtype 'Color'
+subtype     'Color'
     as      'Str',
     where   { $ok{$_} },
     message { ... };</code></pre>
