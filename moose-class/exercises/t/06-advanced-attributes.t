@@ -1,7 +1,7 @@
 # Your tasks ...
 #
-# First, we want to make the account associated with a Person a proper
-# class. Call it BankAccount.
+# First, you must make the account associated with a Person a proper
+# class of its own. Call it BankAccount.
 #
 # This class should have two attributes, "balance", an Int that
 # defaults to 100, and "owner", a Person object.
@@ -16,16 +16,15 @@
 #
 # Use a trigger to record the _old value_ of the balance each time it
 # changes. This means your trigger should not do anything if it is not passed
-# an old value (this case happens when the attribute is set for the first
+# an old value (this will be the case when the attribute is set for the first
 # time).
 #
-# We will now delete the HasAccount role entirely. Instead, add an
-# "account" attribute to Person directly.
+# Now you can delete the HasAccount role entirely. Instead, add an "account"
+# attribute to Person directly.
 #
-# This new account attribute should default to a new BankAccount
-# object. Use delegation so that we can call Person->deposit and
-# Person->withdraw and have it call those methods on the person's
-# BankAccount object.
+# This new account attribute should default to a new BankAccount object. Use
+# delegation so that when the code calls Person->deposit and Person->withdraw,
+# it calls those methods on the person's BankAccount object.
 #
 # Add a BUILD method to the Person class to set the owner of the
 # Person's bank account to $self.
