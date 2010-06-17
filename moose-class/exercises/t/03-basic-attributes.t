@@ -21,7 +21,7 @@
 # rather than re-implementing it.
 #
 # Add a read-write salary_level attribute. This will be a number from
-# 1-10 (but we will deal with enforcing this later). This attribute
+# 1-10 (but you will deal with enforcing this later). This attribute
 # should default to 1.
 #
 # Make the salary attribute read-only. Also make it lazy. The default

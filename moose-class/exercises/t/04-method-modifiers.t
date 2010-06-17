@@ -1,6 +1,6 @@
 # Your tasks ...
 #
-# First, we will create a set of three new classes to make use of the augment
+# First, you will create a set of three new classes to make use of the augment
 # method modifier. The class hierarchy will look like this:
 #
 #   Document
