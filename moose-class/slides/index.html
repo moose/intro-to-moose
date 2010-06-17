@@ -1348,7 +1348,9 @@ use Moose;
 
 <span class="delete">with 'Printable';</span>
 
-<span class="highlight">has has_been_printed =&gt; ( is =&gt; 'rw'  );
+<span class="highlight">die '...' unless __PACKAGE__->can('as_string');
+
+has has_been_printed =&gt; ( is =&gt; 'rw'  );
 
 sub print {
     my $self = shift;
