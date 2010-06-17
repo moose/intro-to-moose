@@ -1142,7 +1142,20 @@ use Moose;
 
 ...
 
-no Moose;
+<span class="highlight">no Moose;</span>
+
+# false
+Person->can('extends');</code></pre>
+</div>
+
+<div class="slide">
+  <h1>Cleaning Up Moose Droppings</h1>
+
+  <pre><code>package Person;
+<span class="highlight">use namespace::autoclean;</span>
+use Moose;
+
+...
 
 # false
 Person->can('extends');</code></pre>
@@ -1163,7 +1176,7 @@ Person->can('extends');</code></pre>
   <h1>Immutability</h1>
 
   <ul>
-    <li><span style="font-family: URW Chancery L; font-size: 140%">Stevan's Incantation of Fleet-Footedness</span></li>
+    <li><span style="font-family: URW Chancery L; font-size: 120%">Stevan's Incantation of Fleet-Footedness</span></li>
   </ul>
 
   <pre><code>package Person;
