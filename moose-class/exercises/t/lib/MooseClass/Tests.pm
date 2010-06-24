@@ -376,7 +376,12 @@ sub person01 {
     is( $person->full_name, 'Bilbo Baggins',
         'full_name() is correctly implemented' );
 
-    $person = Person->new( [ qw( Lisa Smith ) ] );
+    $person = eval { Person->new( [ qw( Lisa Smith ) ] ) };
+    ok( !$@, 'Person->new() can accept an array reference as an argument' )
+        or BAIL_OUT(
+        'You must implement Person->BUILDARGS in order to continue these tests'
+        );
+
     is( $person->first_name, 'Lisa', 'set first_name from two-arg arrayref' );
     is( $person->last_name, 'Smith', 'set last_name from two-arg arrayref' );
 
