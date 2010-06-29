@@ -35,20 +35,32 @@ sub tests01 {
 }
 
 sub tests02 {
-    tests01();
-
     local $Test::Builder::Level = $Test::Builder::Level + 1;
 
-    no_droppings($_) for qw( Printable HasAccount );
+    has_meta('Printable');
+    requires_method( 'Printable', 'as_string' );
 
-    does_role( 'Person', $_ ) for qw( Printable HasAccount );
-    has_method( 'Person', $_ ) for qw( as_string deposit withdraw );
+    has_meta('Person');
+    does_role( 'Person', 'Printable' );
+    has_method( 'Person', 'as_string' );
+
+    has_meta('HasAccount');
+    has_method( 'HasAccount', $_ ) for qw( deposit withdraw );
+    has_role_attr( 'HasAccount', 'balance' );
+
+    does_role( 'Person', 'HasAccount' );
+    has_method( 'Person', $_ ) for qw( deposit withdraw );
     has_rw_attr( 'Person', 'balance' );
 
+    has_meta('Employee');
     does_role( 'Employee', $_ ) for qw( Printable HasAccount );
 
     person02();
     employee02();
+
+    no_droppings($_) for qw( Printable HasAccount );
+
+    tests01();
 }
 
 sub tests03 {
@@ -67,22 +79,30 @@ sub tests03 {
         has_method( 'Employee', '_build_salary' );
     }
 
-    ok( ! Employee->meta->has_method('full_name'),
-        'Employee no longer implements a full_name method' );
+    ok(
+        !Employee->meta->has_method('full_name'),
+        'Employee no longer implements a full_name method'
+    );
 
     my $person_title_attr = Person->meta->get_attribute('title');
     ok( !$person_title_attr->is_required, 'title is not required in Person' );
-    is( $person_title_attr->predicate, 'has_title',
-        'Person title attr has a has_title predicate' );
-    is( $person_title_attr->clearer, 'clear_title',
-        'Person title attr has a clear_title clearer' );
+    is(
+        $person_title_attr->predicate, 'has_title',
+        'Person title attr has a has_title predicate'
+    );
+    is(
+        $person_title_attr->clearer, 'clear_title',
+        'Person title attr has a clear_title clearer'
+    );
 
     my $balance_attr = Person->meta->get_attribute('balance');
     is( $balance_attr->default, 100, 'balance defaults to 100' );
 
     my $employee_title_attr = Employee->meta->get_attribute('title');
-    is( $employee_title_attr->default, 'Worker',
-        'title defaults to Worker in Employee' );
+    is(
+        $employee_title_attr->default, 'Worker',
+        'title defaults to Worker in Employee'
+    );
 
     my $salary_level_attr = Employee->meta->get_attribute('salary_level');
     is( $salary_level_attr->default, 1, 'salary_level defaults to 1' );
@@ -112,7 +132,7 @@ sub tests04 {
         has_ro_attr( 'TPSReport', $_ ) for qw( t p s );
 
         has_method( 'Document', 'output' );
-        has_augmented_method( 'Report', 'output' );
+        has_augmented_method( 'Report',    'output' );
         has_augmented_method( 'TPSReport', 'output' );
     }
 
@@ -147,71 +167,93 @@ sub tests05 {
         no_droppings('Employee');
     }
 
-    for my $attr_name ( qw( first_name last_name title ) ) {
+    for my $attr_name (qw( first_name last_name title )) {
         my $attr = Person->meta->get_attribute($attr_name);
 
-        ok( $attr->has_type_constraint,
-            "Person $attr_name has a type constraint" );
-        is( $attr->type_constraint->name, 'Str',
-            "Person $attr_name type is Str" );
+        ok(
+            $attr->has_type_constraint,
+            "Person $attr_name has a type constraint"
+        );
+        is(
+            $attr->type_constraint->name, 'Str',
+            "Person $attr_name type is Str"
+        );
     }
 
     {
         my $salary_level_attr = Employee->meta->get_attribute('salary_level');
-        ok( $salary_level_attr->has_type_constraint,
-            'Employee salary_level has a type constraint' );
+        ok(
+            $salary_level_attr->has_type_constraint,
+            'Employee salary_level has a type constraint'
+        );
 
         my $tc = $salary_level_attr->type_constraint;
 
         for my $invalid ( 0, 11, -14, 'foo', undef ) {
             my $str = defined $invalid ? $invalid : 'undef';
-            ok( ! $tc->check($invalid),
-                "salary_level type rejects invalid value - $str" );
+            ok(
+                !$tc->check($invalid),
+                "salary_level type rejects invalid value - $str"
+            );
         }
 
-        for my $valid ( 1..10 ) {
-            ok( $tc->check($valid),
-                "salary_level type accepts valid value - $valid" );
+        for my $valid ( 1 .. 10 ) {
+            ok(
+                $tc->check($valid),
+                "salary_level type accepts valid value - $valid"
+            );
         }
     }
 
     {
         my $salary_attr = Employee->meta->get_attribute('salary');
 
-        ok( $salary_attr->has_type_constraint,
-            'Employee salary has a type constraint' );
+        ok(
+            $salary_attr->has_type_constraint,
+            'Employee salary has a type constraint'
+        );
 
         my $tc = $salary_attr->type_constraint;
 
         for my $invalid ( 0, -14, 'foo', undef ) {
             my $str = defined $invalid ? $invalid : 'undef';
-            ok( ! $tc->check($invalid),
-                "salary type rejects invalid value - $str" );
+            ok(
+                !$tc->check($invalid),
+                "salary type rejects invalid value - $str"
+            );
         }
 
         for my $valid ( 1, 100_000, 10**10 ) {
-            ok( $tc->check($valid),
-                "salary type accepts valid value - $valid" );
+            ok(
+                $tc->check($valid),
+                "salary type accepts valid value - $valid"
+            );
         }
     }
 
     {
         my $ssn_attr = Employee->meta->get_attribute('ssn');
 
-        ok( $ssn_attr->has_type_constraint,
-            'Employee ssn has a type constraint' );
+        ok(
+            $ssn_attr->has_type_constraint,
+            'Employee ssn has a type constraint'
+        );
 
         my $tc = $ssn_attr->type_constraint;
 
         for my $invalid ( 0, -14, 'foo', undef, '123-ab-1241', '123456789' ) {
             my $str = defined $invalid ? $invalid : 'undef';
-            ok( ! $tc->check($invalid),
-                "ssn type rejects invalid value - $str" );
+            ok(
+                !$tc->check($invalid),
+                "ssn type rejects invalid value - $str"
+            );
         }
 
         for my $valid ( '041-12-1251', '123-45-6789', '926-41-5820' ) {
-            ok( $tc->check($valid),
-                "ssn type accepts valid value - $valid" );
+            ok(
+                $tc->check($valid),
+                "ssn type accepts valid value - $valid"
+            );
         }
     }
 }
@@ -231,8 +273,10 @@ sub tests06 {
     }
 
     my $ba_meta = BankAccount->meta;
-    ok( $ba_meta->has_attribute('balance'),
-        'BankAccount class has a balance attribute' );
+    ok(
+        $ba_meta->has_attribute('balance'),
+        'BankAccount class has a balance attribute'
+    );
 
     my $history_attr = $ba_meta->get_attribute('history');
 
@@ -242,12 +286,16 @@ sub tests06 {
         'BankAccount history attribute uses native delegation to an array ref'
     );
 
-    ok( $ba_meta->get_attribute('balance')->has_trigger,
-        'BankAccount balance attribute has a trigger' );
+    ok(
+        $ba_meta->get_attribute('balance')->has_trigger,
+        'BankAccount balance attribute has a trigger'
+    );
 
     my $person_meta = Person->meta;
-    ok( ! $person_meta->has_attribute('balance'),
-        'Person class does not have a balance attribute' );
+    ok(
+        !$person_meta->has_attribute('balance'),
+        'Person class does not have a balance attribute'
+    );
 
     my $deposit_meth = $person_meta->get_method('deposit');
     isa_ok( $deposit_meth, 'Moose::Meta::Method::Delegation' );
@@ -255,21 +303,24 @@ sub tests06 {
     my $withdraw_meth = $person_meta->get_method('withdraw');
     isa_ok( $withdraw_meth, 'Moose::Meta::Method::Delegation' );
 
-    ok( $ba_meta->get_attribute('owner')->is_weak_ref,
-        'owner attribute is a weak ref' );
+    ok(
+        $ba_meta->get_attribute('owner')->is_weak_ref,
+        'owner attribute is a weak ref'
+    );
 
     person06();
 }
 
-
 sub has_meta {
-    my $class = shift;
+    my $package = shift;
 
-    use_ok($class)
-        or BAIL_OUT("$class cannot be loaded");
+    use_ok($package)
+        or BAIL_OUT("$package cannot be loaded");
 
-    ok( $class->can('meta'), "$class has a meta() method" )
-        or BAIL_OUT("$class does not have a meta() method (did you forget to 'use Moose'?)");
+    ok( $package->can('meta'), "$package has a meta() method" )
+        or BAIL_OUT(
+        "$package does not have a meta() method (did you forget to 'use Moose'?)"
+        );
 }
 
 sub check_isa {
@@ -295,15 +346,21 @@ sub has_rw_attr {
     my $overridden = shift;
 
     my $articled = $overridden ? "an overridden $name" : A($name);
-    ok( $class->meta->has_attribute($name),
-        "$class has $articled attribute" );
+    ok(
+        $class->meta->has_attribute($name),
+        "$class has $articled attribute"
+    );
 
     my $attr = $class->meta->get_attribute($name);
 
-    is( $attr->get_read_method, $name,
-        "$name attribute has a reader accessor - $name()" );
-    is( $attr->get_write_method, $name,
-        "$name attribute has a writer accessor - $name()" );
+    is(
+        $attr->get_read_method, $name,
+        "$name attribute has a reader accessor - $name()"
+    );
+    is(
+        $attr->get_write_method, $name,
+        "$name attribute has a writer accessor - $name()"
+    );
 }
 
 sub has_ro_attr {
@@ -311,33 +368,50 @@ sub has_ro_attr {
     my $name  = shift;
 
     my $articled = A($name);
-    ok( $class->meta->has_attribute($name),
-        "$class has $articled attribute" );
+    ok(
+        $class->meta->has_attribute($name),
+        "$class has $articled attribute"
+    );
 
     my $attr = $class->meta->get_attribute($name);
 
-    is( $attr->get_read_method, $name,
-        "$name attribute has a reader accessor - $name()" );
-    is( $attr->get_write_method, undef,
-        "$name attribute does not have a writer" );
+    is(
+        $attr->get_read_method, $name,
+        "$name attribute has a reader accessor - $name()"
+    );
+    is(
+        $attr->get_write_method, undef,
+        "$name attribute does not have a writer"
+    );
+}
+
+sub has_role_attr {
+    my $role = shift;
+    my $name = shift;
+
+    my $articled = A($name);
+    ok(
+        $role->meta->get_attribute($name),
+        "$role has $articled attribute"
+    );
 }
 
 sub has_method {
-    my $class = shift;
-    my $name  = shift;
+    my $package = shift;
+    my $name    = shift;
 
     my $articled = A($name);
-    ok( $class->meta->has_method($name), "$class has $articled method" );
+    ok( $package->meta->has_method($name), "$package has $articled method" );
 }
 
 sub has_overridden_method {
-    my $class = shift;
-    my $name  = shift;
+    my $package = shift;
+    my $name    = shift;
 
     my $articled = A($name);
-    ok( $class->meta->has_method($name), "$class has $articled method" );
+    ok( $package->meta->has_method($name), "$package has $articled method" );
 
-    my $meth = $class->meta->get_method($name);
+    my $meth = $package->meta->get_method($name);
     isa_ok( $meth, 'Moose::Meta::Method::Overridden' );
 }
 
@@ -352,11 +426,22 @@ sub has_augmented_method {
     isa_ok( $meth, 'Moose::Meta::Method::Augmented' );
 }
 
-sub no_droppings {
-    my $class = shift;
+sub requires_method {
+    my $package = shift;
+    my $method  = shift;
 
-    ok( !$class->can('has'), "no Moose droppings in $class" );
-    ok( !$class->can('subtype'), "no Moose::Util::TypeConstraints droppings in $class" );
+    ok(
+        $package->meta->requires_method($method),
+        "$package requires the method $method"
+    );
+}
+
+sub no_droppings {
+    my $package = shift;
+
+    ok( !$package->can('has'), "no Moose droppings in $package" );
+    ok( !$package->can('subtype'),
+        "no Moose::Util::TypeConstraints droppings in $package" );
 }
 
 sub is_immutable {
@@ -366,10 +451,10 @@ sub is_immutable {
 }
 
 sub does_role {
-    my $class = shift;
-    my $role  = shift;
+    my $package = shift;
+    my $role    = shift;
 
-    ok( $class->meta->does_role($role), "$class does the $role role" );
+    ok( $package->meta->does_role($role), "$package does the $role role" );
 }
 
 sub person01 {
@@ -378,8 +463,10 @@ sub person01 {
         last_name  => 'Baggins',
     );
 
-    is( $person->full_name, 'Bilbo Baggins',
-        'full_name() is correctly implemented' );
+    is(
+        $person->full_name, 'Bilbo Baggins',
+        'full_name() is correctly implemented'
+    );
 
     $person = eval { Person->new( [ qw( Lisa Smith ) ] ) };
     ok( !$@, 'Person->new() can accept an array reference as an argument' )
@@ -390,9 +477,13 @@ sub person01 {
     is( $person->first_name, 'Lisa', 'set first_name from two-arg arrayref' );
     is( $person->last_name, 'Smith', 'set last_name from two-arg arrayref' );
 
-    eval { Person->new( sub { 'foo' } ) };
-    like( $@, qr/\QSingle parameters to new() must be a HASH ref/,
-          'Person constructor still rejects bad parameters' );
+    eval {
+        Person->new( sub {'foo'} );
+    };
+    like(
+        $@, qr/\QSingle parameters to new() must be a HASH ref/,
+        'Person constructor still rejects bad parameters'
+    );
 }
 
 sub employee01 {
@@ -402,13 +493,15 @@ sub employee01 {
         title      => 'Singer',
     );
 
-    my $called = 0;
+    my $called     = 0;
     my $orig_super = \&Employee::super;
     no warnings 'redefine';
     local *Employee::super = sub { $called++; goto &$orig_super };
 
-    is( $employee->full_name, 'Amanda Palmer (Singer)',
-        'full_name() is properly overriden in Employee' );
+    is(
+        $employee->full_name, 'Amanda Palmer (Singer)',
+        'full_name() is properly overriden in Employee'
+    );
     ok( $called, 'Employee->full_name calls super()' );
 }
 
@@ -419,8 +512,10 @@ sub person02 {
         balance    => 0,
     );
 
-    is( $person->as_string, 'Bilbo Baggins',
-        'as_string() is correctly implemented' );
+    is(
+        $person->as_string, 'Bilbo Baggins',
+        'as_string() is correctly implemented'
+    );
 
     account_tests($person);
 }
@@ -433,8 +528,10 @@ sub employee02 {
         balance    => 0,
     );
 
-    is( $employee->as_string, 'Amanda Palmer (Singer)',
-        'as_string() uses overridden full_name method in Employee' );
+    is(
+        $employee->as_string, 'Amanda Palmer (Singer)',
+        'as_string() uses overridden full_name method in Employee'
+    );
 
     account_tests($employee);
 }
@@ -445,22 +542,30 @@ sub person03 {
         last_name  => 'Baggins',
     );
 
-    is( $person->full_name, 'Bilbo Baggins',
-        'full_name() is correctly implemented for a Person without a title' );
-    ok( !$person->has_title,
-        'Person has_title predicate is working correctly (returns false)' );
+    is(
+        $person->full_name, 'Bilbo Baggins',
+        'full_name() is correctly implemented for a Person without a title'
+    );
+    ok(
+        !$person->has_title,
+        'Person has_title predicate is working correctly (returns false)'
+    );
 
     $person->title('Ringbearer');
-    ok( $person->has_title, 'Person has_title predicate is working correctly (returns true)' );
+    ok( $person->has_title,
+        'Person has_title predicate is working correctly (returns true)' );
 
-    my $called = 0;
+    my $called    = 0;
     my $orig_pred = \&Person::has_title;
     no warnings 'redefine';
     local *Person::has_title = sub { $called++; goto &$orig_pred };
 
-    is( $person->full_name, 'Bilbo Baggins (Ringbearer)',
-        'full_name() is correctly implemented for a Person with a title' );
-    ok( $called, 'full_name in person uses the predicate for the title attribute' );
+    is(
+        $person->full_name, 'Bilbo Baggins (Ringbearer)',
+        'full_name() is correctly implemented for a Person with a title'
+    );
+    ok( $called,
+        'full_name in person uses the predicate for the title attribute' );
 
     $person->clear_title;
     ok( !$person->has_title, 'Person clear_title method cleared the title' );
@@ -476,8 +581,10 @@ sub employee03 {
         salary       => 42,
     );
 
-    is( $employee->salary, 30000,
-        'salary is calculated from salary_level, and salary passed to constructor is ignored' );
+    is(
+        $employee->salary, 30000,
+        'salary is calculated from salary_level, and salary passed to constructor is ignored'
+    );
 }
 
 sub person06 {
@@ -487,20 +594,28 @@ sub person06 {
     );
 
     isa_ok( $person->account, 'BankAccount' );
-    is( $person->account->owner, $person,
-        'owner of bank account is person that created account' );
+    is(
+        $person->account->owner, $person,
+        'owner of bank account is person that created account'
+    );
 
     $person->deposit(10);
-    is_deeply( $person->account->history, [ 100 ],
-               'deposit was recorded in account history' );
+    is_deeply(
+        $person->account->history, [100],
+        'deposit was recorded in account history'
+    );
 
     $person->withdraw(15);
-    is_deeply( $person->account->history, [ 100, 110 ],
-               'withdrawal was recorded in account history' );
+    is_deeply(
+        $person->account->history, [ 100, 110 ],
+        'withdrawal was recorded in account history'
+    );
 
     $person->withdraw(45);
-    is_deeply( $person->account->history, [ 100, 110, 95 ],
-               'withdrawal was recorded in account history' );
+    is_deeply(
+        $person->account->history, [ 100, 110, 95 ],
+        'withdrawal was recorded in account history'
+    );
 }
 
 sub account_tests {
@@ -511,13 +626,17 @@ sub account_tests {
 
     $person->deposit(50);
     eval { $person->withdraw( 75 + $base_amount ) };
-    like( $@, qr/\QBalance cannot be negative/,
-          'cannot withdraw more than is in our balance' );
+    like(
+        $@, qr/\QBalance cannot be negative/,
+        'cannot withdraw more than is in our balance'
+    );
 
-    $person->withdraw( 23 );
+    $person->withdraw(23);
 
-    is( $person->balance, 27 + $base_amount,
-        'balance is 27 (+ starting balance) after deposit of 50 and withdrawal of 23' );
+    is(
+        $person->balance, 27 + $base_amount,
+        'balance is 27 (+ starting balance) after deposit of 50 and withdrawal of 23'
+    );
 }
 
 1;
