@@ -17,9 +17,6 @@ sub tests01 {
 
     has_method( 'Person', 'full_name' );
 
-    no_droppings('Person');
-    is_immutable('Person');
-
     person01();
 
     has_meta('Employee');
@@ -32,6 +29,9 @@ sub tests01 {
     has_overridden_method( 'Employee', 'full_name' );
 
     employee01();
+
+    no_droppings('Person');
+    is_immutable('Person');
 }
 
 sub tests02 {
