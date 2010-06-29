@@ -24,7 +24,4 @@ use lib 't/lib';
 
 use MooseClass::Tests;
 
-use Person;
-use Employee;
-
 MooseClass::Tests::tests05();

@@ -220,6 +220,8 @@ sub tests06 {
     {
         local $Test::Builder::Level = $Test::Builder::Level + 1;
 
+        has_meta('Person');
+        has_meta('Employee');
         has_meta('BankAccount');
         no_droppings('BankAccount');
 
@@ -262,6 +264,9 @@ sub tests06 {
 
 sub has_meta {
     my $class = shift;
+
+    use_ok($class)
+        or BAIL_OUT("$class cannot be loaded");
 
     ok( $class->can('meta'), "$class has a meta() method" )
         or BAIL_OUT("$class does not have a meta() method (did you forget to 'use Moose'?)");

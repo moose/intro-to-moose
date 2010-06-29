@@ -36,8 +36,4 @@ use lib 't/lib';
 
 use MooseClass::Tests;
 
-use Person;
-use Employee;
-use BankAccount;
-
 MooseClass::Tests::tests06();
