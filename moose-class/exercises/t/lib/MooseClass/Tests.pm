@@ -7,8 +7,6 @@ use Lingua::EN::Inflect qw( A PL_N );
 use Test::More 'no_plan';
 
 sub tests01 {
-    local $Test::Builder::Level = $Test::Builder::Level + 1;
-
     has_meta('Person');
 
     check_isa( 'Person', ['Moose::Object'] );
@@ -35,8 +33,6 @@ sub tests01 {
 }
 
 sub tests02 {
-    local $Test::Builder::Level = $Test::Builder::Level + 1;
-
     has_meta('Printable');
     requires_method( 'Printable', 'as_string' );
 
@@ -64,20 +60,16 @@ sub tests02 {
 }
 
 sub tests03 {
-    {
-        local $Test::Builder::Level = $Test::Builder::Level + 1;
+    has_meta('Person');
+    has_meta('Employee');
 
-        has_meta('Person');
-        has_meta('Employee');
+    has_rw_attr( 'Person', 'title' );
 
-        has_rw_attr( 'Person', 'title' );
+    has_rw_attr( 'Employee', 'title', 'overridden' );
+    has_rw_attr( 'Employee', 'salary_level' );
+    has_ro_attr( 'Employee', 'salary' );
 
-        has_rw_attr( 'Employee', 'title', 'overridden' );
-        has_rw_attr( 'Employee', 'salary_level' );
-        has_ro_attr( 'Employee', 'salary' );
-
-        has_method( 'Employee', '_build_salary' );
-    }
+    has_method( 'Employee', '_build_salary' );
 
     ok(
         !Employee->meta->has_method('full_name'),
@@ -116,25 +108,21 @@ sub tests03 {
 }
 
 sub tests04 {
-    {
-        local $Test::Builder::Level = $Test::Builder::Level + 1;
+    has_meta('Document');
+    has_meta('Report');
+    has_meta('TPSReport');
 
-        has_meta('Document');
-        has_meta('Report');
-        has_meta('TPSReport');
+    no_droppings('Document');
+    no_droppings('Report');
+    no_droppings('TPSReport');
 
-        no_droppings('Document');
-        no_droppings('Report');
-        no_droppings('TPSReport');
+    has_ro_attr( 'Document',  $_ ) for qw( title author );
+    has_ro_attr( 'Report',    'summary' );
+    has_ro_attr( 'TPSReport', $_ ) for qw( t p s );
 
-        has_ro_attr( 'Document',  $_ ) for qw( title author );
-        has_ro_attr( 'Report',    'summary' );
-        has_ro_attr( 'TPSReport', $_ ) for qw( t p s );
-
-        has_method( 'Document', 'output' );
-        has_augmented_method( 'Report',    'output' );
-        has_augmented_method( 'TPSReport', 'output' );
-    }
+    has_method( 'Document', 'output' );
+    has_augmented_method( 'Report',    'output' );
+    has_augmented_method( 'TPSReport', 'output' );
 
     my $tps = TPSReport->new(
         title   => 'That TPS Report',
@@ -159,13 +147,9 @@ EOF
 }
 
 sub tests05 {
-    {
-        local $Test::Builder::Level = $Test::Builder::Level + 1;
-
-        has_meta('Person');
-        has_meta('Employee');
-        no_droppings('Employee');
-    }
+    has_meta('Person');
+    has_meta('Employee');
+    no_droppings('Employee');
 
     for my $attr_name (qw( first_name last_name title )) {
         my $attr = Person->meta->get_attribute($attr_name);
@@ -259,18 +243,14 @@ sub tests05 {
 }
 
 sub tests06 {
-    {
-        local $Test::Builder::Level = $Test::Builder::Level + 1;
+    has_meta('Person');
+    has_meta('Employee');
+    has_meta('BankAccount');
+    no_droppings('BankAccount');
 
-        has_meta('Person');
-        has_meta('Employee');
-        has_meta('BankAccount');
-        no_droppings('BankAccount');
-
-        has_rw_attr( 'BankAccount', 'balance' );
-        has_rw_attr( 'BankAccount', 'owner' );
-        has_ro_attr( 'BankAccount', 'history' );
-    }
+    has_rw_attr( 'BankAccount', 'balance' );
+    has_rw_attr( 'BankAccount', 'owner' );
+    has_ro_attr( 'BankAccount', 'history' );
 
     my $ba_meta = BankAccount->meta;
     ok(
@@ -314,6 +294,8 @@ sub tests06 {
 sub has_meta {
     my $package = shift;
 
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+
     use_ok($package)
         or BAIL_OUT("$package cannot be loaded");
 
@@ -326,6 +308,8 @@ sub has_meta {
 sub check_isa {
     my $class   = shift;
     my $parents = shift;
+
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
 
     my @isa = $class->meta->linearized_isa;
     shift @isa;    # returns $class as the first entry
@@ -344,6 +328,8 @@ sub has_rw_attr {
     my $class      = shift;
     my $name       = shift;
     my $overridden = shift;
+
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
 
     my $articled = $overridden ? "an overridden $name" : A($name);
     ok(
@@ -367,6 +353,8 @@ sub has_ro_attr {
     my $class = shift;
     my $name  = shift;
 
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+
     my $articled = A($name);
     ok(
         $class->meta->has_attribute($name),
@@ -389,6 +377,8 @@ sub has_role_attr {
     my $role = shift;
     my $name = shift;
 
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+
     my $articled = A($name);
     ok(
         $role->meta->get_attribute($name),
@@ -400,6 +390,8 @@ sub has_method {
     my $package = shift;
     my $name    = shift;
 
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+
     my $articled = A($name);
     ok( $package->meta->has_method($name), "$package has $articled method" );
 }
@@ -407,6 +399,8 @@ sub has_method {
 sub has_overridden_method {
     my $package = shift;
     my $name    = shift;
+
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
 
     my $articled = A($name);
     ok( $package->meta->has_method($name), "$package has $articled method" );
@@ -419,6 +413,8 @@ sub has_augmented_method {
     my $class = shift;
     my $name  = shift;
 
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+
     my $articled = A($name);
     ok( $class->meta->has_method($name), "$class has $articled method" );
 
@@ -430,6 +426,8 @@ sub requires_method {
     my $package = shift;
     my $method  = shift;
 
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+
     ok(
         $package->meta->requires_method($method),
         "$package requires the method $method"
@@ -439,6 +437,8 @@ sub requires_method {
 sub no_droppings {
     my $package = shift;
 
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+
     ok( !$package->can('has'), "no Moose droppings in $package" );
     ok( !$package->can('subtype'),
         "no Moose::Util::TypeConstraints droppings in $package" );
@@ -447,12 +447,16 @@ sub no_droppings {
 sub is_immutable {
     my $class = shift;
 
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+
     ok( $class->meta->is_immutable, "$class has been made immutable" );
 }
 
 sub does_role {
     my $package = shift;
     my $role    = shift;
+
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
 
     ok( $package->meta->does_role($role), "$package does the $role role" );
 }
