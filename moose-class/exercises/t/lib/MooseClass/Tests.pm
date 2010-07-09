@@ -122,15 +122,12 @@ sub tests03 {
 
 sub tests04 {
     has_meta('Document');
-    has_meta('Report');
-    has_meta('TPSReport');
-
-    no_droppings('Document');
-    no_droppings('Report');
-    no_droppings('TPSReport');
-
     has_ro_attr( 'Document',  $_ ) for qw( title author );
+
+    has_meta('Report');
     has_ro_attr( 'Report',    'summary' );
+
+    has_meta('TPSReport');
     has_ro_attr( 'TPSReport', $_ ) for qw( t p s );
 
     has_method( 'Document', 'output' );
@@ -157,6 +154,10 @@ p: Swingline
 s: flair!
 Written by Peter Gibbons (for Bill Lumberg)
 EOF
+
+    no_droppings('Document');
+    no_droppings('Report');
+    no_droppings('TPSReport');
 }
 
 sub tests05 {
