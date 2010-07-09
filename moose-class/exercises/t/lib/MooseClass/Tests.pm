@@ -259,22 +259,47 @@ sub tests05 {
 }
 
 sub tests06 {
-    has_meta('Person');
-    has_meta('Employee');
     has_meta('BankAccount');
-    no_droppings('BankAccount');
 
-    has_rw_attr( 'BankAccount', 'balance' );
-    has_rw_attr( 'BankAccount', 'owner' );
-    has_ro_attr( 'BankAccount', 'history' );
+    has_rw_attr( 'BankAccount', $_ ) for qw( balance owner );
 
     my $ba_meta = BankAccount->meta;
+
     ok(
-        $ba_meta->has_attribute('balance'),
-        'BankAccount class has a balance attribute'
+        $ba_meta->get_attribute('owner')->is_weak_ref,
+        'owner attribute is a weak ref'
     );
 
+    has_method( 'BankAccount', $_ ) for qw( deposit withdraw );
+
+    has_ro_attr( 'BankAccount', 'history' );
+
     my $history_attr = $ba_meta->get_attribute('history');
+
+    is_deeply(
+        $history_attr->default->(),
+        [],
+        'BankAccount history attribute defaults to []'
+    );
+
+    {
+        my $tc = $history_attr->type_constraint;
+
+        for my $invalid ( 0, 42, undef, {}, [ 'foo', 'bar' ] ) {
+            my $str = defined $invalid ? $invalid : 'undef';
+            ok(
+                !$tc->check($invalid),
+                "salary_level type rejects invalid value - $str"
+            );
+        }
+
+        for my $valid ( [], [1], [ 1, 2, 3 ], [ 1, -10, 9999 ] ) {
+            ok(
+                $tc->check($valid),
+                "salary_level type accepts valid value"
+            );
+        }
+    }
 
     ok(
         $history_attr->meta()
@@ -287,7 +312,13 @@ sub tests06 {
         'BankAccount balance attribute has a trigger'
     );
 
+    has_meta('Person');
+
     my $person_meta = Person->meta;
+
+    ok( !$person_meta->does_role('HasAccount'),
+        'Person class does not do the HasAccount role' );
+
     ok(
         !$person_meta->has_attribute('balance'),
         'Person class does not have a balance attribute'
@@ -299,12 +330,11 @@ sub tests06 {
     my $withdraw_meth = $person_meta->get_method('withdraw');
     isa_ok( $withdraw_meth, 'Moose::Meta::Method::Delegation' );
 
-    ok(
-        $ba_meta->get_attribute('owner')->is_weak_ref,
-        'owner attribute is a weak ref'
-    );
-
     person06();
+
+    has_meta('Employee');
+
+    no_droppings('BankAccount');
 }
 
 sub has_meta {
