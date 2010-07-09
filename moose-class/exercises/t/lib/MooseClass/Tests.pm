@@ -61,20 +61,16 @@ sub tests02 {
 
 sub tests03 {
     has_meta('Person');
-    has_meta('Employee');
+
+    for my $name ( qw( first_name last_name ) ) {
+        has_rw_attr( 'Person', $name );
+
+        my $attr = Person->meta->get_attribute($name);
+        ok( $attr && $attr->is_required,
+            "$name is required in Person" );
+    }
 
     has_rw_attr( 'Person', 'title' );
-
-    has_rw_attr( 'Employee', 'title', 'overridden' );
-    has_rw_attr( 'Employee', 'salary_level' );
-    has_ro_attr( 'Employee', 'salary' );
-
-    has_method( 'Employee', '_build_salary' );
-
-    ok(
-        !Employee->meta->has_method('full_name'),
-        'Employee no longer implements a full_name method'
-    );
 
     my $person_title_attr = Person->meta->get_attribute('title');
     ok( !$person_title_attr->is_required, 'title is not required in Person' );
@@ -87,8 +83,11 @@ sub tests03 {
         'Person title attr has a clear_title clearer'
     );
 
-    my $balance_attr = Person->meta->get_attribute('balance');
-    is( $balance_attr->default, 100, 'balance defaults to 100' );
+    person03();
+
+    has_meta('Employee');
+
+    has_rw_attr( 'Employee', 'title', 'overridden' );
 
     my $employee_title_attr = Employee->meta->get_attribute('title');
     is(
@@ -96,15 +95,29 @@ sub tests03 {
         'title defaults to Worker in Employee'
     );
 
-    my $salary_level_attr = Employee->meta->get_attribute('salary_level');
-    is( $salary_level_attr->default, 1, 'salary_level defaults to 1' );
+    ok(
+        !Employee->meta->has_method('full_name'),
+        'Employee no longer implements a full_name method'
+    );
+
+    has_ro_attr( 'Employee', 'salary' );
 
     my $salary_attr = Employee->meta->get_attribute('salary');
+    ok( $salary_attr->is_lazy, 'salary is lazy' );
     ok( !$salary_attr->init_arg,   'no init_arg for salary attribute' );
     ok( $salary_attr->has_builder, 'salary attr has a builder' );
 
-    person03();
+    has_method( 'Employee', '_build_salary' );
+
+    has_rw_attr( 'Employee', 'salary_level' );
+
+    my $salary_level_attr = Employee->meta->get_attribute('salary_level');
+    is( $salary_level_attr->default, 1, 'salary_level defaults to 1' );
+
     employee03();
+
+    my $balance_attr = Person->meta->get_attribute('balance');
+    is( $balance_attr->default, 100, 'balance defaults to 100' );
 }
 
 sub tests04 {

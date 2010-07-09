@@ -10,9 +10,15 @@ has title => (
     clearer   => 'clear_title',
 );
 
-has first_name => ( is => 'rw' );
+has first_name => (
+    is       => 'rw',
+    required => 1,
+);
 
-has last_name  => ( is => 'rw' );
+has last_name => (
+    is       => 'rw',
+    required => 1,
+);
 
 sub BUILDARGS {
     my $class = shift;
