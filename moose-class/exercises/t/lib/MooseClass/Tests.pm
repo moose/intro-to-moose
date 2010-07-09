@@ -162,8 +162,6 @@ EOF
 
 sub tests05 {
     has_meta('Person');
-    has_meta('Employee');
-    no_droppings('Employee');
 
     for my $attr_name (qw( first_name last_name title )) {
         my $attr = Person->meta->get_attribute($attr_name);
@@ -177,6 +175,8 @@ sub tests05 {
             "Person $attr_name type is Str"
         );
     }
+
+    has_meta('Employee');
 
     {
         my $salary_level_attr = Employee->meta->get_attribute('salary_level');
@@ -254,6 +254,8 @@ sub tests05 {
             );
         }
     }
+
+    no_droppings('Employee');
 }
 
 sub tests06 {
