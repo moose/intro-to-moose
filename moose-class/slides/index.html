@@ -1427,64 +1427,12 @@ use Moose;
 </div>
 
 <div class="slide">
-  <h1>Method Aliasing</h1>
-
-  <pre><code>package FragileDancer;
-use Moose;
-
-<span class="highlight">with 'IsFragile' =>
-         { -alias =>
-               { break => 'break_bone' } },
-     'CanBreakdance' =>
-         { -alias =>
-               { break => 'break_it_down' } };</span></code></pre>
+  <h1>Conflicts Are a Smell</h1>
 
   <ul>
-    <li>Renames the roles' methods</li>
-    <li>Still conflicts, need to <code>exclude</code> as well</li>
-  </ul>
-</div>
-
-<div class="slide">
-  <h1>Method Exclusion</h1>
-
-  <pre><code>package FragileDancer;
-use Moose;
-
-<span class="highlight">with 'IsFragile' =>
-         { -alias =>
-               { break => 'break_bone' },
-           -excludes => 'break' },
-     'CanBreakdance' =>
-         { -alias =>
-               { break => 'break_it_down' },
-           -excludes => 'break' };</span></code></pre>
-</div>
-
-<div class="slide">
-  <h1>And then ...</h1>
-
-  <pre><code>package FragileDancer;
-use Moose;
-
-sub break {
-    my $self = shift;
-
-    $self-&gt;break_it_down;
-    if ( rand(1) &lt; 0.5 ) {
-        $self-&gt;break_bone;
-    }
-}</code></pre>
-</div>
-
-<div class="slide">
-  <h1>Still Full of Fail</h1>
-
-  <ul>
-    <li>Roles are also about semantics!</li>
-    <li>We've fulfilled the letter and lost the spirit</li>
+    <li>Roles are about semantics!</li>
     <li>Roles have a <em>meaning</em></li>
-    <li>Think twice before blindly aliasing and excluding methods!</li>
+    <li>Method name conflicts smell like bad design</li>
   </ul>
 </div>
 
