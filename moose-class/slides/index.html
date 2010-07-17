@@ -1107,8 +1107,7 @@ has first_name =&gt; ( <span class="highlight">is =&gt; 'ro'</span> );
 my $person =
     Person-&gt;new( first_name =&gt; 'Dave' );
 
-$person-&gt;first_name('Stevan');
-print $person-&gt;first_name; # Dave</code></pre>
+$person-&gt;first_name('Stevan'); # dies</code></pre>
 
 </div>
 
