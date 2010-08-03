@@ -2417,19 +2417,21 @@ around run</span> =&gt; sub {
 <div class="slide">
   <h1>Augment and Inner</h1>
 
-  <pre><code>package Document;
+  <pre class="medium"><code>package Document;
 
 sub xml { '&lt;doc&gt;' . <span class="highlight">inner()</span> . '&lt;/doc&gt;' }
 
 package Report;
 extends 'Document';
 <span class="highlight">augment xml</span> =&gt;
-    sub { title() . <span class="highlight">inner()</span> . summary() };
+    sub { my $self = shift;
+          $self-&gt;title() . <span class="highlight">inner()</span> . $self-&gt;summary() };
 
 package TPSReport;
 extends 'Report';
 <span class="highlight">augment xml</span> =&gt;
-    sub { tps_xml() . <span class="highlight">inner()</span> };</code></pre>
+    sub { my $self = shift;
+          $self-&gt;tps_xml() . <span class="highlight">inner()</span> };</code></pre>
 </div>
 
 <div class="slide">
