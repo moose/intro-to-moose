@@ -519,10 +519,18 @@ sub person01 {
     );
 
     $person = eval { Person->new( [ qw( Lisa Smith ) ] ) };
-    ok( !$@, 'Person->new() can accept an array reference as an argument' )
-        or BAIL_OUT(
-        'You must implement Person->BUILDARGS in order to continue these tests'
+
+    if ( my $e = $@ ) {
+        diag(
+            "Calling Person->new() with an array reference threw an error:\n$e"
         );
+        BAIL_OUT(
+            'You must implement Person->BUILDARGS correctly in order to continue these tests'
+        );
+    }
+    else {
+        ok( 1, 'Person->new() can accept an array reference as an argument' );
+    }
 
     is( $person->first_name, 'Lisa', 'set first_name from two-arg arrayref' );
     is( $person->last_name, 'Smith', 'set last_name from two-arg arrayref' );
