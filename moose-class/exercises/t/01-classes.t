@@ -8,7 +8,7 @@
 # * last_name - read-write
 #
 # This class should also have a method named "full_name". This
-# method should return the first and last name separated by a string
+# method should return the first and last name separated by a space
 # ("Jon Smith").
 #
 # Write a BUILDARGS method for this class which allows the caller to
