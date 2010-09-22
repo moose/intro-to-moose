@@ -1528,7 +1528,7 @@ use Moose;
 
 <span class="incremental">with 'HasSize';
 
-has size => ( is => 'ro' );</span></code></pre>
+has size =&gt; ( is =&gt; 'ro' );</span></code></pre>
 </div>
 
 <div class="slide">
@@ -1542,7 +1542,7 @@ requires 'size';
 package Shirt;
 use Moose;
 
-has size => ( is => 'ro' );
+has size =&gt; ( is =&gt; 'ro' );
 
 with 'HasSize';</code></pre>
 </div>
@@ -1564,9 +1564,9 @@ with 'HasSize';</code></pre>
   <pre><code>package Comparison;
 use Moose;
 
-has [ 'left', 'right' ] => (
-    is   => 'ro',
-    <span class="highlight">does => 'Comparable',</span>
+has [ 'left', 'right' ] =&gt; (
+    is   =&gt; 'ro',
+    <span class="highlight">does =&gt; 'Comparable',</span>
 );
 </code></pre>
 
@@ -1863,7 +1863,7 @@ has bank =&gt; (
 sub _build_bank {
     my $self = shift;
     return Bank-&gt;new(
-        name => 'Spire FCU' );
+        name =&gt; 'Spire FCU' );
 }</code></pre>
 </div>
 
@@ -1930,7 +1930,7 @@ has shoe_size =&gt; (
   <pre><code>has shoes =&gt; (
     is      =&gt; 'ro',
     <span class="highlight">lazy    =&gt; 1,</span>
-    builder => '_build_shoes',
+    builder =&gt; '_build_shoes',
 );
 
 sub _build_shoes {
@@ -2003,7 +2003,7 @@ has account =&gt; (
   <pre><code>package Person;
 use Moose;
 
-has shoe_size => (
+has shoe_size =&gt; (
     is       =&gt; 'ro',
     <span class="highlight">init_arg =&gt; 'foot_size',</span>
 );
@@ -2021,7 +2021,7 @@ print $person-&gt;shoe_size;</code></pre>
 <pre><code>package Person;
 use Moose;
 
-has shoes => (
+has shoes =&gt; (
     is       =&gt; 'ro',
     <span class="highlight">init_arg =&gt; undef,</span>
 );
@@ -3021,9 +3021,9 @@ coerce <span class="highlight">ArrayOfInt</span>
 
 use MyApp::Types qw( ArrayOfInt );
 
-has transaction_history => (
-    is  => 'rw',
-    isa => ArrayOfInt,
+has transaction_history =&gt; (
+    is  =&gt; 'rw',
+    isa =&gt; ArrayOfInt,
 );</code></pre>
 </div>
 
@@ -3207,7 +3207,7 @@ $alice-&gt;friend($bob);</code></pre>
 
 has lungs =&gt; (
     is      =&gt; 'ro',
-    isa     => 'Lungs',
+    isa     =&gt; 'Lungs',
     <span class="highlight">handles =&gt; [ 'inhale', 'exhale' ],</span>
 );</code></pre>
 
