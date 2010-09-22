@@ -1054,13 +1054,13 @@ use Moose;
 
 <span class="current incremental">extends 'Person';</span>
 
-<span class="incremental">override</span> work =&gt; sub {
+<span class="incremental">override</span> <span class="incremental">work</span> <span class="incremental">=&gt; sub {
     my $self = shift;
 
     die "Pay me first"
         unless $self-&gt;got_paid;
-    <span class="incremental">super();</span>
-}<span class="incremental">;</span></code></pre>
+    super();
+}</span><span class="incremental">;</span></code></pre>
 </div>
 
 <div class="slide">
