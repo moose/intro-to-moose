@@ -893,7 +893,7 @@ use Moose;</code></pre>
   <h1>BUILDARGS</h1>
 
   <ul>
-    <li>Takes <code>@_</code>, returns a hash reference of attribute name/value pairs</li>
+    <li>Processes <code>new</code>'s <code>@_</code>, returns a hash reference of attribute name/value pairs</li>
     <li>Accepts a hash or hashref; throws otherwise</li>
     <li>Provide your own for other cases</li>
     <li><strong>Always</strong> call <code>$class-&gt;SUPER::BUILDARGS(@_)</code> as a fallback!</li>
