@@ -1,7 +1,10 @@
-authors/id/C/CH/CHORNY/Test-Warn-0.22.tar.gz
-authors/id/D/DR/DROLSKY/Class-MOP-1.08.tar.gz
-authors/id/D/DR/DROLSKY/Moose-1.13.tar.gz
-authors/id/F/FL/FLORA/Sub-Name-0.05.tar.gz
+authors/01mailrc.txt.gz
+authors/id/D/DO/DOY/CHECKSUMS
+authors/id/D/DO/DOY/Package-Stash-0.08.tar.gz
+authors/id/D/DR/DROLSKY/CHECKSUMS
+authors/id/D/DR/DROLSKY/Class-MOP-1.09.tar.gz
+authors/id/D/DR/DROLSKY/Moose-1.15.tar.gz
 authors/id/T/TO/TOKUHIROM/CHECKSUMS
-authors/id/T/TO/TOKUHIROM/Test-Requires-0.05.tar.gz
+authors/id/T/TO/TOKUHIROM/Test-Requires-0.06.tar.gz
 modules/02packages.details.txt.gz
+modules/03modlist.data.gz
