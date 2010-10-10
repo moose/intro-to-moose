@@ -683,6 +683,12 @@ sub account_tests {
     my $base_amount = shift || 0;
 
     $person->deposit(50);
+
+    is(
+        $person->balance, 50 + $base_amount,
+        "balance is 50 + $base_amount",
+    );
+
     eval { $person->withdraw( 75 + $base_amount ) };
     like(
         $@, qr/\QBalance cannot be negative/,
