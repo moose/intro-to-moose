@@ -2030,15 +2030,7 @@ Person-&gt;new( <span class="wrong">shoes =&gt; Shoes-&gt;new</span> );</code></
 
   <ul>
     <li>By default, subclasses inherit attribute as-is</li>
-    <li>Can change some attribute parameters in subclasses
-      <ul>
-        <li>default</li>
-        <li>builder</li>
-        <li>required</li>
-        <li>lazy</li>
-        <li>others we've not yet covered</li>
-      </ul>
-    </li>
+    <li>Can change most attribute parameters in subclasses</li>
   </ul>
 </div>   
 
@@ -2166,8 +2158,9 @@ has first_name =&gt; (
 
   <ul>
     <li>An attribute's constructor name can be changed with <code>init_arg</code></li>
+    <li>Can set <code>init_arg</code> to <code>undef</code></li>
     <li>A subclass can alter its parents' attributes</li>
-    <li>Attribute accessor names can be changed</li>
+    <li>Accessor naming scheme can be changed</li>
   </ul>
 </div>
 
