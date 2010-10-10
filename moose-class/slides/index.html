@@ -1635,7 +1635,7 @@ requires 'compare';
     <li>Human <em>@ISA</em> Animal</li>
     <li>Human <em>does</em> Toolmaker (as <em>does</em> Chimpanzee)</li>
     <li>Car <em>@ISA</em> Vehicle</li>
-    <li>Car <em>does</em> HasEngine</li>
+    <li>Car <em>does</em> Destroyable</li>
   </ul>
 </div>
 
@@ -1822,22 +1822,6 @@ use Moose;
 has packages =&gt; (
     is      =&gt; 'rw',
     default =&gt; <span class="highlight">sub { [] }</span>,
-);</code></pre>
-</div>
-
-<div class="slide">
-  <h1>What if I Want to Share?</h1>
-
-  <pre><code>package Person;
-use Moose;
-
-my $highlander_bank =
-    Bank-&gt;new(
-        name =&gt; 'Clan MacLeod Trust' );
-
-has bank =&gt; (
-    is      =&gt; 'rw',
-    default =&gt; sub { $highlander_bank },
 );</code></pre>
 </div>
 
