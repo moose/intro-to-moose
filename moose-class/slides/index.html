@@ -897,6 +897,7 @@ use Moose;</code></pre>
     <li>Accepts a hash or hashref; errors otherwise</li>
     <li>Provide your own for other cases</li>
     <li><strong>Always</strong> call <code>$class-&gt;SUPER::BUILDARGS(@_)</code> as a fallback!</li>
+    <li>Make sure to pass the <strong>original value of <code>@_</code></strong> to the parent</li>
   </ul>
 </div>
 
