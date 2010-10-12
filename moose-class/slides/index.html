@@ -897,7 +897,6 @@ use Moose;</code></pre>
     <li>Accepts a hash or hashref; errors otherwise</li>
     <li>Provide your own for other cases</li>
     <li><strong>Always</strong> call <code>$class-&gt;SUPER::BUILDARGS(@_)</code> as a fallback!</li>
-    <li>Make sure to pass the <strong>original value of <code>@_</code></strong> to the parent</li>
   </ul>
 </div>
 
@@ -1055,13 +1054,13 @@ use Moose;
 
 <span class="current incremental">extends 'Person';</span>
 
-<span class="incremental">override</span> <span class="incremental">work</span> =&gt; sub {
+<span class="incremental">override</span> <span class="incremental">work</span> <span class="incremental">=&gt; sub {
     my $self = shift;
 
     die "Pay me first"
         unless $self-&gt;got_paid;
-    <span class="incremental">super();</span>
-}<span class="incremental">;</span></code></pre>
+    super();
+}</span><span class="incremental">;</span></code></pre>
 </div>
 
 <div class="slide">
@@ -1237,6 +1236,8 @@ use Moose;
 
 # perl install-moose (if needed)
 
+## Read the instructions in t/01-classes.t
+
 # perl bin/prove -lv t/01-classes.t
 
 # edit lib/Person.pm and lib/Employee.pm
@@ -1331,7 +1332,7 @@ print $person-&gt;full_name
   <h1>Roles in Practice</h1>
 
   <ul>
-    <li>Consuming a role &#x2248; inlining the role</li>
+    <li>Consuming a role =~ inlining the role</li>
   </ul>
 </div>
 
@@ -1636,7 +1637,7 @@ requires 'compare';
     <li>Human <em>@ISA</em> Animal</li>
     <li>Human <em>does</em> Toolmaker (as <em>does</em> Chimpanzee)</li>
     <li>Car <em>@ISA</em> Vehicle</li>
-    <li>Car <em>does</em> Destroyable</li>
+    <li>Car <em>does</em> HasEngine</li>
   </ul>
 </div>
 
@@ -1823,6 +1824,22 @@ use Moose;
 has packages =&gt; (
     is      =&gt; 'rw',
     default =&gt; <span class="highlight">sub { [] }</span>,
+);</code></pre>
+</div>
+
+<div class="slide">
+  <h1>What if I Want to Share?</h1>
+
+  <pre><code>package Person;
+use Moose;
+
+my $highlander_bank =
+    Bank-&gt;new(
+        name =&gt; 'Clan MacLeod Trust' );
+
+has bank =&gt; (
+    is      =&gt; 'rw',
+    default =&gt; sub { $highlander_bank },
 );</code></pre>
 </div>
 
@@ -2031,7 +2048,15 @@ Person-&gt;new( <span class="wrong">shoes =&gt; Shoes-&gt;new</span> );</code></
 
   <ul>
     <li>By default, subclasses inherit attribute as-is</li>
-    <li>Can change most attribute parameters in subclasses</li>
+    <li>Can change some attribute parameters in subclasses
+      <ul>
+        <li>default</li>
+        <li>builder</li>
+        <li>required</li>
+        <li>lazy</li>
+        <li>others we've not yet covered</li>
+      </ul>
+    </li>
   </ul>
 </div>   
 
@@ -2159,9 +2184,8 @@ has first_name =&gt; (
 
   <ul>
     <li>An attribute's constructor name can be changed with <code>init_arg</code></li>
-    <li>Can set <code>init_arg</code> to <code>undef</code></li>
     <li>A subclass can alter its parents' attributes</li>
-    <li>Accessor naming scheme can be changed</li>
+    <li>Attribute accessor names can be changed</li>
   </ul>
 </div>
 
@@ -3531,7 +3555,7 @@ Iterate til this passes all its tests</pre>
   </p>
 
   <p>
-    Otherwise, jump to slide 268 ...
+    Otherwise, jump to slide 269 ...
   </p>
 </div>
 
@@ -3757,7 +3781,7 @@ with HasCollection =&gt; { type =&gt; 'Int' };</code></pre>
     <li>mailing list - <a href="mailto:moose@perl.org">moose@perl.org</a></li>
     <li>Slides and exercises are in Moose's git repo:
         <br />
-        <span style="font-size:80%; white-space: nowrap">git://git.moose.perl.org/moose-presentations/moose.git</span></li>
+        <span style="font-size:80%; white-space: nowrap">git://jules.scsys.co.uk/gitmo/moose-presentations</span></li>
   </ul>
 </div>
 
