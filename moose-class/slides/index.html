@@ -1833,22 +1833,6 @@ has packages =&gt; (
 </div>
 
 <div class="slide">
-  <h1>What if I Want to Share?</h1>
-
-  <pre><code>package Person;
-use Moose;
-
-my $highlander_bank =
-    Bank-&gt;new(
-        name =&gt; 'Clan MacLeod Trust' );
-
-has bank =&gt; (
-    is      =&gt; 'rw',
-    default =&gt; sub { $highlander_bank },
-);</code></pre>
-</div>
-
-<div class="slide">
   <h1>Builder</h1>
 
   <ul>
