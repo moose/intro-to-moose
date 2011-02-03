@@ -2398,62 +2398,6 @@ around run</span> =&gt; sub {
 </div>
 
 <div class="slide">
-  <h1>Augment and Inner</h1>
-
-  <ul>
-    <li>Inverted <code>super</code></li>
-    <li>From least- to most-specific</li>
-    <li>Like Mason's autohandler feature</li>
-    <li>Grandparent to parent to child</li>
-    <li>Not allowed in roles</li>
-  </ul>
-</div>
-
-<div class="slide">
-  <h1>Augment and Inner</h1>
-
-  <pre class="medium"><code>package Document;
-
-sub xml { '&lt;doc&gt;' . <span class="highlight">inner()</span> . '&lt;/doc&gt;' }
-
-package Report;
-extends 'Document';
-<span class="highlight">augment xml</span> =&gt;
-    sub { my $self = shift;
-          $self-&gt;title() . <span class="highlight">inner()</span> . $self-&gt;summary() };
-
-package TPSReport;
-extends 'Report';
-<span class="highlight">augment xml</span> =&gt;
-    sub { my $self = shift;
-          $self-&gt;tps_xml() . <span class="highlight">inner()</span> };</code></pre>
-</div>
-
-<div class="slide">
-  <h1>Augment and Inner</h1>
-
-  <ul>
-    <li>When we call <code>$tps-&gt;xml</code> ...
-      <ul>
-        <li><code>Document-&gt;xml</code></li>
-        <li><code>Report-&gt;xml</code></li>
-        <li><code>TPSReport-&gt;xml</code></li>
-      </ul>
-    </li>
-  </ul>
-</div>
-
-<div class="slide">
-  <h1>Augment and Inner Usage</h1>
-
-  <ul>
-    <li>Call <code>inner()</code> to "fill in the blank"</li>
-    <li>Requires designing for subclassing</li>
-    <li>Call <code>inner()</code> in the terminal class, just in case</li>
-  </ul>
-</div>
-
-<div class="slide">
   <h1>Method Modifiers Summary</h1>
 
   <ul>
@@ -2477,23 +2421,9 @@ extends 'Report';
         <li>alter parameters passed to the original method</li>
         <li>alter the return value of the original method</li>
         <li>not call the original method at all (or call a <em>different</em> method)</li>
+        <li>When using modifiers in a role, require the modified method</li>
       </ul>
     </li>
-  </ul>
-</div>
-
-<div class="slide">
-  <h1>Method Modifiers Summary</h1>
-
-  <ul>
-    <li>When using modifiers in a role, require the modified method</li>
-    <li>Use <code>augment</code> and <code>inner</code> to invert the normal subclassing flow ...
-      <ul>
-        <li>Least- to most-specific (parents to children)</li>
-        <li>Build in "insertability" (stick more stuff in the "middle")</li>
-      </ul>
-    </li>
-    <li>Always call <code>inner</code> in the most specific subclass to allow for future extension</li>
   </ul>
 </div>
 
