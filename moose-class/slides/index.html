@@ -1810,6 +1810,7 @@ use Moose;
 
 has bank =&gt; (
     is      =&gt; 'rw',
+    # THIS WILL NOT WORK
     <span class="wrong">default =&gt; Bank-&gt;new(
                    name =&gt; 'Spire FCU' ),</span>
 );</code></pre>
