@@ -1344,7 +1344,9 @@ $person-&gt;print();</code></pre>
 <pre><code>package Person;
 use Moose;
 
-<span class="highlight">with 'Printable';</span></code></pre>
+<span class="highlight">with 'Printable';</span>
+
+sub as_string { $_[0]-&gt;first_name() }</code></pre>
 </div>
 
 <div class="slide">
@@ -1354,6 +1356,8 @@ use Moose;
 use Moose;
 
 <span class="delete">with 'Printable';</span>
+
+sub as_string { $_[0]-&gt;first_name() }
 
 <span class="highlight">has has_been_printed =&gt; ( is =&gt; 'rw'  );
 
