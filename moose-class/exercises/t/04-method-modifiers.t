@@ -1,43 +1,23 @@
 # Your tasks ...
 #
-# First, you will create a set of three new classes to make use of the augment
-# method modifier. The class hierarchy will look like this:
+# You will go back to the Person class and add several method modifiers.
 #
-#   Document
-#      |
-#   Report
-#      |
-#   TPSReport
+# First, add before and after modifiers to the full_name() method. The
+# modifiers will be using for debugging. These modifiers will record debugging
+# info by setting a package global, @Person::CALL;
 #
-# The Document class should have two read-only attributes: "title" and
-# "author".
+# The before modifier should push the string "calling full_name" onto
+# @Person::CALL. The after modifier should push "called full_name" onto this
+# array.
 #
-# The Report class should have one read-only attribute: "summary".
+# You do not need to declare this global, but you can if you like.
 #
-# Finally, the TPSReport class should have three read-only attributes: "t",
-# "p", and "s".
+# Finally, create an around modifier for full_name. This modifier should call
+# the real full_name method.
 #
-# The goal is to produce a report that looks this:
-#
-# $title
-#
-# $summary
-#
-# t: $t
-# p: $p
-# s: $s
-#
-# Written by $author
-#
-# This report should be returned as a string from the Document->output method.
-#
-# Don't worry too much about how many newlines separate each item (as long as
-# it's at least one). The test does a little massaging to make this more
-# forgiving.
-#
-# Use augment method modifiers in Report and TPSReport to "inject" the
-# relevant content, while Document will output the $title and $author.
-
+# However, if the person object's last name is "Wall" (as in Larry Wall), your
+# modifier should wrap the full name in asterisks (*), one before the name and
+# one after, and then return that new version of the name.
 use strict;
 use warnings;
 

@@ -121,43 +121,66 @@ sub tests03 {
 }
 
 sub tests04 {
-    has_meta('Document');
-    has_ro_attr( 'Document',  $_ ) for qw( title author );
+    has_meta('Person');
 
-    has_meta('Report');
-    has_ro_attr( 'Report',    'summary' );
+    ok( Person->can('full_name'), 'Person has a full_name() method' )
+        or BAIL_OUT(
+        'Person does not have a full_name() method. Cannot continue testing.'
+        );
 
-    has_meta('TPSReport');
-    has_ro_attr( 'TPSReport', $_ ) for qw( t p s );
-
-    has_method( 'Document', 'output' );
-    has_augmented_method( 'Report',    'output' );
-    has_augmented_method( 'TPSReport', 'output' );
-
-    my $tps = TPSReport->new(
-        title   => 'That TPS Report',
-        author  => 'Peter Gibbons (for Bill Lumberg)',
-        summary => 'I celebrate his whole collection!',
-        t       => 'PC Load Letter',
-        p       => 'Swingline',
-        s       => 'flair!',
+    my $meth = Person->meta()->get_method('full_name');
+    ok(
+        $meth && $meth->isa('Class::MOP::Method::Wrapped'),
+        'method modifiers have been applied to the Person->full_name method'
     );
 
-    my $output = $tps->output;
-    $output =~ s/\n\n+/\n/g;
+    is(
+        scalar $meth->before_modifiers,
+        1,
+        'Person->full_name has a single before modifier'
+    );
 
-    is( $output, <<'EOF', 'output returns expected report' );
-That TPS Report
-I celebrate his whole collection!
-t: PC Load Letter
-p: Swingline
-s: flair!
-Written by Peter Gibbons (for Bill Lumberg)
-EOF
+    is(
+        scalar $meth->after_modifiers,
+        1,
+        'Person->full_name has a single after modifier'
+    );
 
-    no_droppings('Document');
-    no_droppings('Report');
-    no_droppings('TPSReport');
+    my $person = Person->new(
+        first_name => 'Bilbo',
+        last_name  => 'Baggins',
+    );
+
+    is_deeply(
+        \@Person::CALL,
+        [],
+        'Person::CALL global is empty before calling full_name'
+    );
+
+    $person->full_name();
+
+    is_deeply(
+        \@Person::CALL,
+        [ 'calling full_name', 'called full_name' ],
+        'Person::CALL global contains before and after strings'
+    );
+
+    is(
+        scalar $meth->around_modifiers,
+        1,
+        'Person->full_name has a single around modifier'
+    );
+
+    my $larry = Person->new(
+        first_name => 'Larry',
+        last_name  => 'Wall',
+    );
+
+    is(
+        $larry->full_name,
+        '*Larry Wall*',
+        'full_name is wrapped by asterisks when last name is Wall'
+    );
 }
 
 sub tests05 {
