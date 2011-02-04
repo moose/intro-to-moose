@@ -2753,7 +2753,8 @@ coerce 'My::DateTime',
 <div class="slide">
   <h1>Coercion Examples</h1>
 
-  <pre><code>coerce 'ArrayRef[Int]',
+  <pre><code># BAD CODE - DO NOT COPY
+coerce 'ArrayRef[Int]',
     from 'Int',
     via  { [ $_ ] };</code></pre>
 
@@ -3291,7 +3292,6 @@ has history =&gt; (
 use Moose;
 has _favorite_numbers =&gt; (
     traits   =&gt; [ 'Array' ],
-    is       =&gt; 'bare',
     isa      =&gt; 'ArrayRef[Int]',
     default  =&gt; sub { [] },
     init_arg =&gt; undef,
@@ -3456,6 +3456,10 @@ print <span class="highlight">Person-&gt;meta
     <li>Traits and metaclasses let you extend Moose's core attribute features</li>
   </ul>
 </div>
+
+<div class="slide">
+  <h1>Questions?</h1>
+</div>  
 
 <div class="slide">
   <h1>Exercises</h1>
