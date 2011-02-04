@@ -672,9 +672,17 @@ sub employee03 {
 }
 
 sub person06 {
+    my $account = BankAccount->new();
+
     my $person = Person->new(
         first_name => 'Bilbo',
         last_name  => 'Baggins',
+        account    => $account,
+    );
+
+    is(
+        $person->account, $account,
+        'account object passed to Person->new is still in object'
     );
 
     isa_ok( $person->account, 'BankAccount' );
