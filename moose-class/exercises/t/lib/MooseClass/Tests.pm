@@ -30,6 +30,9 @@ sub tests01 {
 
     no_droppings('Person');
     is_immutable('Person');
+
+    no_droppings('Employee');
+    is_immutable('Employee');
 }
 
 sub tests02 {
