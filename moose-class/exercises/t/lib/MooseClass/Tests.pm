@@ -369,8 +369,16 @@ sub has_meta {
 
     local $Test::Builder::Level = $Test::Builder::Level + 1;
 
-    use_ok($package)
-        or BAIL_OUT("$package cannot be loaded");
+    {
+        my @warn;
+        local $SIG{__WARN__} = sub { push @warn, @_ };
+
+        use_ok($package)
+            or BAIL_OUT("$package cannot be loaded");
+
+        BAIL_OUT("Warning when loading $package: @warn")
+            if @warn;
+    }
 
     ok( $package->can('meta'), "$package has a meta() method" )
         or BAIL_OUT(
