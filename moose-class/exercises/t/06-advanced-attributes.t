@@ -11,8 +11,8 @@
 # Copy the deposit and withdraw methods from the HasAccount role.
 #
 # Finally, add a read-only history attribute. This will be an ArrayRef of
-# Int's. This should default to an empty array reference. Use Native
-# delegation to create a method to push values onto this attribute.
+# Int's. This should default to an empty array reference. Use a Native
+# delegation method to push values onto this attribute.
 #
 # Use a trigger to record the _old value_ of the balance each time it
 # changes. This means your trigger should not do anything if it is not passed
