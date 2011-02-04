@@ -328,7 +328,8 @@ sub tests06 {
     }
 
     ok(
-        $history_attr->meta()
+        $history_attr->meta()->can('does_role')
+            && $history_attr->meta()
             ->does_role('Moose::Meta::Attribute::Native::Trait::Array'),
         'BankAccount history attribute uses native delegation to an array ref'
     );
