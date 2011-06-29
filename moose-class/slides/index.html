@@ -1487,22 +1487,6 @@ Integer-&gt;does('Comparable'); # also true!</code></pre>
 </div>
 
 <div class="slide">
-  <h1>Name Conflicts Between Roles</h1>
-
-  <pre><code>package HasSubProcess;
-use Moose::Role;
-
-<span class="highlight">sub execute { ... }</span>
-
-package Killer;
-use Moose::Role;
-
-with 'HasSubProcess';
-
-<span class="highlight">sub execute { ... }</span></code></pre>
-</div>
-
-<div class="slide">
   <h1>Roles as Interfaces</h1>
 
   <ul>
