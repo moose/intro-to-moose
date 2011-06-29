@@ -1503,28 +1503,6 @@ with 'HasSubProcess';
 </div>
 
 <div class="slide">
-  <h1>Delayed Conflict</h1>
-
-  <pre><code>package SysadminAssassin;
-with 'Killer';</code></pre>
-
-  <ul>
-    <li><code>SysadminAssassin</code> must implement its own <code>execute</code></li>
-    <li>But loading the <code>Killer</code> role by itself does not cause an error</li>
-  </ul>
-</div>
-
-<div class="slide">
-  <h1>Roles as Interfaces</h1>
-
-  <ul>
-    <li>Roles can <code>require</code> methods of their consumers</li>
-    <li>Compile-time checks</li>
-    <li>Method must exist when the role is consumed</li>
-  </ul>
-</div>
-
-<div class="slide">
   <h1>The Attribute Gotcha</h1>
 
 <pre><code>package HasSize;
