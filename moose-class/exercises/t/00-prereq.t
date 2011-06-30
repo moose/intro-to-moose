@@ -6,8 +6,7 @@ use lib 't/lib';
 use Test::More tests => 1;
 
 my %prereqs = (
-    'Moose'      => '0.92',
-    'Class::MOP' => '0.94',
+    'Moose'      => '2.0000',
 );
 
 my @missing;
