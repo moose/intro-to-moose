@@ -1155,8 +1155,8 @@ Person-&gt;can('extends');</code></pre>
   <h1>Cleaning Up Moose Droppings</h1>
 
   <pre><code>package Person;
-<span class="highlight">use namespace::autoclean;</span>
 use Moose;
+<span class="highlight">use namespace::autoclean;</span>
 
 ...
 
@@ -2394,9 +2394,9 @@ around run</span> =&gt; sub {
         <li>alter parameters passed to the original method</li>
         <li>alter the return value of the original method</li>
         <li>not call the original method at all (or call a <em>different</em> method)</li>
-        <li>When using modifiers in a role, require the modified method</li>
       </ul>
     </li>
+    <li>When using modifiers in a role, require the modified method</li>
   </ul>
 </div>
 
