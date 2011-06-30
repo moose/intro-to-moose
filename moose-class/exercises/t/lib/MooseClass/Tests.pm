@@ -316,14 +316,14 @@ sub tests06 {
             my $str = defined $invalid ? $invalid : 'undef';
             ok(
                 !$tc->check($invalid),
-                "salary_level type rejects invalid value - $str"
+                "history type rejects invalid value - $str"
             );
         }
 
         for my $valid ( [], [1], [ 1, 2, 3 ], [ 1, -10, 9999 ] ) {
             ok(
                 $tc->check($valid),
-                "salary_level type accepts valid value"
+                "history type accepts valid value"
             );
         }
     }
