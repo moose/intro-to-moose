@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use Lingua::EN::Inflect qw( A PL_N );
+use Scalar::Util qw( blessed );
 use Test::More 'no_plan';
 
 sub tests01 {
@@ -352,10 +353,16 @@ sub tests06 {
     );
 
     my $deposit_meth = $person_meta->get_method('deposit');
-    isa_ok( $deposit_meth, 'Moose::Meta::Method::Delegation' );
+    _my_isa_ok(
+        $deposit_meth, 'Moose::Meta::Method::Delegation',
+        'The Person->deposit method exists and is a delegation method'
+    );
 
     my $withdraw_meth = $person_meta->get_method('withdraw');
-    isa_ok( $withdraw_meth, 'Moose::Meta::Method::Delegation' );
+    _my_isa_ok(
+        $withdraw_meth, 'Moose::Meta::Method::Delegation',
+        'The Person->withdraw method exists and is a delegation method'
+    );
 
     person06();
 
@@ -487,20 +494,10 @@ sub has_overridden_method {
     ok( $package->meta->has_method($name), "$package has $articled method" );
 
     my $meth = $package->meta->get_method($name);
-    isa_ok( $meth, 'Moose::Meta::Method::Overridden' );
-}
-
-sub has_augmented_method {
-    my $class = shift;
-    my $name  = shift;
-
-    local $Test::Builder::Level = $Test::Builder::Level + 1;
-
-    my $articled = A($name);
-    ok( $class->meta->has_method($name), "$class has $articled method" );
-
-    my $meth = $class->meta->get_method($name);
-    isa_ok( $meth, 'Moose::Meta::Method::Augmented' );
+    _my_isa_ok(
+        $meth, 'Moose::Meta::Method::Overridden',
+        "The $name method is an overridden method"
+    );
 }
 
 sub requires_method {
@@ -694,7 +691,11 @@ sub person06 {
         'account object passed to Person->new is still in object'
     );
 
-    isa_ok( $person->account, 'BankAccount' );
+    _my_isa_ok(
+        $person->account, 'BankAccount',
+        'The value of $person->account() isa BankAccount object'
+    );
+
     is(
         $person->account->owner, $person,
         'owner of bank account is person that created account'
@@ -743,6 +744,19 @@ sub account_tests {
     is(
         $person->balance, 27 + $base_amount,
         'balance is 27 (+ starting balance) after deposit of 50 and withdrawal of 23'
+    );
+}
+
+sub _my_isa_ok {
+    my $thing = shift;
+    my $class = shift;
+    my $desc  = shift;
+
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+
+    ok(
+        $thing && ( blessed $thing || !ref $thing ) && $thing->isa($class),
+        $desc
     );
 }
 
