@@ -27,41 +27,6 @@ answers - code that passes all the tests for each section. You can
 look in here if you're stuck, or if you just want to see how someone
 else did these exercises.
 
-install-moose and moosepan/ - a local CPAN mirror with just Moose and
-its dependencies. See below for usage instructions.
-
-
-INSTALLING MOOSE AND ITS DEPENDENCIES
-=====================================
-
-This directory contains a partial CPAN mirror that will allow you to
-install Moose and all of its dependencies. Just run:
-
-  /path/to/perl install-moose
-
-and it will use this mirror to install the latest version of Moose on
-your system.
-
-This assumes that you have already configured the CPAN shell on your
-system in the past. If you haven't, it may still work, or it may
-prompt you for a bunch of configuration items first.
-
-This script may try to connect to the net (even though it shouldn't). If you
-are behind a firewall that requires a proxy for http, this may cause the script
-to simply hang.
-
-In that case, try setting the "http_proxy" environment variable to appropriate
-value before running the script.
-
-WINDOWS USERS
-============
-
-The above installation script may only work with strawberry perl, and has not
-been tested with ActiveState.
-
-If you are using ActiveState, please install Moose from an appropriate PPM
-repository.
-
 EXERCISES HOW-TO
 ================
 
@@ -81,5 +46,5 @@ To run the tests, simply run this command:
 
 The test file name will be something like 01-classes.t.
 
-The tests will run in verbose mode, so you will get clues as to what
-exactly failed. Keep iterating on your code until the tests pass.
+This command will run the tests in verbose mode so you will get clues as to
+what exactly failed. Keep iterating on your code until the tests pass.
