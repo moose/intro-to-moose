@@ -13,6 +13,8 @@ use version;
 {
     package CPAN::FindDependencies;
 
+    use LWP::Simple qw( get );
+
     no warnings 'redefine';
     # The real function assumes that if you provide an argument it's a
     # local file, not a URI.
