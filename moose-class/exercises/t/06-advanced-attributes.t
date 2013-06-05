@@ -17,7 +17,8 @@
 # Use a trigger to record the _old value_ of the balance each time it
 # changes. This means your trigger should not do anything if it is not passed
 # an old value (this will be the case when the attribute is set for the first
-# time).
+# time). You can check for the presence of an old value by looking at the
+# number of elements passed to the trigger in the @_ array.
 #
 # Now you can delete the HasAccount role entirely. Instead, add an "account"
 # attribute to Person directly.
