@@ -14,7 +14,7 @@
 # the first and last name. Use the title's predicate method in the new
 # full_name method.
 #
-# Go back to the Employee class
+# Go back to the Employee class.
 #
 # Make the title attribute default to the string 'Worker' for the
 # Employee class. You can now inherit full_name from the Person class
