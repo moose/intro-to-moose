@@ -950,10 +950,10 @@ sub BUILD {
 <div class="slide">
   <h1>Object Construction a la Moose</h1>
 
-  <pre><code>Person-&gt;new(@_)</code></pre>
+  <pre><code>Person-&gt;new(@args)</code></pre>
 
   <ol style="margin-top: 0">
-    <li>Calls <code>Person-&gt;BUILDARGS(@_)</code> to turn <code>@_</code> into a hashref</li>
+    <li>Calls <code>Person-&gt;BUILDARGS(@args)</code> to turn <code>@args</code> into a hashref</li>
     <li>Blesses a reference</li>
     <li>Populates attributes based on the hashref from #1</li>
     <li>Calls <code>$new_object-&gt;BUILDALL($constructor_args)</code>
