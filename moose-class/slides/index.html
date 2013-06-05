@@ -2600,11 +2600,15 @@ has start_date =&gt; (
   <h1>Subtype Shortcuts - <code>class_type</code></h1>
 
   <pre><code>use Moose::Util::TypeConstraints;
-class_type 'DateTime';</code></pre>
+
+class_type 'DateTime';
+
+</code></pre>
 
 <hr />
 
-<pre><code>subtype     'DateTime',
+<pre><code>
+subtype     'DateTime',
     as      'Object',
     where   { $_-&gt;isa('DateTime') },
     message { ... };</code></pre>
@@ -2614,11 +2618,15 @@ class_type 'DateTime';</code></pre>
   <h1>Subtype Shortcuts - <code>role_type</code></h1>
 
   <pre><code>use Moose::Util::TypeConstraints;
-role_type 'Printable';</code></pre>
+
+role_type 'Printable';
+
+</code></pre>
 
 <hr />
 
-<pre><code>subtype 'Printable',
+<pre><code>
+subtype 'Printable',
     as  'Object',
     where
         { Moose::Util::does_role(
@@ -2630,11 +2638,15 @@ role_type 'Printable';</code></pre>
   <h1>Subtype Shortcuts - <code>duck_type</code></h1>
 
   <pre><code>use Moose::Util::TypeConstraints;
-duck_type Car =&gt; qw( run break_down );</code></pre>
+
+duck_type Car =&gt; qw( run break_down );
+
+</code></pre>
 
 <hr />
 
-<pre><code>subtype 'Car',
+<pre><code>
+subtype 'Car',
     as      'Object',
     where   { all { $_-&gt;can($_) }
               qw( run break_down ) },
@@ -2645,11 +2657,15 @@ duck_type Car =&gt; qw( run break_down );</code></pre>
   <h1>Subtype Shortcuts - <code>enum</code></h1>
 
   <pre><code>use Moose::Util::TypeConstraints;
-enum Color =&gt; qw( red blue green );</code></pre>
+
+enum Color =&gt; qw( red blue green );
+
+</code></pre>
 
 <hr />
 
-<pre><code>my %ok = map { $_ =&gt; 1 }
+<pre><code>
+my %ok = map { $_ =&gt; 1 }
              qw( red blue green );
 
 subtype     'Color'
@@ -2664,7 +2680,9 @@ subtype     'Color'
   <pre><code>package Person;
 
 <span class="highlight">my $posint =
-    subtype as 'Int', where { $_ &gt; 0 };</span>
+    subtype
+        as 'Int',
+        where { $_ &gt; 0 };</span>
 
 has size =&gt; (
     is  =&gt; 'ro',
