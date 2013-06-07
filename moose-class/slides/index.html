@@ -3373,82 +3373,6 @@ $person-&gt;account-&gt;deposit(100);</code></pre>
 </div>
 
 <div class="slide">
-  <h1>Traits and Metaclasses</h1>
-
-  <ul>
-    <li>The ultimate in customization</li>
-    <li>Per attribute metaclasses</li>
-    <li>Per attribute roles applied to the attribute metaclass</li>
-    <li>Change the meta-level behavior</li>
-  </ul>
-</div>
-
-<div class="slide">
-  <h1>Traits and Metaclasses</h1>
-
-  <ul>
-    <li>The default metaclass is <code>Moose::Meta::Attribute</code></li>
-    <li>Controls accessor generation, defaults, delegation, etc.</li>
-    <li>Adding a role to this metaclass (or replacing it) allows for infinite customization</li>
-  </ul>
-</div>
-
-<div class="slide">
-  <h1>Traits and Metaclasses</h1>
-
-  <ul>
-    <li>Can add/alter/remove an attribute parameter (from <code>has</code>)</li>
-    <li>Can change behavior of created attribute</li>
-  </ul>
-</div>
-
-<div class="slide">
-  <h1>Simple Trait Example</h1>
-
-  <pre><code>package Person;
-use Moose;
-use MooseX::LabeledAttributes;
-
-has ssn =&gt; (
-    <span class="highlight">traits =&gt; [ 'Labeled' ],</span>
-    is     =&gt; 'ro',
-    isa    =&gt; 'Str',
-    <span class="highlight">label  =&gt; 'Social Security Number',</span>
-);
-print <span class="highlight">Person-&gt;meta
-            -&gt;get_attribute('ssn')-&gt;label;</span></code></pre>
-</div>
-
-<div class="slide">
-  <h1>Simple Metaclass Example</h1>
-
-  <pre><code>package Person;
-use Moose;
-use MooseX::LabeledAttributes;
-
-has ssn =&gt; (
-    <span class="highlight">metaclass =&gt;
-        'MooseX::Meta::Attribute::Labeled',</span>
-    is        =&gt; 'ro',
-    isa       =&gt; 'Str',
-    <span class="highlight">label     =&gt; 'Social Security Number',</span>
-);
-print <span class="highlight">Person-&gt;meta
-            -&gt;get_attribute('ssn')-&gt;label;</span></code></pre>
-</div>
-
-<div class="slide">
-  <h1>Traits vs Metaclass</h1>
-
-  <ul>
-    <li>Can apply any mix of traits to an attribute</li>
-    <li>But just one metaclass</li>
-    <li>Traits (aka roles) can cooperate</li>
-    <li>Metaclasses require you to pick just one</li>
-  </ul>
-</div>
-
-<div class="slide">
   <h1>Advanced Attributes Summary</h1>
 
   <ul>
@@ -3456,7 +3380,6 @@ print <span class="highlight">Person-&gt;meta
     <li>Use trigger to do an action post-attribute write</li>
     <li>Use delegations to hide "internal" objects</li>
     <li>Use native delegations to treat Perl types as objects</li>
-    <li>Traits and metaclasses let you extend Moose's core attribute features</li>
   </ul>
 </div>
 
