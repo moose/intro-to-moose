@@ -3138,6 +3138,25 @@ has lungs =&gt; (
 </div>
 
 <div class="slide">
+  <h1>Delegation Explained</h1>
+
+<pre><code>package Person;
+
+has lungs =&gt; (
+    is      =&gt; 'ro',
+    isa     =&gt; 'Lungs',
+    <span class="delete">handles =&gt; [ 'inhale', 'exhale' ],</span>
+);
+
+<span class="highlight">sub inhale {
+    my $self = shift;
+    $self-&gt;lungs()-&gt;inhale();
+}
+
+sub exhale { ... }</span></pre></code>
+</div>
+
+<div class="slide">
   <h1>Why Delegation?</h1>
 
   <ul>
