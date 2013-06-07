@@ -2001,6 +2001,26 @@ Person-&gt;new( <span class="wrong">shoes =&gt; Shoes-&gt;new</span> );</code></
 </div>
 
 <div class="slide">
+  <h1>Some More <code>init_arg</code> examples</h1>
+
+  <ul>
+    <li>Private attribute, public constructor name</li>
+  </ul>
+
+<pre><code>package Person;
+use Moose;
+
+has <span class="highlight">_size</span> =&gt; (
+    is       =&gt; 'ro',
+    <span class="highlight">init_arg =&gt; 'size',</span>
+);
+
+my $person = Person-&gt;new( <span class="highlight">size =&gt; 42</span> );
+
+<span class="wrong">$person->size(); # error</span></code></pre>
+</div>
+
+<div class="slide">
   <h1>Why Set <code>init_arg =&gt; undef</code>?</h1>
 
   <ul>
