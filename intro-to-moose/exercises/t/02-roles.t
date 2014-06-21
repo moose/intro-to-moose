@@ -12,7 +12,7 @@
 # "withdraw" methods. Attempting to reduce the cash balance below 0
 # via "withdraw" should die with an error that includes the string:
 #
-#  Balance cannot be negative
+#   Balance cannot be negative
 #
 # Make the Person class consume this role as well.
 #

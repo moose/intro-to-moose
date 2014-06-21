@@ -31,9 +31,9 @@
 # * salary - read-write
 # * ssn - read-only
 #
-# The Employee class should override the "full_name" method to
-# append the employee's title in parentheses ("Jon Smith
-# (Programmer)"). Use override() and super() for this.
+# The Employee class should override the "full_name" method to append the
+# employee's title in parentheses ("Jon Smith (Programmer)"). You can assume
+# that the title is always set. Use override() and super() for this.
 #
 # Finally, both classes should be free of Moose droppings, and should be
 # immutable.
