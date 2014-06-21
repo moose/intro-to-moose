@@ -1307,25 +1307,22 @@ sub print {
   <pre><code>package Person;
 use Moose;
 
-with 'Printable';</code></pre>
+with 'Printable';
+
+# required by role
+sub as_string { $_[0]-&gt;first_name() }</code></pre>
 </div>
 
 <div class="slide">
   <h1>Classes Consume Roles</h1>
 
-<pre><code>package Person;
-
-sub as_string { $_[0]-&gt;first_name() }
-
-...
-
-my $person = Person-&gt;new(
+<pre><code>my $person = Person-&gt;new(
     first_name   =&gt; 'Kenichi',
     last_name    =&gt; 'Asai',
     access_level =&gt; 42,
 );
 
-$person-&gt;print();</code></pre>
+$person-&gt;print(); # prints 'Kenichi'</code></pre>
 </div>
 
 <div class="slide">
