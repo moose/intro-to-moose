@@ -1530,7 +1530,7 @@ with 'HasSize';</code></pre>
     <li>Really, it's <em>package load</em> time</li>
     <li>That's run-time, but before the "real" run-time</li>
     <li>Moose does not rewire Perl, it's just sugar!</li>
-    <li>(but <code>MooseX::Declare</code> <em>does</em> rewire Perl)</li>
+    <li>(but <code>Moops</code> <em>does</em> rewire Perl)</li>
   </ul>
 </div>
 
@@ -3464,7 +3464,6 @@ Iterate til this passes all its tests</pre>
 
   <ul>
     <li><code>MooseX::NonMoose</code> - best solution for subclassing non-Moose parents</li>
-    <li><code>MooseX::Declare</code> - <em>real</em> Perl 5 OO</li>
     <li><code>MooseX::FollowPBP</code> and <code>MooseX::SemiAffordanceAccessor</code></li>
     <li><code>MooseX::Params::Validate</code> and <code>MooseX::Method::Signatures</code></li>
     <li><code>MooseX::Types</code></li>
@@ -3472,12 +3471,12 @@ Iterate til this passes all its tests</pre>
 </div>    
 
 <div class="slide">
-  <h1>MooseX::Declare</h1>
+  <h1>Moops</h1>
 
-<pre><code>use MooseX::Declare;
-use 5.12.0; # for say
+<pre><code>use Moops;
+use 5.14.0; # for say
 
-class Person {
+class Person using Moose {
     has greeting =&gt;
         ( is =&gt; 'ro', isa =&gt; 'Str' );
 
@@ -3488,10 +3487,9 @@ class Person {
 </div>
 
 <div class="slide">
-  <h1>MooseX::Declare</h1>
+  <h1>Moops</h1>
 
   <ul>
-    <li>Still experimental-ish, but seeing more and more use</li>
     <li><strong>Not</strong> a source filter!</li>
     <li>Hooks into the Perl parser rather than filtering all your code</li>
     <li>But not supported by <code>PPI</code>, <code>perltidy</code>, etc. (yet?)</li>
