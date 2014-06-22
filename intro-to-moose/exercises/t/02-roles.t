@@ -7,10 +7,11 @@
 # role. Use full_name as the output for the as_string method. The
 # Employee subclass should still override this output.
 #
-# Implement a role HasAccount. This should provide a read-write
-# "balance" attribute. It should also implement "deposit" and
-# "withdraw" methods. Attempting to reduce the cash balance below 0
-# via "withdraw" should die with an error that includes the string:
+# Implement a role HasAccount. This should provide a read-write "balance"
+# attribute. It should also implement "deposit" and "withdraw" methods. These
+# methods will be passed a single argument, a positive number. Increment or
+# decrement the balance by this amount. Attempting to reduce the cash balance
+# below 0 via "withdraw" should die with an error that includes the string:
 #
 #   Balance cannot be negative
 #
