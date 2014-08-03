@@ -20,7 +20,7 @@ has title => (
 
 has first_name => ( is => 'rw' );
 
-has last_name  => ( is => 'rw' );
+has last_name => ( is => 'rw' );
 
 sub BUILD {
     my $self = shift;

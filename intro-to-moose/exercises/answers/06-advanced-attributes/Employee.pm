@@ -20,7 +20,7 @@ has salary => (
     init_arg => undef,
 );
 
-has ssn    => ( is => 'ro' );
+has ssn => ( is => 'ro' );
 
 sub _build_salary {
     my $self = shift;
