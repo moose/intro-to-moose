@@ -1116,6 +1116,16 @@ $person-&gt;first_name('Stevan'); # dies</code></pre>
 </div>
 
 <div class="slide">
+  <h1>Declaring Attributes Creates Methods</h1>
+
+  <ul>
+    <li><code>has first_name =&gt; ( is =&gt; 'ro' );</code> creates a <code>first_name()</code> method</li>
+    <li>This returns the value of the attribute</li>
+    <li>With read-write attributes, you can also pass a value to set the attribute</li>
+  </ul>
+</div>
+
+<div class="slide">
   <h1>There is More to Come</h1>
 
   <ul>
