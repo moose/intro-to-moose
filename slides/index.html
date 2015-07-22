@@ -2693,7 +2693,7 @@ enum Color =&gt; qw( red blue green );
 my %ok = map { $_ =&gt; 1 }
              qw( red blue green );
 
-subtype     'Color'
+subtype     'Color',
     as      'Str',
     where   { $ok{$_} },
     message { ... };</code></pre>
