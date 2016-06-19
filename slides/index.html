@@ -1505,6 +1505,8 @@ with 'Comparable';
 
 sub is_equal {
     my $self = shift;
+    # We know we can call compare because
+    # Comparable requires it
     return $self-&gt;compare(@_) == 0;
 }</code></pre>
 </div>
@@ -2481,7 +2483,7 @@ Iterate til this passes all its tests</pre>
     <li>Sort of ...</li>
     <li><em>Variables</em> are not typed</li>
     <li>Attributes can have types</li>
-    <li>MooseX modules let you define method signatures</li>
+    <li>There are CPAN modules that let you define method signatures</li>
   </ul>
 </div>
 
@@ -2880,6 +2882,20 @@ sub work {
 </div>
 
 <div class="slide">
+  <h1>Typed Methods (Low-tech)</h1>
+
+  <ul>
+    <li>But take a look at <code>Params::CheckCompiler</code> on CPAN:
+      <ul>
+        <li>It's about 30x faster when check passes</li>
+        <li>Works with any type system on CPAN</li>
+      </ul>
+    </li>
+    <li>I may rename it to <code>Params::ValidationCompiler</code></li>
+  </ul>
+</div>
+
+<div class="slide">
   <h1>Typed Methods (High-tech)</h1>
 
   <pre class="medium"><code>package Person;
@@ -3024,8 +3040,22 @@ has transaction_history =&gt; (
 
   <ul>
     <li>Toby Inkster's module</li>
-    <li>Works with Moose and Moo</li>
-    <li>Matches the Moose and MooseX::Types APIs exactly (this is not necessarily a good thing)</li>
+    <li>Works with <code>Moose</code> and <code>Moo</code></li>
+    <li>Matches the <code>Moose</code> and <code>MooseX::Types</code> APIs exactly (this is not necessarily a good thing)</li>
+    <li>Has most of the problems of <code>MooseX::Types</code></li>
+    <li>Has zero dependencies</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Specio</h1>
+
+  <ul>
+    <li>My module</li>
+    <li>Works with <code>Moose</code> and <code>Moo</code></li>
+    <li>Fixes many of the problems with both <code>Moose</code> and <code>MooseX::Types</code></li>
+    <li>Has a few dependencies</li>
+    <li>Relatively new, so probably has new problems as yet undiscovered</li>
   </ul>
 </div>
 
@@ -3033,8 +3063,7 @@ has transaction_history =&gt; (
   <h1>Recommendation</h1>
 
   <ul>
-    <li>Use <code>MooseX::Types</code> or <code>Type::Tiny</code> for now</li>
-    <li>Maybe try out my module <code>Specio</code></li>
+    <li>Use <code>MooseX::Types</code>, <code>Type::Tiny</code>, or <code>Specio</code></li>
     <li>Compile time error catching and automatic namespacing are huge wins</li>
     <li>Docs from <code>Moose::Util::TypeConstraints</code> are 98% compatible with <code>MooseX::Types</code> anyway</li>
     <li>A function exported by a type library works wherever a type name would</li>
