@@ -19,7 +19,7 @@
 #
 # Hint: A quick and dirty way to check for this is to use ref() to check if
 # the first value in @_ is an array reference (perldoc -f ref). A nicer way to
-# do this would be use to use Scalar::Util::reftype().
+# do this might be to use to use Scalar::Util::reftype().
 #
 # Create an Employee class in lib/Employee.pm
 #
@@ -35,7 +35,7 @@
 # employee's title in parentheses ("Jon Smith (Programmer)"). You can assume
 # that the title is always set. Use override() and super() for this.
 #
-# Finally, both classes should be free of Moose droppings, and should be
+# Finally, both classes should be free of Moose droppings and should be
 # immutable.
 
 use strict;
