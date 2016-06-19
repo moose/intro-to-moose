@@ -52,7 +52,18 @@ img#me05 {top: 43px;left: 36px;}
 <div class="slide">
   <h1>Introduction to Moose</h1>
   <h2>Dave Rolsky</h2>
-  <h2>http://www.urth.org/~autarch/intro-to-moose.tar.gz</h2>
+  <h2><a href="https://github.com/moose/intro-to-moose.git">https://github.com/moose/intro-to-moose.git</a></h2>
+</div>
+
+<div class="slide">
+  <h1>Are You Prepared?</h1>
+
+  <ul>
+    <li>Perl?</li>
+    <li>An editor?</li>
+    <li>Moose installed?</li>
+    <li>Class repo checkout?</li>
+  </ul>
 </div>
 
 <div class="slide">
@@ -155,7 +166,12 @@ img#me05 {top: 43px;left: 36px;}
   <pre><code>package Person;
 use Moose;
 
-<span class="highlight">has first_name =&gt; ( is =&gt; 'ro' );</span></code></pre>
+<span class="highlight">has name =&gt; ( is =&gt; 'ro' );</span>
+
+sub say_name {
+    my $self = shift;
+    print <span class="highlight">$self-&gt;name</span> . "\n";
+}</code></pre>
 
 </div>
 
@@ -218,9 +234,9 @@ use Moose;
 
   <ul>
     <li>AKA advice</li>
-    <li>&quot;<strong>Before</strong> foo(), do this first&quot;</li>
-    <li>&quot;Do this <strong>after</strong> foo()&quot;</li>
-    <li>&quot;Put this code <strong>around</strong> foo()&quot;</li>
+    <li>&quot;<strong>Before</strong> <code>foo</code>, do this first&quot;</li>
+    <li>&quot;Do this <strong>after</strong> <code>foo</code>&quot;</li>
+    <li>&quot;Put this code <strong>around</strong> <code>foo</code>&quot;</li>
   </ul>
 </div>
 
@@ -228,10 +244,10 @@ use Moose;
   <h1>Before and After</h1>
 
 <pre><code>before 'foo'
-    =&gt; sub { warn 'About to call foo()' };
+    =&gt; sub { warn 'About to call foo' };
 
 after  'foo'
-    =&gt; sub { warn 'Leaving foo()' };</code></pre>
+    =&gt; sub { warn 'Leaving foo' };</code></pre>
 
 </div>
 
@@ -242,7 +258,7 @@ after  'foo'
     my $real_foo = shift;
     my $self     = shift;
 
-    warn 'Just before foo()';
+    warn 'Just before foo';
     my @return =
         $self-&gt;$real_foo( @_, bar =&gt; 42 );
 
@@ -309,8 +325,8 @@ has blog_uri =&gt; (
   <h1>Constructors</h1>
 
   <ul>
-    <li>Moose creates <code>new()</code> for you</li>
-    <li>Provide an optional <code>BUILDARGS()</code> and <code>BUILD()</code></li>
+    <li>Moose creates <code>new</code> for you</li>
+    <li>Provide an optional <code>BUILDARGS</code> and <code>BUILD</code></li>
   </ul>
 </div>
 
@@ -318,7 +334,7 @@ has blog_uri =&gt; (
   <h1>Destructors</h1>
 
   <ul>
-    <li>Provide an optional <code>DEMOLISH()</code></li>
+    <li>Provide an optional <code>DEMOLISH</code></li>
   </ul>
 </div>
 
@@ -853,6 +869,22 @@ has last_name =&gt; (
     </ul>
 </div>
 
+<div class="slide">
+  <h1>What About Moo?</h1>
+
+  <ul>
+    <li>Moo is a good choice if ...
+      <ul>
+        <li>Faster startup time is important</li>
+        <li>You don't care about the meta layer</li>
+        <li>You want fewer dependencies in your chain</li>
+      </ul>
+    </li>
+    <li>Almost everything in this class is applicable to Moo with <code>s/Moose/Moo/g</code></li>
+  </ul>
+</div>
+    
+
 <div class="slide fake-slide0">
   <h1>Part 1: Moose Classes</h1>
 </div>
@@ -883,8 +915,8 @@ use Moose;</code></pre>
   <h1>What <code>Moose::Object</code> Provides</h1>
 
   <ul>
-    <li>Constructor - <code>new()</code></li>
-    <li>Calls your <code>BUILDARGS()</code> and/or <code>BUILD()</code></li>
+    <li>Constructor - <code>new</code></li>
+    <li>Calls your <code>BUILDARGS</code> and/or <code>BUILD</code></li>
     <li>Calls your <code>DEMOLISH</code> during object destruction</li>
   </ul>
 </div>
@@ -1027,9 +1059,9 @@ extends 'LWP';</code></pre>
   <ul>
     <li>No <code>Moose::Object</code>, so ...
       <ul>
-        <li>No attribute-handling <code>new()</code></li>
-        <li>No <code>BUILDARGS()</code> or <code>BUILD()</code></li>
-        <li>No <code>DEMOLISH()</code></li>
+        <li>No attribute-handling <code>new</code></li>
+        <li>No <code>BUILDARGS</code> or <code>BUILD</code></li>
+        <li>No <code>DEMOLISH</code></li>
       </ul>
     </li>
     <li>But <code>MooseX::NonMoose</code> fixes all of this</li>
@@ -1070,7 +1102,7 @@ use Moose;
     <li>Mostly like <code>$self-&gt;SUPER::work(@_)</code></li>
     <li><strong>But</strong> cannot change <code>@_</code>!</li>
     <li>Binds the parent's method <strong>correctly</strong> at compile time</li>
-    <li>Parent determined by checking <code>Child-&gt;meta()-&gt;superclasses()</code></li>
+    <li>Parent determined by checking<br><code>Child-&gt;meta-&gt;superclasses</code></li>
   </ul>
 </div>
 
@@ -1080,17 +1112,6 @@ use Moose;
   <ul>
     <li><code>has 'foo'</code></li>
     <li>Use <code>is =&gt; 'ro'</code> or <code>is =&gt; 'rw'</code></li>
-  </ul>
-</div>
-
-<div class="slide">
-  <h1>Attribute Accessors</h1>
-
-  <ul>
-    <li>Moose creates a method with the same name as your attribute</li>
-    <li>This method is called an "accessor"</li>
-    <li>The access is what is read-only or read-write</li>
-    <li>Attributes without "is" have no accessors</li>
   </ul>
 </div>
 
@@ -1128,9 +1149,11 @@ $person-&gt;first_name('Stevan'); # dies</code></pre>
 <div class="slide">
   <h1>Declaring Attributes Creates Methods</h1>
 
+  <pre><code>has first_name =&gt; ( is =&gt; 'ro' );</code></pre>
+
   <ul>
-    <li><code>has first_name =&gt; ( is =&gt; 'ro' );</code> creates a <code>first_name()</code> method</li>
-    <li>This returns the value of the attribute</li>
+    <li>This code creates a <code>first_name</code> method</li>
+    <li>The method returns the value of the attribute</li>
     <li>With read-write attributes, you can also pass a value to set the attribute</li>
   </ul>
 </div>
@@ -1330,7 +1353,7 @@ use Moose;
 with 'Printable';
 
 # required by role
-sub as_string { $_[0]-&gt;first_name() }</code></pre>
+sub as_string { $_[0]-&gt;first_name }</code></pre>
 </div>
 
 <div class="slide">
@@ -1342,7 +1365,7 @@ sub as_string { $_[0]-&gt;first_name() }</code></pre>
     access_level =&gt; 42,
 );
 
-$person-&gt;print(); # prints 'Kenichi'</code></pre>
+$person-&gt;print; # prints 'Kenichi'</code></pre>
 </div>
 
 <div class="slide">
@@ -1361,7 +1384,7 @@ use Moose;
 
 <span class="highlight">with 'Printable';</span>
 
-sub as_string { $_[0]-&gt;first_name() }</code></pre>
+sub as_string { $_[0]-&gt;first_name }</code></pre>
 </div>
 
 <div class="slide">
@@ -1372,7 +1395,7 @@ use Moose;
 
 <span class="delete">with 'Printable';</span>
 
-sub as_string { $_[0]-&gt;first_name() }
+sub as_string { $_[0]-&gt;first_name }
 
 <span class="highlight">has has_been_printed =&gt; ( is =&gt; 'rw'  );
 
@@ -1741,7 +1764,7 @@ has first_name =&gt; (
 );
 
 <span class="incremental">Person-&gt;new( first_name =&gt; undef ); # ok
-Person-&gt;new(); # kaboom</span></code></pre>
+Person-&gt;new; # kaboom</span></code></pre>
 </div>
 
 <div class="slide">
@@ -2034,7 +2057,7 @@ has <span class="highlight">_size</span> =&gt; (
 
 my $person = Person-&gt;new( <span class="highlight">size =&gt; 42</span> );
 
-<span class="wrong">$person->size(); # error</span></code></pre>
+<span class="wrong">$person->size; # error</span></code></pre>
 </div>
 
 <div class="slide">
@@ -3185,7 +3208,7 @@ has lungs =&gt; (
 
 <span class="highlight">sub inhale {
     my $self = shift;
-    $self-&gt;lungs()-&gt;inhale();
+    $self-&gt;lungs-&gt;inhale;
 }
 
 sub exhale { ... }</span></pre></code>
@@ -3362,7 +3385,7 @@ has _favorite_numbers =&gt; (
 <div class="slide">
   <h1>Native Delegation - Array(Ref)</h1>
 
-  <pre><code>my $person = Person-&gt;new();
+  <pre><code>my $person = Person-&gt;new;
 
 $person-&gt;add_favorite_number(7);
 $person-&gt;add_favorite_number(42);
@@ -3595,7 +3618,7 @@ sub run { ... }</code></pre>
 
 use App::CLI;
 
-<span class="highlight">App::CLI-&gt;new_with_options()</span>-&gt;run();</code></pre>
+<span class="highlight">App::CLI-&gt;new_with_options</span>-&gt;run;</code></pre>
 
 <pre>$ myapp-cli \
    --file foo \
@@ -3635,7 +3658,7 @@ my $clone  = <span class="highlight">$person-&gt;clone;</span></code></pre>
     my $p = shift;
 
     my $type =
-        'ArrayRef[' . $p-&gt;type() . ']';
+        'ArrayRef[' . $p-&gt;type . ']';
     has collection =&gt;
         ( is  =&gt; 'ro',
           isa =&gt; $type );
