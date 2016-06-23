@@ -163,7 +163,11 @@ sub tests04 {
         'Person::CALL global is empty before calling full_name'
     );
 
-    $person->full_name();
+    is(
+        $person->full_name,
+        'Bilbo Baggins',
+        'full_name is not wrapped by asterisks when last name is Baggins'
+    );
 
     is_deeply(
         \@Person::CALL,
