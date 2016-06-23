@@ -294,9 +294,13 @@ sub tests05 {
 sub tests06 {
     has_meta('BankAccount');
 
-    has_rw_attr( 'BankAccount', $_ ) for qw( balance owner );
-
     my $ba_meta = BankAccount->meta;
+    ok(
+        $ba_meta->isa('Moose::Meta::Class'),
+        'BankAccount is a Moose class'
+    ) or BAIL_OUT('Cannot continue unless BankAccount is a Moose class');
+
+    has_rw_attr( 'BankAccount', $_ ) for qw( balance owner );
 
     ok(
         $ba_meta->get_attribute('owner')->is_weak_ref,
