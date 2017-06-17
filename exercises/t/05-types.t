@@ -1,7 +1,7 @@
 # Your tasks ...
 #
-# In this set of exercises, you will return to your Person and
-# Employee classes, and add appropriate types for every one of their
+# In this set of exercises you will return to your Person and
+# Employee classes and add appropriate types for every one of their
 # attributes.
 #
 # In Person, the title, first_name, and last_name attributes should
