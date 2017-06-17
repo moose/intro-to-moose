@@ -4,14 +4,14 @@
 # attributes required.
 #
 # Move the title attribute from the Employee class to the Person
-# class. Adjust full_name in the Person class so it includes the
-# title, which is optional.
+# class.
 #
 # Add a predicate (has_title) and clearer (clear_title) to the title
 # attribute as well.
 #
-# If a person has no title, the full_name method should simply return
-# the first and last name. Use the title's predicate method in the new
+# Adjust full_name in the Person class so it includes the title, which is
+# optional. If a person has no title, the full_name method should simply
+# return the first and last name. Use the title's predicate method in the new
 # full_name method.
 #
 # Go back to the Employee class.
