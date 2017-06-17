@@ -2861,50 +2861,37 @@ Iterate til this passes all its tests</pre>
   <h1>Typed Methods (Low-tech)</h1>
 
   <pre class="medium"><code>package Person;
-<span class="highlight">use MooseX::Params::Validate qw( validated_list );</span>
+<span class="highlight">use Params::ValidationCompiler qw( validation_for );</span>
+use MooseX::Types qw( ArrayRef Bool );
+
+<span class="highlight">my $validator = validation_for(
+    params =&gt; {
+        tasks    =&gt; { type   =&gt; ArrayRef['Task'],
+                      coerce =&gt; 1 },
+        can_rest =&gt; { type    =&gt; Bool,
+                      default =&gt; 0 },
+    },
+);</span>
 
 sub work {
     my $self = shift;
-    <span class="highlight">my ( $tasks, $can_rest ) =
-        validated_list(
-            \@_,
-            tasks    =&gt;
-                { isa    =&gt; 'ArrayRef[Task]',
-                  coerce =&gt; 1 },
-            can_rest =&gt;
-                { isa     =&gt; 'Bool',
-                  default =&gt; 0 },
-        );</span>
+    <span class="highlight">my %args = $validator->(@_);</span>
     ...
 }</code></pre>
 </div>
 
 <div class="slide">
-  <h1>Typed Methods (Low-tech)</h1>
-
-  <ul>
-    <li>But take a look at <code>Params::CheckCompiler</code> on CPAN:
-      <ul>
-        <li>It's about 30x faster when check passes</li>
-        <li>Works with any type system on CPAN</li>
-      </ul>
-    </li>
-    <li>I may rename it to <code>Params::ValidationCompiler</code></li>
-  </ul>
-</div>
-
-<div class="slide">
   <h1>Typed Methods (High-tech)</h1>
 
-  <pre class="medium"><code>package Person;
+  <pre class="medium"><code><span class="highlight">use Moops;</span>
 
-<span class="highlight">use MooseX::Method::Signatures;</span>
+class Person {
+    <span class="highlight">method work ( ArrayRef[Task] $tasks,
+                            Bool $can_rest = 0 )</span> {
+        my $self = shift;
 
-<span class="highlight">method work ( ArrayRef[Task] :$tasks,
-                        Bool :$can_rest = 0 )</span> {
-    my $self = shift;
-
-    ...
+        ...
+    }
 }</code></pre>
 </div>
 
@@ -3053,7 +3040,6 @@ has transaction_history =&gt; (
     <li>Works with <code>Moose</code> and <code>Moo</code></li>
     <li>Fixes many of the problems with both <code>Moose</code> and <code>MooseX::Types</code></li>
     <li>Has a few dependencies</li>
-    <li>Relatively new, so probably has new problems as yet undiscovered</li>
   </ul>
 </div>
 
