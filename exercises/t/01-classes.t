@@ -19,7 +19,7 @@
 #
 # Hint: A quick and dirty way to check for this is to use ref() to check if
 # the first value in @_ is an array reference (perldoc -f ref). A nicer way to
-# do this might be to use to use Scalar::Util::reftype().
+# do this might be to use Scalar::Util::reftype().
 #
 # Create an Employee class in lib/Employee.pm
 #
