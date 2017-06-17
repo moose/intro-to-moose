@@ -23,7 +23,7 @@
 # Now you can delete the HasAccount role entirely. Instead, add an "account"
 # attribute to Person directly.
 #
-# This new account attribute should default to a new BankAccount object. Use
+# This account attribute should default to a new BankAccount object. Use
 # delegation so that when the code calls Person->deposit and Person->withdraw,
 # it calls those methods on the person's BankAccount object.
 #
