@@ -10,9 +10,9 @@
 # attribute as well.
 #
 # Adjust full_name in the Person class so it includes the title, which is
-# optional. If a person has no title, the full_name method should simply
-# return the first and last name. Use the title's predicate method in the new
-# full_name method.
+# optional and has no default. If a person has no title, the full_name method
+# should simply return the first and last name. Use the title's predicate
+# method in the new full_name method.
 #
 # Go back to the Employee class.
 #
