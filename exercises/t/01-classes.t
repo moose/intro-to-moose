@@ -12,7 +12,7 @@
 # ("Jon Smith").
 #
 # Write a BUILDARGS method for this class which allows the caller to
-# pass a two argument array reference. These should be assigned to the
+# pass a two element array reference. These should be assigned to the
 # first and last name respectively.
 #
 #   Person->new( [ 'Lisa', 'Smith' ] );
