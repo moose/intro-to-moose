@@ -10,15 +10,15 @@
 #
 # Copy the deposit and withdraw methods from the HasAccount role.
 #
-# Finally, add a read-only history attribute. This will be an ArrayRef of
-# Int's. This should default to an empty array reference. Use a Native
+# Finally, add a read-only attribute named "history". This will be an ArrayRef
+# of Int's. This should default to an empty array reference. Use a Native
 # delegation method to push values onto this attribute.
 #
-# Use a trigger to record the _old value_ of the balance each time it
-# changes. This means your trigger should not do anything if it is not passed
-# an old value (this will be the case when the attribute is set for the first
-# time). You can check for the presence of an old value by looking at the
-# number of elements passed to the trigger in the @_ array.
+# Use a trigger to record the _old value_ of the balance in "historY" each
+# time the balance changes. This means your trigger should not do anything if
+# it is not passed an old value (this will be the case when the attribute is
+# set for the first time). You can check for the presence of an old value by
+# looking at the number of elements passed to the trigger in the @_ array.
 #
 # Now you can delete the HasAccount role entirely. Instead, add an "account"
 # attribute to Person directly.
