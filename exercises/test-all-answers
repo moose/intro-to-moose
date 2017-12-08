@@ -6,7 +6,7 @@ use autodie qw( :all );
 
 use Path::Class qw( dir );
 
-system( qw( prove -v t/00-prereq.t ) );
+system( qw( prove -vm t/00-prereq.t ) );
 
 for my $t_file (
     sort grep { !$_->is_dir() && $_->basename() =~ /^(?:0[1-9]|[1-9])/ }
@@ -18,5 +18,5 @@ for my $t_file (
 
     die "No lib dir for $t_file" unless -d $lib;
 
-    system( 'prove', '-I', $lib, '-v', $t_file );
+    system( 'prove', '-I', $lib, '-vm', $t_file );
 }
