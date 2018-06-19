@@ -1604,8 +1604,7 @@ has [ 'left', 'right' ] =&gt; (
   <pre><code>use Moose::Util qw( apply_all_roles );
 
 my $fragile_person = Person-&gt;new( ... );
-apply_all_roles( $fragile_person,
-                 'IsFragile' );</code></pre>
+apply_all_roles( $fragile_person, 'IsFragile' );</code></pre>
 
   <ul>
     <li>Does not change the <code>Person</code> class</li>
@@ -3637,6 +3636,18 @@ use App::CLI;
    --file foo \
    --filters compress \
    --filters sanitize</pre>
+</div>
+
+<div class="slide">
+  <h1>MooseX::App::Cmd</h1>
+
+  <ul>
+    <li>Lets you build a CLI tool with subcommands:</li>
+  </ul>
+
+  <pre>$ my-command init --dir ./dir
+$ my-command copy --from ./dir --to ./new
+  </pre>
 </div>
 
 <div class="slide">
