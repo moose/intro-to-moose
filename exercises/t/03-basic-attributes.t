@@ -16,9 +16,9 @@
 #
 # Go back to the Employee class.
 #
-# Use a builder to make the title attribute default to the string 'Worker' for
-# the Employee class. You can now inherit full_name from the Person class
-# rather than re-implementing it.
+# In the employee class, make default value for the title attribute the string
+# 'Worker' (do not use a builder for this). You can now inherit full_name from
+# the Person class rather than re-implementing it.
 #
 # Add a read-write salary_level attribute. This will be a number from
 # 1-10 (but you will deal with enforcing this later). This attribute
