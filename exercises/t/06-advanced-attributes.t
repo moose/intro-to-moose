@@ -14,7 +14,7 @@
 # of Int's. This should default to an empty array reference. Use a Native
 # delegation method to push values onto this attribute.
 #
-# Use a trigger to record the _old value_ of the balance in "historY" each
+# Use a trigger to record the _old value_ of the balance in "history" each
 # time the balance changes. This means your trigger should not do anything if
 # it is not passed an old value (this will be the case when the attribute is
 # set for the first time). You can check for the presence of an old value by
