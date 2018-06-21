@@ -1604,7 +1604,8 @@ has [ 'left', 'right' ] =&gt; (
   <pre><code>use Moose::Util qw( apply_all_roles );
 
 my $fragile_person = Person-&gt;new( ... );
-apply_all_roles( $fragile_person, 'IsFragile' );</code></pre>
+apply_all_roles( $fragile_person,
+                 'IsFragile' );</code></pre>
 
   <ul>
     <li>Does not change the <code>Person</code> class</li>
