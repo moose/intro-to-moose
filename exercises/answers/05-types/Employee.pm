@@ -10,7 +10,7 @@ has '+title' => (
 );
 
 subtype 'Int1To10',
-    as    'Int',
+    as 'Int',
     where { $_ >= 1 && $_ <= 10 };
 
 has salary_level => (
@@ -20,7 +20,7 @@ has salary_level => (
 );
 
 subtype 'PosInt',
-    as    'Int',
+    as 'Int',
     where { $_ > 0 };
 
 has salary => (
@@ -32,8 +32,8 @@ has salary => (
 );
 
 subtype 'ValidSSN',
-    as    'Str',
-    where { /^\d\d\d-\d\d\-\d\d\d\d$/};
+    as 'Str',
+    where {/^\d\d\d-\d\d\-\d\d\d\d$/};
 
 has ssn => (
     is  => 'ro',

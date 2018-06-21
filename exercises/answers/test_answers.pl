@@ -6,7 +6,6 @@ use warnings;
 use FindBin;
 use TAP::Harness;
 
-
 my $harness = TAP::Harness->new(
     {
         failures => 1,

@@ -6,7 +6,7 @@ use lib 't/lib';
 use Test::More tests => 1;
 
 my %prereqs = (
-    'Moose'      => '2.1800',
+    'Moose' => '2.1800',
 );
 
 my @missing;
@@ -19,7 +19,9 @@ for my $mod ( keys %prereqs ) {
     }
 
     if ( $mod->VERSION < $prereqs{$mod} ) {
-        push @missing, "$mod must be version $prereqs{$mod} or greater (you have " . $mod->VERSION . ")";
+        push @missing,
+            "$mod must be version $prereqs{$mod} or greater (you have "
+            . $mod->VERSION . ")";
     }
 }
 
@@ -32,4 +34,4 @@ if (@missing) {
     diag " ***********************************************************\n";
 }
 
-ok( ! @missing, 'Checking for prereqs' );
+ok( !@missing, 'Checking for prereqs' );

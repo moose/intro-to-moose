@@ -68,12 +68,14 @@ sub tests02 {
 sub tests03 {
     has_meta('Person');
 
-    for my $name ( qw( first_name last_name ) ) {
+    for my $name (qw( first_name last_name )) {
         has_rw_attr( 'Person', $name );
 
         my $attr = Person->meta->get_attribute($name);
-        ok( $attr && $attr->is_required,
-            "$name is required in Person" );
+        ok(
+            $attr && $attr->is_required,
+            "$name is required in Person"
+        );
     }
 
     has_rw_attr( 'Person', 'title' );
@@ -109,7 +111,7 @@ sub tests03 {
     has_ro_attr( 'Employee', 'salary' );
 
     my $salary_attr = Employee->meta->get_attribute('salary');
-    ok( $salary_attr->is_lazy, 'salary is lazy' );
+    ok( $salary_attr->is_lazy,     'salary is lazy' );
     ok( !$salary_attr->init_arg,   'no init_arg for salary attribute' );
     ok( $salary_attr->has_builder, 'salary attr has a builder' );
 
@@ -339,7 +341,7 @@ sub tests06 {
     }
 
     ok(
-        $history_attr->meta()->can('does_role')
+               $history_attr->meta()->can('does_role')
             && $history_attr->meta()
             ->does_role('Moose::Meta::Attribute::Native::Trait::Array'),
         'BankAccount history attribute uses native delegation to an array ref'
@@ -354,8 +356,10 @@ sub tests06 {
 
     my $person_meta = Person->meta;
 
-    ok( !$person_meta->does_role('HasAccount'),
-        'Person class does not do the HasAccount role' );
+    ok(
+        !$person_meta->does_role('HasAccount'),
+        'Person class does not do the HasAccount role'
+    );
 
     ok(
         !$person_meta->has_attribute('balance'),
@@ -528,8 +532,10 @@ sub no_droppings {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
 
     ok( !$package->can('has'), "no Moose droppings in $package" );
-    ok( !$package->can('subtype'),
-        "no Moose::Util::TypeConstraints droppings in $package" );
+    ok(
+        !$package->can('subtype'),
+        "no Moose::Util::TypeConstraints droppings in $package"
+    );
 }
 
 sub is_immutable {
@@ -560,7 +566,7 @@ sub person01 {
         'full_name() is correctly implemented'
     );
 
-    $person = eval { Person->new( [ qw( Lisa Smith ) ] ) };
+    $person = eval { Person->new( [qw( Lisa Smith )] ) };
 
     if ( my $e = $@ ) {
         diag(
@@ -652,8 +658,10 @@ sub person03 {
     );
 
     $person->title('Ringbearer');
-    ok( $person->has_title,
-        'Person has_title predicate is working correctly (returns true)' );
+    ok(
+        $person->has_title,
+        'Person has_title predicate is working correctly (returns true)'
+    );
 
     my $called    = 0;
     my $orig_pred = \&Person::has_title;
@@ -664,8 +672,10 @@ sub person03 {
         $person->full_name, 'Bilbo Baggins (Ringbearer)',
         'full_name() is correctly implemented for a Person with a title'
     );
-    ok( $called,
-        'full_name in person uses the predicate for the title attribute' );
+    ok(
+        $called,
+        'full_name in person uses the predicate for the title attribute'
+    );
 
     $person->clear_title;
     ok( !$person->has_title, 'Person clear_title method cleared the title' );
