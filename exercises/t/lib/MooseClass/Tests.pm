@@ -3,8 +3,6 @@ package MooseClass::Tests;
 use strict;
 use warnings;
 
-use lib 't/lib';
-
 use Lingua::EN::Inflect qw( A PL_N );
 use Scalar::Util qw( blessed );
 use Test::More 'no_plan';
