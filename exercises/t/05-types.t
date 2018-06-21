@@ -15,7 +15,7 @@
 # The salary attribute should be a positive integer.
 #
 # Finally, the ssn attribute should be a string subtype that validates
-# against a regular expression of /^\d\d\d-\d\d-\d\d\d\d$/
+# against a regular expression of /\A\d\d\d-\d\d-\d\d\d\d\z/
 
 use strict;
 use warnings;
